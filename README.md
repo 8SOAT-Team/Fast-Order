@@ -84,8 +84,8 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para m
 
 ## Autores
 
-André Bessa - RM357159
-Fernanda - RM357346
-Gilberto Loubach - RM357416
-Felipe Bergmann - RM357042
-Victor Oliver - RM357451
+- André Bessa - RM357159
+- Fernanda - RM357346
+- Felipe Bergmann - RM357042
+- Gilberto Loubach - RM357416
+- Victor Oliver - RM357451
