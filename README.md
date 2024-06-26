@@ -20,9 +20,10 @@ Breve descrição do que é o projeto e seu propósito.
 ## Configuração
 Crie um arquivo .env baseado no arquivo .env.example:
 
-bash
-Copiar código
+```bash
 cp .env.example .env
+```
+
 Atualize as variáveis de ambiente no arquivo .env conforme necessário.
 
 ## Como Rodar o Projeto
@@ -31,7 +32,11 @@ Construa e inicie os containers Docker:
 ```bash
 docker-compose up --build
 ```
-A API deve estar rodando em http://localhost:8080.
+
+A API deve estar rodando em http://localhost:5011.
+
+Será iniciado um container com o postgres, rodando na porta 5432 e expondo na porta 5433.
+Outro container será iniciado com o adminer na porta 8080 auxiliando na visualização do schema de banco de dados.
 
 ## Uso
 ### Exemplos de Endpoints
