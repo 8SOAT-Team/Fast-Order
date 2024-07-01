@@ -1,0 +1,6 @@
+@Postech8SOAT.FastOrder.WebAPI_HostAddress = http://localhost:5236
+
+GET {{Postech8SOAT.FastOrder.WebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
