@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Service\" />
-  </ItemGroup>
-
 </Project>

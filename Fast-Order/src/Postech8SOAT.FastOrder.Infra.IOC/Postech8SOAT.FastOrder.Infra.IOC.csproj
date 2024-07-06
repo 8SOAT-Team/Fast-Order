@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Postech8SOAT.FastOrder.Application\Postech8SOAT.FastOrder.Application.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
   </ItemGroup>
 
