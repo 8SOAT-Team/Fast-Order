@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Service\" />
+    <ProjectReference Include="..\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
+    <Folder Include="Service\" />
   </ItemGroup>
 
 </Project>

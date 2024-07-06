@@ -2,6 +2,6 @@
 using Postech8SOAT.FastOrder.Domain.Ports.Repository.Base;
 
 namespace Postech8SOAT.FastOrder.Domain.Ports.Repository;
-public interface IClienteRepository:IRepository<Cliente>
+public interface IClienteRepository : IRepository<Cliente>
 {
 }
