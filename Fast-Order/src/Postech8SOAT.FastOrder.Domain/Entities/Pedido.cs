@@ -9,7 +9,7 @@ public class Pedido:Entity
     public int? ClienteId { get; set; }
     public Cliente? Cliente { get; set; }
     public List<Produto>? Produtos { get; set; }
-    public Decimal ValorTotal { get; }
+    public Decimal ValorTotal { get; private set; }
 
     public event Action<decimal> ValorTotalCalculado = delegate { };
 

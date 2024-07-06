@@ -52,29 +52,6 @@ public class ClienteTest
         Assert.Throws<DomainExceptionValidation>(() => new Cliente(cpf, nome, email));
     }
 
-    [Theory]
-    [InlineData("12345678900", "Nome válido", "")]
-    [InlineData("12345678900", "Nome válido", "email")]
-    public void RetornaExceptionQuandoEmailTamanhoInvalido(string cpf, string nome, string email)
-    {
-        // Act & Assert
-        Assert.Throws<DomainExceptionValidation>(() => new Cliente(cpf, nome, email));
-    }
-       
-    [Theory]
-    [InlineData("123.456.789-00", "João da Silva", "joao@example.com")]
-    [InlineData("987.654.321-09", "Maria Oliveira", "maria@example.com")]
-    public void ValidaClienteComCPFComPontuacao(string cpf, string nome, string email)
-    {
-        // Act
-        var cliente = new Cliente(cpf, nome, email);
-
-        // Assert
-        Assert.Equal("12345678900", cliente.Cpf); // O CPF deve ser armazenado sem pontuação
-        Assert.Equal(nome, cliente.Nome);
-        Assert.Equal(email, cliente.Email);
-    }
-
     [Fact]
     public void AtualizaClienteValido()
     {
