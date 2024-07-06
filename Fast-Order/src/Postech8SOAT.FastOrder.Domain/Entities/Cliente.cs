@@ -5,7 +5,7 @@ public class Cliente:Entity
 {
     protected Cliente()
     {
-        
+        this.Id = Guid.NewGuid();
     }
     public string? Cpf { get; private set; }
     public string? Nome { get; private set; }
@@ -16,9 +16,10 @@ public class Cliente:Entity
         ValidationDomain(cpf, nome, email);
     }
 
-    public Cliente(int id, string? cpf, string? nome, string? email)
+    public Cliente(Guid id, string? cpf, string? nome, string? email)
     {
-        DomainExceptionValidation.When(id < 0, "Id inválido");
+        DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
+        DomainExceptionValidation.When(id == null, "Id inválido");
         Id = id;
         ValidationDomain(cpf, nome, email);
     }

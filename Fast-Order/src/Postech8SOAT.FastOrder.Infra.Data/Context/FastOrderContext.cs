@@ -17,7 +17,11 @@ public class FastOrderContext:DbContext
     public DbSet<Produto> Produtos { get; set; }
     public DbSet<Pedido> Pedidos { get; set; }
 
-    private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FastOrderDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+    public DbSet<ItemDoPedido> ItensDoPedido { get; set; }
+
+    //private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FastOrderDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+
+    private string connectionString = "Server=sqlserver-fc;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;";
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 
@@ -25,7 +29,7 @@ public class FastOrderContext:DbContext
         {
             return;
         }
-        optionsBuilder         
+        optionsBuilder            
             .UseSqlServer(connectionString);
 
     }

@@ -11,7 +11,7 @@ public class ProdutoTest
         var nome = "";
         var descricao = "Teste";
         //Act
-        Action act = () => new Produto(nome, descricao, 10, "Imagem de teste");
+        Action act = () => new Produto(nome, descricao, 10, "Imagem de teste", Guid.NewGuid());
         //Assert
         Assert.Throws<DomainExceptionValidation>(() => act());
     }
@@ -22,7 +22,7 @@ public class ProdutoTest
         var nome = "Te";
         var descricao = "Teste";
         //Act
-        Action act = () => new Produto(nome, descricao, 10, "Imagem de teste");
+        Action act = () => new Produto(nome, descricao, 10, "Imagem de teste",Guid.NewGuid());
         //Assert
         Assert.Throws<DomainExceptionValidation>(() => act());
     }
@@ -34,20 +34,20 @@ public class ProdutoTest
         var nome = "Teste";
         var descricao = "Teste";
         //Act
-        var produto = new Produto(nome, descricao, 10, "Imagem de teste");
+        var produto = new Produto(nome, descricao, 10, "Imagem de teste", Guid.NewGuid());
         //Assert
         Assert.NotNull(produto);
     }
 
     [Theory]
-    [InlineData("Teste", "Teste", 10, "Imagem de teste 1")]
-    [InlineData("Teste2", "Teste2", 10, "Imagem de teste 2")]
-    [InlineData("Teste3", "Teste3", 10, "Imagem de teste 3")]
-    public void DeveCriarProdutoComSucessoParametrizado(string nome, string descricao, decimal preco, string imagem)
+    [InlineData("Teste", "Teste", 10, "Imagem de teste 1", "167e0817-036c-491d-841b-65926809db6d")]
+    [InlineData("Teste2", "Teste2", 10, "Imagem de teste 2", "129bef6d-3057-4c06-a33c-1792e5686b3b")]
+    [InlineData("Teste3", "Teste3", 10, "Imagem de teste 3", "e65e9a4f-c17c-4d2a-b537-c6d156349dc4")]
+    public void DeveCriarProdutoComSucessoParametrizado(string nome, string descricao, decimal preco, string imagem,Guid categoriaId)
     {
         //Arrange
         //Act
-        var produto = new Produto(nome, descricao, preco, imagem);
+        var produto = new Produto(nome, descricao, preco, imagem, categoriaId);
         //Assert
         Assert.NotNull(produto);
     }
@@ -59,7 +59,7 @@ public class ProdutoTest
         var nome = "Teste";
         var descricao = "Teste";
         //Act
-        Action act = () => new Produto(nome, descricao, 10, "");
+        Action act = () => new Produto(nome, descricao, 10, "", Guid.NewGuid());
         //Assert
         Assert.Throws<DomainExceptionValidation>(() => act());
     }
@@ -71,7 +71,7 @@ public class ProdutoTest
         var nome = "Teste";
         var descricao = "Teste";
         //Act
-        Action act = () => new Produto(nome, descricao, 10, "Im");
+        Action act = () => new Produto(nome, descricao, 10, "Im", Guid.NewGuid());
         //Assert
         Assert.Throws<DomainExceptionValidation>(() => act());
     }

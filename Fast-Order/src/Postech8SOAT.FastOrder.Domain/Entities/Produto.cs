@@ -1,32 +1,32 @@
-﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
-using Postech8SOAT.FastOrder.Domain.Exceptions;
+﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Produto:Entity
 {
     protected Produto()
     {
-        
+        this.Id = Guid.NewGuid();
     }
-    public string? Nome { get; private set; }
-    public string? Descricao { get; private set; }
-    public decimal Preco { get; private set; }
-    public int CategoriaId { get; set; }
-    public Categoria? Categoria { get; set; }
-    public string? Imagem { get; private set; }
+    public string? Nome { get;  set; }
+    public string? Descricao { get;  set; }
+    public decimal Preco { get;  set; }
+    public virtual Guid CategoriaId { get; set; }
+    public virtual Categoria? Categoria { get; set; }
+    public string? Imagem { get; set; }
 
-    public Produto(string? nome, string? descricao, decimal preco,string imagem)
+    public Produto(string? nome, string? descricao, decimal preco,string imagem,Guid categoriaId)
     {
-        ValidationDomain(nome, descricao, preco,imagem);
+        ValidationDomain(nome, descricao, preco,imagem, categoriaId);
     }
 
-    public Produto(int id,string? nome, string? descricao, decimal preco,string imagem)
+    public Produto(Guid id,string? nome, string? descricao, decimal preco,string imagem, Guid categoriaId)
     {
-        DomainExceptionValidation.When(id < 0, "Id inválido");
+        DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
+        DomainExceptionValidation.When(id == null, "Id inválido");
         Id = id;
-       ValidationDomain(nome, descricao, preco,imagem);
+        ValidationDomain(nome, descricao, preco,imagem, categoriaId);
     }
-    private void ValidationDomain(string? nome, string? descricao, decimal preco,string image)
+    private void ValidationDomain(string? nome, string? descricao, decimal preco,string image, Guid categoriaId)
     {
         DomainExceptionValidation.When(string.IsNullOrEmpty(nome), "Nome é obrigatório");
 
@@ -49,15 +49,19 @@ public class Produto:Entity
         DomainExceptionValidation.When(descricao.Length < 3 || descricao.Length > 100, "Descrição deve ter entre 3 e 100 caracteres");
 
         DomainExceptionValidation.When(preco < 0, "Preço inválido");
+        DomainExceptionValidation.When(categoriaId == Guid.Empty, "Id inválido");
+        DomainExceptionValidation.When(categoriaId == null, "Id inválido");
+        
 
         this.Nome = nome;
         this.Descricao = descricao;
         this.Preco = preco;
         this.Imagem = image;
+        this.CategoriaId = categoriaId;
     }
 
-    public void Update(string? nome, string? descricao, decimal preco,string imagem)
+    public void Update(string? nome, string? descricao, decimal preco,string imagem, Guid categoriaId)
     {
-        ValidationDomain(nome, descricao, preco, imagem);
+        ValidationDomain(nome, descricao, preco, imagem, categoriaId);
     }
 }

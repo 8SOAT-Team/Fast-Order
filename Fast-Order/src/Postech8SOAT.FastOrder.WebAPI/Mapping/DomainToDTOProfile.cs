@@ -9,10 +9,8 @@ public class DomainToDTOProfile:Profile
     public DomainToDTOProfile()
     {
         CreateMap<Produto, ProdutoDTO>()
-            .ForMember(dest => dest.CategoriaId, opt => opt.MapFrom(src => src.Categoria.Id))
-            .ForMember(dest => dest.Imagem, opt => opt.MapFrom(src => src.Imagem))
             .ReverseMap();
-
+            
         CreateMap<Cliente, ClienteDTO>()
             .ReverseMap();
 
@@ -21,5 +19,7 @@ public class DomainToDTOProfile:Profile
 
         CreateMap<Pedido, PedidoDTO>()
             .ReverseMap();
+
+        
     }
 }

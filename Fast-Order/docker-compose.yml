@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  postech8soat.fastorder.webapi:
+    image: ${DOCKER_REGISTRY-}postech8soatfastorderwebapi
+    build:
+      context: .
+      dockerfile: src/Postech8SOAT.FastOrder.WebAPI/Dockerfile
+    ports:
+      - '57398:8080'
+      - '57399:8081'
+    depends_on:
+      - sqlserver
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    hostname: 'sqlserver-fc'
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: "tech#2024"
+    volumes:
+    - c:\dados\volumes\mssql:/var/opt/mssql3
+    ports:
+      - '11433:1433'
+    expose:
+      - 1433

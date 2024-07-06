@@ -5,29 +5,28 @@ public class Categoria:Entity
 {
     protected Categoria()
     {
-        
+        this.Id = Guid.NewGuid();
     }
     public string? Nome { get; private set; }
     public string? Descricao { get; set; }
-    public ICollection<Produto>? Produtos { get; private set; }
+    public virtual ICollection<Produto>? Produtos { get; private set; }
 
     public Categoria(string? nome,string? descricao)
     {
         ValidationDomain(nome, descricao);
         
     }
-    public Categoria(int id, string? nome, string? descricao)
+    public Categoria(Guid id, string? nome, string? descricao)
     {
-        DomainExceptionValidation.When(id < 0, "Id inválido");
+        DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
+        DomainExceptionValidation.When(id == null, "Id inválido");
         Id = id;
         ValidationDomain(nome, descricao);
     }
-
     public void Update(string? nome, string? descricao)
     {
         ValidationDomain(nome, descricao);
     }
-
     private void ValidationDomain(string? nome, string? descricao)
     {
        DomainExceptionValidation.When(string.IsNullOrEmpty(nome), "Nome é obrigatório");

@@ -23,9 +23,9 @@ public class Repository<T> : IRepository<T> where T : class
         context.Set<T>().Remove(entity);
     }
 
-    public async Task<IQueryable<T>> FindAllAsync()
+    public async Task<ICollection<T>> FindAllAsync()
     {
-        return context.Set<T>().AsNoTracking();
+        return context.Set<T>().ToList();
     }
 
     public async Task<T> FindByAsync(Expression<Func<T, bool>> predicate)

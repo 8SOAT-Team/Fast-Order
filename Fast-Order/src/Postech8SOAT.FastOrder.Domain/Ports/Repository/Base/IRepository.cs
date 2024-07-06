@@ -3,7 +3,7 @@
 namespace Postech8SOAT.FastOrder.Domain.Ports.Repository.Base;
 public interface IRepository<T>
 {
-    Task<IQueryable<T>> FindAllAsync();
+    Task<ICollection<T>> FindAllAsync();
     Task<T> FindByAsync(Expression<Func<T, bool>> predicate);
     Task<IEnumerable<T>> SearchAllPagedAsync(int page, int pageSize);
     Task AddAsync(T entity);

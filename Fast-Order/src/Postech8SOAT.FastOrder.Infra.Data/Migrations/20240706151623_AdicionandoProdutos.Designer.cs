@@ -12,8 +12,8 @@ using Postech8SOAT.FastOrder.Infra.Data.Context;
 namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
 {
     [DbContext(typeof(FastOrderContext))]
-    [Migration("20240706124515_Inicial")]
-    partial class Inicial
+    [Migration("20240706151623_AdicionandoProdutos")]
+    partial class AdicionandoProdutos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,9 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
 
             modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Categoria", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -50,19 +48,19 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("6224b6c0-26e9-42fa-8b04-dc0e9fd6b971"),
                             Descricao = "Coca-Cola 2L",
                             Nome = "Coca-Cola"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("0194d8c4-2d04-4172-a63a-4d381eadf729"),
                             Descricao = "Hamburger X-Tudo",
                             Nome = "Hamburger X-Tudo"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("07c470aa-606f-4792-849a-02433c121117"),
                             Descricao = "Fritas a moda da casa.",
                             Nome = "Batata Frita"
                         });
@@ -70,11 +68,9 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
 
             modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Cliente", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
@@ -96,16 +92,35 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                     b.ToTable("Clientes", (string)null);
                 });
 
+            modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.ItemDoPedido", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PedidoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProdutoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PedidoId");
+
+                    b.HasIndex("ProdutoId");
+
+                    b.ToTable("ItensDoPedido", (string)null);
+                });
+
             modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Pedido", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ClienteId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ClienteId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataPedido")
                         .HasColumnType("datetime2");
@@ -124,43 +139,14 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                     b.ToTable("Pedidos", (string)null);
                 });
 
-            modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.PedidoProduto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("PedidoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ValorTotal")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PedidoId");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.ToTable("PedidoProdutos", (string)null);
-                });
-
             modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Produto", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoriaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -177,33 +163,21 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("PedidoId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Preco")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PedidoId");
+                    b.HasIndex("CategoriaId");
 
                     b.ToTable("Produtos", (string)null);
                 });
 
-            modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Pedido", b =>
-                {
-                    b.HasOne("Postech8SOAT.FastOrder.Domain.Entities.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("ClienteId");
-
-                    b.Navigation("Cliente");
-                });
-
-            modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.PedidoProduto", b =>
+            modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.ItemDoPedido", b =>
                 {
                     b.HasOne("Postech8SOAT.FastOrder.Domain.Entities.Pedido", "Pedido")
-                        .WithMany()
+                        .WithMany("ItensDoPedido")
                         .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -219,17 +193,24 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                     b.Navigation("Produto");
                 });
 
+            modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Pedido", b =>
+                {
+                    b.HasOne("Postech8SOAT.FastOrder.Domain.Entities.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
             modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Produto", b =>
                 {
                     b.HasOne("Postech8SOAT.FastOrder.Domain.Entities.Categoria", "Categoria")
                         .WithMany("Produtos")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Postech8SOAT.FastOrder.Domain.Entities.Pedido", null)
-                        .WithMany("Produtos")
-                        .HasForeignKey("PedidoId");
 
                     b.Navigation("Categoria");
                 });
@@ -241,7 +222,7 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
 
             modelBuilder.Entity("Postech8SOAT.FastOrder.Domain.Entities.Pedido", b =>
                 {
-                    b.Navigation("Produtos");
+                    b.Navigation("ItensDoPedido");
                 });
 #pragma warning restore 612, 618
         }

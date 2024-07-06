@@ -11,13 +11,13 @@ public class ProdutoDTO
     [MinLength(3)]
     [MaxLength(100)]
     [DisplayName("Nome")]
-    public string? Nome { get; private set; }
+    public string? Nome { get; set; }
 
     [Required(ErrorMessage = "A descrição é requerida.")]
     [MinLength(5)]
     [MaxLength(200)]
     [DisplayName("Descrição")]
-    public string? Descricao { get; private set; }
+    public string? Descricao { get; set; }
 
     [Required(ErrorMessage = "O preço é requerido.")]
     [Column(TypeName = "decimal(18,2)")]
@@ -27,7 +27,7 @@ public class ProdutoDTO
     public decimal Preco { get;  set; }
 
     [DisplayName("Categoria")]
-    public int? CategoriaId { get; set; }
+    public Guid CategoriaId { get; set; }
     [MaxLength(250)]
     [DisplayName("Imagem do produto.")]
     public string? Imagem { get;  set; }

@@ -13,9 +13,9 @@ public static class FastOrderRegisterDependencies
 
     public static void ConfigureDI(this IServiceCollection services, IConfiguration configuration)
     {
-        //Registrar no container nativo de injeção de dependências.       
-        services.AddDbContext<FastOrderContext>(options =>
-                   options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(typeof(FastOrderContext).Assembly.FullName)));
+        //Registrar no container nativo de injeção de dependências.
+           services.AddDbContext<FastOrderContext>(options =>
+                   options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnectionContainer")));
 
         services.AddScoped<IClienteRepository,ClienteRepository>();        services.AddScoped<ICategoriaRepository,CategoriaRepository>();
         services.AddScoped<IProdutoRepository,ProdutoRepository>();
