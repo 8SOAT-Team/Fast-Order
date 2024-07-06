@@ -11,5 +11,9 @@ internal class CategoriaTypeConfiguration:IEntityTypeConfiguration<Categoria>
         builder.HasKey(c => c.Id);
         builder.Property(c => c.Nome).IsRequired().HasMaxLength(100);
         builder.Property(c => c.Descricao).IsRequired().HasMaxLength(100);
+        builder.HasData(
+                       new Categoria(1, "Coca-Cola", "Coca-Cola 2L"),
+                       new Categoria(2, "Hamburger X-Tudo", "Hamburger X-Tudo"),
+                       new Categoria(3, "Batata Frita", "Fritas a moda da casa."));
     }
 }

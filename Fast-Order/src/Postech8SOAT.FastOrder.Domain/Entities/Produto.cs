@@ -4,10 +4,14 @@ using Postech8SOAT.FastOrder.Domain.Exceptions;
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Produto:Entity
 {
+    protected Produto()
+    {
+        
+    }
     public string? Nome { get; private set; }
     public string? Descricao { get; private set; }
     public decimal Preco { get; private set; }
-    public int? CategoriaId { get; set; }
+    public int CategoriaId { get; set; }
     public Categoria? Categoria { get; set; }
     public string? Imagem { get; private set; }
 

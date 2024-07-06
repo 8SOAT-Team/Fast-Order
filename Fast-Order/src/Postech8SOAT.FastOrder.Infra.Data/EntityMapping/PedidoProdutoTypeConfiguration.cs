@@ -12,7 +12,7 @@ internal class PedidoProdutoTypeConfiguration:IEntityTypeConfiguration<PedidoPro
         builder.Property(pp=>pp.PedidoId).IsRequired();
         builder.Property(pp=>pp.ProdutoId).IsRequired();
         builder.Property(pp => pp.Quantidade).IsRequired();
-        builder.Property(pp => pp.ValorUnitario).HasPrecision(10, 2);
+        builder.Property(pp => pp.ValorTotal).HasPrecision(18, 2);
         builder.HasOne(pp => pp.Pedido).WithMany().HasForeignKey(pp => pp.PedidoId);
         builder.HasOne(pp => pp.Produto).WithMany().HasForeignKey(pp => pp.ProdutoId);
     }

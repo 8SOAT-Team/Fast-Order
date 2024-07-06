@@ -3,9 +3,13 @@
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Categoria:Entity
 {
-    public string? Nome { get; set; }
+    protected Categoria()
+    {
+        
+    }
+    public string? Nome { get; private set; }
     public string? Descricao { get; set; }
-    public ICollection<Produto>? Produtos { get; set; }
+    public ICollection<Produto>? Produtos { get; private set; }
 
     public Categoria(string? nome,string? descricao)
     {

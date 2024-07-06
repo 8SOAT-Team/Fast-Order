@@ -10,15 +10,10 @@ internal class ProdutoTypeConfiguration:IEntityTypeConfiguration<Produto>
     {
         builder.ToTable("Produtos");
         builder.HasKey(p => p.Id);
-        builder.Property(p => p.Nome).IsRequired().HasMaxLength(100).IsRequired();
+        builder.Property(p => p.Nome).IsRequired().HasMaxLength(100).IsRequired();        
         builder.Property(p => p.Descricao).IsRequired().HasMaxLength(100);
-        builder.Property(p => p.Preco).HasPrecision(10, 2);
-        builder.Property(p => p.Imagem).IsRequired().HasMaxLength(100);
-        builder.Property(p => p.StatusPedido)
-              .HasConversion(
-                fromObj => fromObj.ToString(),
-                fromDb => (StatusPedido)Enum.Parse(typeof(StatusPedido), fromDb)
-            );
-        builder.HasOne(p => p.Categoria).WithMany().HasForeignKey(p => p.CategoriaId);
+        builder.Property(p => p.Preco).HasPrecision(18, 2);
+        builder.Property(p => p.Imagem).IsRequired().HasMaxLength(100);        
+        builder.HasOne(p => p.Categoria).WithMany(p=>p.Produtos).HasForeignKey(p => p.Id);
     }
 }

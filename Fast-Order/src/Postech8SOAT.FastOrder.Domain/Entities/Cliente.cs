@@ -3,9 +3,13 @@
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Cliente:Entity
 {
-    public string? Cpf { get; set; }
-    public string? Nome { get; set; }
-    public string? Email { get; set; }
+    protected Cliente()
+    {
+        
+    }
+    public string? Cpf { get; private set; }
+    public string? Nome { get; private set; }
+    public string? Email { get; private set; }
 
     public Cliente(string? cpf, string? nome, string? email)
     {

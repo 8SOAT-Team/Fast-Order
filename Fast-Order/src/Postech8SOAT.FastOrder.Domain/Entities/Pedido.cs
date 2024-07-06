@@ -4,6 +4,10 @@ using Postech8SOAT.FastOrder.Domain.Exceptions;
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Pedido:Entity
 {
+    protected Pedido()
+    {
+        
+    }
     public DateTime DataPedido { get; set; }
     public StatusPedido? StatusPedido { get; set; }
     public int? ClienteId { get; set; }
