@@ -7,8 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.IOC\Postech8SOAT.FastOrder.Infra.IOC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Endpoints\" />
   </ItemGroup>
 
 </Project>

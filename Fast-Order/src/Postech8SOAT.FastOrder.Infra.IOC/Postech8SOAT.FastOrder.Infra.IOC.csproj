@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
+  </ItemGroup>
+
 </Project>
