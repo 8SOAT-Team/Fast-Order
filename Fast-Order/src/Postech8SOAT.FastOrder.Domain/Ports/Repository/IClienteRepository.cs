@@ -4,6 +4,6 @@ using Postech8SOAT.FastOrder.Domain.Ports.Repository.Base;
 namespace Postech8SOAT.FastOrder.Domain.Ports.Repository;
 public interface IClienteRepository : IRepository<Cliente>
 {
-    public Task<Cliente> GetClienteByCpfAsync(string cpf);
-    public Task<Cliente> GetClienteByEmailAsync(string email);
+     Task<Cliente> GetClienteByCpfAsync(string cpf);
+     Task<Cliente> GetClienteByEmailAsync(string email);
 }

@@ -20,6 +20,7 @@ public static class FastOrderRegisterDependencies
         services.AddScoped<IClienteRepository,ClienteRepository>();        services.AddScoped<ICategoriaRepository,CategoriaRepository>();
         services.AddScoped<IProdutoRepository,ProdutoRepository>();
         services.AddScoped<IPedidoRepository,PedidoRepository>();
-        services.AddScoped<IClienteService, ClienteService>();         
+        services.AddScoped<IClienteService, ClienteService>();
+        services.AddScoped<IProdutoService, ProdutoService>();
     }
 }

@@ -23,7 +23,7 @@ public class ClienteService:IClienteService
         return cliente;
     }
 
-    public async Task<IEnumerable<Cliente>> GetAllClientesAsync()
+    public async Task<ICollection<Cliente>> GetAllClientesAsync()
     {
         return await repository.FindAllAsync();
     }
@@ -38,9 +38,9 @@ public class ClienteService:IClienteService
         return await repository.GetClienteByEmailAsync(email);
     }
 
-    public Task<Cliente> GetClienteByIdAsync(int id)
+    public async Task<Cliente> GetClienteByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await repository.FindByAsync(x => x.Id == id);   
     }
 
     public async Task<Cliente> UpdateClienteAsync(Cliente cliente)
@@ -48,5 +48,4 @@ public class ClienteService:IClienteService
         await repository.UpdateAsync(cliente);
         return cliente;
     }
-
 }

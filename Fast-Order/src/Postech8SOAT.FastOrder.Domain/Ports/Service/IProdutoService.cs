@@ -2,10 +2,11 @@
 namespace Postech8SOAT.FastOrder.Domain.Ports.Service;
 public interface IProdutoService
 {
-    Task<Produto> GetProdutoByIdAsync(int id);
+    Task<Produto> GetProdutoByIdAsync(Guid id);
     Task<Produto> GetProdutoByNomeAsync(string nome);
     Task<Produto> CreateProdutoAsync(Produto produto);
     Task<Produto> UpdateProdutoAsync(Produto produto);
     Task DeleteProdutoAsync(Produto produto);
-    Task<IEnumerable<Produto>> GetAllProdutosAsync();
+    Task<ICollection<Produto>> GetAllProdutosAsync();
+    Task<ICollection<Produto>> GetProdutosByCategoria(Guid categoriaId);
 }
