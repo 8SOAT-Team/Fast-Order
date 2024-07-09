@@ -16,9 +16,9 @@ public class ClienteTest
         var cliente = new Cliente(cpf, nome, email);
 
         // Assert
-        Assert.Equal(cpf, cliente.Cpf);
+        Assert.Equal(cpf, cliente.Cpf.Value);
         Assert.Equal(nome, cliente.Nome);
-        Assert.Equal(email, cliente.Email);
+        Assert.Equal(email, cliente.Email.Address);
     }
 
     [Theory]
@@ -64,10 +64,8 @@ public class ClienteTest
         cliente.Update("12345678900", novoNome, novoEmail);
 
         // Assert
-        Assert.Equal("12345678900", cliente.Cpf);
+        Assert.Equal("12345678900", cliente.Cpf.Value);
         Assert.Equal(novoNome, cliente.Nome);
-        Assert.Equal(novoEmail, cliente.Email);
+        Assert.Equal(novoEmail, cliente.Email.Address);
     }
-
-
 }

@@ -1,62 +1,41 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
+using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Cliente:Entity
+public class Cliente : Entity
 {
-    protected Cliente()
-    {
-        this.Id = Guid.NewGuid();
-    }
-    public string? Cpf { get; private set; }
-    public string? Nome { get; private set; }
-    public string? Email { get; private set; }
+    protected Cliente() { }
 
-    public Cliente(string? cpf, string? nome, string? email)
-    {
-        ValidationDomain(cpf, nome, email);
-    }
+    public Cpf Cpf { get; private init; }
+    public string Nome { get; private set; }
+    public EmailAddress Email { get; private set; }
 
-    public Cliente(Guid id, string? cpf, string? nome, string? email)
+    public Cliente(string cpf, string nome, string email) : this(Guid.NewGuid(), cpf, nome, email) { }
+
+    public Cliente(Guid id, string cpf, string nome, string email) : this(id, new Cpf(cpf), nome, new EmailAddress(email)) { }
+
+    public Cliente(Guid id, Cpf cpf, string nome, EmailAddress email)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
-        DomainExceptionValidation.When(id == null, "Id inválido");
+        ValidationDomain(nome);
+
         Id = id;
-        ValidationDomain(cpf, nome, email);
+        Cpf = cpf;
+        Nome = nome;
+        Email = email;
     }
 
-    public void Update(string? cpf, string? nome, string? email)
+    public void Update(string cpf, string nome, string email)
     {
-        ValidationDomain(cpf, nome, email);
+        //ValidationDomain(cpf, nome);
     }
 
-    private void ValidationDomain(string? cpf, string? nome, string? email)
+    private void ValidationDomain(string nome)
     {
-        DomainExceptionValidation.When(string.IsNullOrEmpty(cpf), "Cpf é obrigatório");
-
-        DomainExceptionValidation.When(cpf!.Length < 11, "Cpf deve ter no mínimo 11 caracteres");
-
-        DomainExceptionValidation.When(cpf.Length > 11, "Cpf deve ter no máximo 11 caracteres");
-
-        DomainExceptionValidation.When(cpf.Length < 11 || cpf.Length > 11, "Cpf deve ter 11 caracteres");
-
         DomainExceptionValidation.When(string.IsNullOrEmpty(nome), "Nome é obrigatório");
 
         DomainExceptionValidation.When(nome!.Length < 3, "Nome deve ter no mínimo 3 caracteres");
 
         DomainExceptionValidation.When(nome.Length > 100, "Nome deve ter no máximo 100 caracteres");
-
-        DomainExceptionValidation.When(nome.Length < 3 || nome.Length > 100, "Nome deve ter entre 3 e 100 caracteres");
-
-        DomainExceptionValidation.When(string.IsNullOrEmpty(email), "Email é obrigatório");
-
-        DomainExceptionValidation.When(email!.Length < 3, "Email deve ter no mínimo 3 caracteres");
-
-        DomainExceptionValidation.When(email.Length > 100, "Email deve ter no máximo 100 caracteres");
-
-        DomainExceptionValidation.When(email.Length < 3 || email.Length > 100, "Email deve ter entre 3 e 100 caracteres");
-
-        this.Cpf = cpf;
-        this.Nome = nome;
-        this.Email = email;
     }
 }

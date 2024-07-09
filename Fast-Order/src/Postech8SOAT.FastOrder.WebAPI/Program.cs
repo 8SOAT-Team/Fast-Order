@@ -31,6 +31,7 @@ app.UseSwagger();
 
 //Adicionar os endpoints
 app.AddEnPointProdutos();
+app.AddEndpointClientes();
 
 app.UseHttpsRedirection();
 app.Run();

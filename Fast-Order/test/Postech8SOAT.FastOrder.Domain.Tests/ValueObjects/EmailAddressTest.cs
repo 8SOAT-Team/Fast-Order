@@ -1,4 +1,5 @@
-﻿using Postech8SOAT.FastOrder.Domain.ValueObjects;
+﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
+using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Domain.Tests.ValueObjects;
 
@@ -28,13 +29,13 @@ public class EmailAddressTest
     public void DadoQueOEmailNaoEstaEmFormatoValido_Deve_LancarUmaException(string emailInvalido)
     {
         // Arrange
-        const string mensagemDeErroEsperada = "Email não está em um formato válido. (Parameter 'address')";
+        const string mensagemDeErroEsperada = "Email não está em um formato válido.";
 
         // Act
         var emailAddress = () => new EmailAddress(emailInvalido);
 
         // Assert
-        var exception = Assert.Throws<ArgumentException>(emailAddress);
+        var exception = Assert.Throws<InvalidEmailArgumentException>(emailAddress);
         Assert.Equal(mensagemDeErroEsperada, exception.Message);
     }
 

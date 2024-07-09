@@ -21,7 +21,7 @@ public class FastOrderContext:DbContext
 
     //private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FastOrderDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
-    private string connectionString = "Server=sqlserver-fc;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;";
+    private string connectionString = "Server=localhost\\sqlserver-fc,11433;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;";
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 
