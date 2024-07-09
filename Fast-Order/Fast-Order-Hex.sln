@@ -34,6 +34,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "certs", "certs", "{C99236CE
 		..\..\..\testes\fastorder.pfx = ..\..\..\testes\fastorder.pfx
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{531F8F58-40A1-471D-8B64-568851329CBB}"
+	ProjectSection(SolutionItems) = preProject
+		.env.linux = .env.linux
+		.env.windows = .env.windows
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
