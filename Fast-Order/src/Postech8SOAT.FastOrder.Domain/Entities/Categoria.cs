@@ -8,7 +8,7 @@ public class Categoria:Entity
         this.Id = Guid.NewGuid();
     }
     public string? Nome { get; private set; }
-    public string? Descricao { get; set; }
+    public string? Descricao { get; private set; }
     public virtual ICollection<Produto>? Produtos { get; private set; }
 
     public Categoria(string? nome,string? descricao)

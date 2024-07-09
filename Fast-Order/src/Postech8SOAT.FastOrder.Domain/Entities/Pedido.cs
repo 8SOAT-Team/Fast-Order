@@ -8,8 +8,8 @@ public class Pedido:Entity
     {
         this.Id = Guid.NewGuid();
     }
-    public DateTime DataPedido { get; set; }
-    public StatusPedido? StatusPedido { get; set; }
+    public DateTime DataPedido { get; private set; }
+    public StatusPedido? StatusPedido { get; private set; }
     public virtual Guid ClienteId { get; set; }
     public virtual Cliente? Cliente { get; set; }
     public virtual ICollection<ItemDoPedido>? ItensDoPedido { get; set; }

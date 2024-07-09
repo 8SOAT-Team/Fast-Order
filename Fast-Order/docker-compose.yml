@@ -7,8 +7,15 @@ services:
       context: .
       dockerfile: src/Postech8SOAT.FastOrder.WebAPI/Dockerfile
     ports:
-      - '57398:8080'
-      - '57399:8081'
+      - '57398:57398'
+      - '57399:57399'
+    environment: 
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:57399;http://+57398
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=fiap@123
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/fastorder.pfx  
+    volumes:
+        - ./certs:/app/certs
     depends_on:
       - sqlserver
   sqlserver:

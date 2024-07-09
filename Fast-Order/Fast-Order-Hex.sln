@@ -25,9 +25,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech8SOAT.FastOrder.WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech8SOAT.FastOrder.Infra.IOC", "src\Postech8SOAT.FastOrder.Infra.IOC\Postech8SOAT.FastOrder.Infra.IOC.csproj", "{EBB993C8-35E5-40D1-8F4F-C523229EAC5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech8SOAT.FastOrder.Domain.Tests", "test\Postech8SOAT.FastOrder.Domain.Tests\Postech8SOAT.FastOrder.Domain.Tests.csproj", "{0636A284-7C85-4AB1-9F33-D4FBD263090A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech8SOAT.FastOrder.Domain.Tests", "test\Postech8SOAT.FastOrder.Domain.Tests\Postech8SOAT.FastOrder.Domain.Tests.csproj", "{0636A284-7C85-4AB1-9F33-D4FBD263090A}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5D1CE172-1497-4B3E-B16C-ABC866AC7A7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "certs", "certs", "{C99236CE-989D-4ED3-ADC6-D4146DA70DAA}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\testes\fastorder.pfx = ..\..\..\testes\fastorder.pfx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

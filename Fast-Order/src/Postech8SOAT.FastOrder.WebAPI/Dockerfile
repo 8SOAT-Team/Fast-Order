@@ -19,6 +19,10 @@ COPY . .
 WORKDIR "/src/src/Postech8SOAT.FastOrder.WebAPI"
 RUN dotnet build "./Postech8SOAT.FastOrder.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+# Copiar certificados para pasta app o container
+COPY ./certs/ /app/certs/
+
+
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Postech8SOAT.FastOrder.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
