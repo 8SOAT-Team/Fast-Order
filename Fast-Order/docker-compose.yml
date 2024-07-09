@@ -25,8 +25,10 @@ services:
       ACCEPT_EULA: 'Y'
       MSSQL_SA_PASSWORD: "tech#2024"
     volumes:
-      - c:\dados\volumes\mssql:/var/opt/mssql3
+      - sql_data:/var/opt/mssql3
     ports:
       - '11433:1433'
     expose:
       - 1433
+volumes:
+  sql_data:
