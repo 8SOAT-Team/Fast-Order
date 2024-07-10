@@ -1,19 +1,17 @@
-﻿using System.Text.RegularExpressions;
+﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
+using Postech8SOAT.FastOrder.Domain.Expressions;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 public partial record EmailAddress
 {
-    private const string _invalidValueMessage = "Email não está em um formato válido.";
     public string Address { get; private init; } = null!;
 
     public EmailAddress(string address)
     {
-        if(IsValidEmail(address) is false)
-        {
-            throw new ArgumentException(_invalidValueMessage, nameof(address));
-        }
-
+        DomainExceptionValidation.When<InvalidEmailArgumentException>(IsValidEmail(address) is false);
         Address = address;
     }
 
@@ -21,9 +19,5 @@ public partial record EmailAddress
 
     public override string? ToString() => Address;
 
-    private bool IsValidEmail(string email) => string.IsNullOrEmpty(email) is false && ValidEmail().IsMatch(email);
-
-
-    [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
-    private static partial Regex ValidEmail();
+    private static bool IsValidEmail(string email) => string.IsNullOrEmpty(email) is false && Expression.ValidEmail().IsMatch(email);
 }
