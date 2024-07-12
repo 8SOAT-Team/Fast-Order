@@ -1,7 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Categoria:Entity
+public class Categoria : Entity, IAggregateRoot
 {
     protected Categoria()
     {
@@ -11,10 +11,10 @@ public class Categoria:Entity
     public string? Descricao { get; private set; }
     public virtual ICollection<Produto>? Produtos { get; private set; }
 
-    public Categoria(string? nome,string? descricao)
+    public Categoria(string? nome, string? descricao)
     {
         ValidationDomain(nome, descricao);
-        
+
     }
     public Categoria(Guid id, string? nome, string? descricao)
     {
@@ -29,7 +29,7 @@ public class Categoria:Entity
     }
     private void ValidationDomain(string? nome, string? descricao)
     {
-       DomainExceptionValidation.When(string.IsNullOrEmpty(nome), "Nome é obrigatório");
+        DomainExceptionValidation.When(string.IsNullOrEmpty(nome), "Nome é obrigatório");
 
         DomainExceptionValidation.When(nome!.Length < 3, "Nome deve ter no mínimo 3 caracteres");
 
