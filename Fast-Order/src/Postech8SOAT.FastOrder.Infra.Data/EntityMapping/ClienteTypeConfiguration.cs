@@ -14,6 +14,7 @@ internal class ClienteTypeConfiguration : IEntityTypeConfiguration<Cliente>
         builder.Property(c => c.Cpf).IsRequired().HasMaxLength(11)
             .HasConversion(new ValueConverter<Cpf, string>(v => v.GetSanitized(), v => new Cpf(v)));
 
+        builder.HasIndex(c => c.Cpf);
 
         builder.Property(c => c.Nome).IsRequired().HasMaxLength(100);
         builder.Property(c => c.Email).IsRequired().HasMaxLength(100)
