@@ -2,7 +2,7 @@
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Cliente : Entity
+public class Cliente : Entity, IAggregateRoot
 {
     protected Cliente() { }
 

@@ -41,7 +41,7 @@ public class ClienteService : IClienteService
 
     public Task<Cliente> GetClienteByIdAsync(Guid id)
     {
-        return repository.FindByAsync(x => x.Id == id);
+        return repository.GetById(id);
     }
 
     public async Task<Cliente> UpdateClienteAsync(Cliente cliente)

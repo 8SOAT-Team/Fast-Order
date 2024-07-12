@@ -20,6 +20,14 @@ public static class ClienteExtensions
 
         }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu CPF").WithOpenApi();
 
+        app.MapGet("/cliente/{id:guid}", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromRoute] Guid id) =>
+        {
+            var cliente = await service.GetClienteByIdAsync(id);
+            var clienteDto = mapper.Map<ClienteDTO>(cliente);
+            return Results.Ok(clienteDto);
+
+        }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu Identificador").WithOpenApi();
+
         app.MapPut("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromBody] ClienteDTO request) =>
         {
             var cliente = mapper.Map<Cliente>(request);
@@ -28,14 +36,6 @@ public static class ClienteExtensions
             var clienteDto = mapper.Map<ClienteDTO>(cliente);
 
             return Results.Ok(clienteDto);
-        }).WithTags(EndpointTag).WithSummary("Cadastre um novo cliente").WithOpenApi();
-
-        app.MapGet("/cliente/{id:guid}", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromRoute] Guid id) =>
-        {
-            var cliente = await service.GetClienteByIdAsync(id);
-            var clienteDto = mapper.Map<ClienteDTO>(cliente);
-            return Results.Ok(clienteDto);
-
-        }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu CPF").WithOpenApi();        
+        }).WithTags(EndpointTag).WithSummary("Cadastre um novo cliente").WithOpenApi();    
     }
 }

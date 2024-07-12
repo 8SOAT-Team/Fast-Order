@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Ports.Repository.Base;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using System.Linq.Expressions;
 
 namespace Postech8SOAT.FastOrder.Infra.Data.Repositories.Base;
 
-public abstract class Repository<T> :  IRepository<T> where T : class
+public abstract class Repository<T> : IRepository<T> where T : class, IAggregateRoot
 {
     private readonly FastOrderContext _context;
 
@@ -48,5 +49,10 @@ public abstract class Repository<T> :  IRepository<T> where T : class
     {
         _context.Entry(entity).State = EntityState.Modified;
         _context.Set<T>().Update(entity);
+    }
+
+    public Task<T?> GetById(Guid id)
+    {
+        return _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
     }
 }
