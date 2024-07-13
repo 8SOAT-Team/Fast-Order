@@ -25,9 +25,15 @@ public class Cliente : Entity, IAggregateRoot
         Email = email;
     }
 
-    public void Update(string cpf, string nome, string email)
+    public void ChangeNome(string nome)
     {
-        //ValidationDomain(cpf, nome);
+        ValidationDomain(nome);
+        Nome = nome;
+    }
+
+    public void ChangeEmail(EmailAddress email)
+    {
+        Email = email;
     }
 
     private void ValidationDomain(string nome)

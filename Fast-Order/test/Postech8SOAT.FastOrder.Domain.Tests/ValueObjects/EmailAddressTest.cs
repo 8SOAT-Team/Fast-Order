@@ -3,7 +3,7 @@ using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Domain.Tests.ValueObjects;
 
-public class EmailAddressTest
+public sealed class EmailAddressTest
 {
     [Theory]
     [InlineData("meu.email@dominio.com.br")]

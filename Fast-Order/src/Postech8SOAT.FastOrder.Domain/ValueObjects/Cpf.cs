@@ -20,7 +20,7 @@ public record Cpf
 
     private static void VerifyValueConstraints(string cpf)
     {
-        DomainExceptionValidation.When(string.IsNullOrEmpty(cpf), () => InvalidArgumentException.WithErrorMessage("Cpf é obrigatório."));
+        DomainExceptionValidation.When(string.IsNullOrWhiteSpace(cpf), () => InvalidArgumentException.WithErrorMessage("Cpf é obrigatório."));
         DomainExceptionValidation.When(Expression.HasCpfLength().IsMatch(cpf) is false, () => InvalidArgumentException.WithErrorMessage("Cpf deve conter 11 dígitos."));
     }
 
