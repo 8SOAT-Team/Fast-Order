@@ -14,13 +14,13 @@ public static class FastOrderRegisterDependencies
     public static void ConfigureDI(this IServiceCollection services, IConfiguration configuration)
     {
         //Registrar no container nativo de injeção de dependências.
-           services.AddDbContext<FastOrderContext>(options =>
-                   options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnectionContainer")));
+        services.AddDbContext<FastOrderContext>(options =>
+                options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnectionContainer")));
 
-        services.AddScoped<IClienteRepository,ClienteRepository>();        
-        services.AddScoped<ICategoriaRepository,CategoriaRepository>();
-        services.AddScoped<IProdutoRepository,ProdutoRepository>();
-        services.AddScoped<IPedidoRepository,PedidoRepository>();
+        services.AddScoped<IClienteRepository, ClienteRepository>();
+        services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+        services.AddScoped<IProdutoRepository, ProdutoRepository>();
+        services.AddScoped<IPedidoRepository, PedidoRepository>();
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IProdutoService, ProdutoService>();
     }

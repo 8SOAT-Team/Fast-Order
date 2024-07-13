@@ -1,51 +1,58 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Ports.Repository.Base;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using System.Linq.Expressions;
 
 namespace Postech8SOAT.FastOrder.Infra.Data.Repositories.Base;
-public class Repository<T> : IRepository<T> where T : class
+
+public abstract class Repository<T> : IRepository<T> where T : class, IAggregateRoot
 {
-    private FastOrderContext context;
+    private readonly FastOrderContext _context;
 
     public Repository(FastOrderContext context)
     {
-        this.context = context;
+        this._context = context;
     }
 
     public virtual async Task AddAsync(T entity)
     {
-        await context.Set<T>().AddAsync(entity);
-        context.SaveChanges();
+        await _context.Set<T>().AddAsync(entity);
+        _context.SaveChanges();
     }
 
     public async Task DeleteAsync(T entity)
     {
-        context.Set<T>().Remove(entity);
+        _context.Set<T>().Remove(entity);
     }
 
     public async Task<ICollection<T>> FindAllAsync()
     {
-        return context.Set<T>().ToList();
+        return _context.Set<T>().ToList();
     }
 
     public async Task<T> FindByAsync(Expression<Func<T, bool>> predicate)
     {
-        return await context.Set<T>().SingleOrDefaultAsync(predicate);
+        return await _context.Set<T>().SingleOrDefaultAsync(predicate);
     }
 
     public async Task<IEnumerable<T>> SearchAllPagedAsync(int page, int pageSize)
     {
-        return await this.context.Set<T>()
+        return await this._context.Set<T>()
            .Skip((page - 1) * pageSize)
            .Take(pageSize)
            .AsNoTracking()
-           .ToListAsync(); ;
+           .ToListAsync();
     }
 
     public async Task UpdateAsync(T entity)
     {
-        context.Entry(entity).State = EntityState.Modified;
-        context.Set<T>().Update(entity);
+        _context.Entry(entity).State = EntityState.Modified;
+        _context.Set<T>().Update(entity);
+    }
+
+    public Task<T?> GetById(Guid id)
+    {
+        return _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
     }
 }

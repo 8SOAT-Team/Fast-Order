@@ -2,7 +2,7 @@
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Cliente : Entity
+public class Cliente : Entity, IAggregateRoot
 {
     protected Cliente() { }
 
@@ -25,9 +25,15 @@ public class Cliente : Entity
         Email = email;
     }
 
-    public void Update(string cpf, string nome, string email)
+    public void ChangeNome(string nome)
     {
-        //ValidationDomain(cpf, nome);
+        ValidationDomain(nome);
+        Nome = nome;
+    }
+
+    public void ChangeEmail(EmailAddress email)
+    {
+        Email = email;
     }
 
     private void ValidationDomain(string nome)

@@ -2,7 +2,7 @@
 using Postech8SOAT.FastOrder.Domain.Exceptions;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Pedido:Entity
+public class Pedido : Entity, IAggregateRoot
 {
     protected Pedido()
     {
@@ -57,7 +57,7 @@ public class Pedido:Entity
         ValidationDomain(dataPedido, statusPedido, clienteId, itens, valortotal);
     }
 
-    private void ValidationDomain(string? dataPedido, StatusPedido? statusPedido, Guid clienteId, List<ItemDoPedido>? itens,decimal valortotal)
+    private void ValidationDomain(string? dataPedido, StatusPedido? statusPedido, Guid clienteId, List<ItemDoPedido>? itens, decimal valortotal)
     {
         DomainExceptionValidation.When(string.IsNullOrEmpty(dataPedido), "Data do pedido é obrigatória");
 

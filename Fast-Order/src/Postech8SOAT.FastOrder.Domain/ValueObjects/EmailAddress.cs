@@ -1,7 +1,5 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
 using Postech8SOAT.FastOrder.Domain.Expressions;
-using System.Net;
-using System.Text.RegularExpressions;
 
 namespace Postech8SOAT.FastOrder.Domain.ValueObjects;
 

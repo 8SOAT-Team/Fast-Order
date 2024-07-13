@@ -1,5 +1,6 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
+using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Domain.Tests.Entities;
 public class ClienteTest
@@ -31,16 +32,16 @@ public class ClienteTest
         string email = "joao@example.com";
 
         // Act & Assert
-        Assert.Throws<DomainExceptionValidation>(() => new Cliente(cpf, nome, email));
+        Assert.ThrowsAny<DomainExceptionValidation>(() => new Cliente(cpf, nome, email));
     }
 
     [Theory]
     [InlineData("1234567890", "Nome válido", "email@example.com")]
     [InlineData("12345678901234567890", "Nome válido", "email@example.com")]
-    public void RetornaExcptionQuandoCPFInvalido(string cpf, string nome, string email)
+    public void RetornaExceptionQuandoCPFInvalido(string cpf, string nome, string email)
     {
         // Act & Assert
-        Assert.Throws<DomainExceptionValidation>(() => new Cliente(cpf, nome, email));
+        Assert.ThrowsAny<DomainExceptionValidation>(() => new Cliente(cpf, nome, email));
     }
 
     [Theory]
@@ -53,19 +54,30 @@ public class ClienteTest
     }
 
     [Fact]
-    public void AtualizaClienteValido()
+    public void ChangeNome_DadoQueONovoNomeEhValido_DeveAlterar()
     {
         // Arrange
         var cliente = new Cliente("12345678900", "João da Silva", "joao@example.com");
         string novoNome = "João Silva";
-        string novoEmail = "joao.silva@example.com";
 
         // Act
-        cliente.Update("12345678900", novoNome, novoEmail);
+        cliente.ChangeNome(novoNome);
 
         // Assert
-        Assert.Equal("12345678900", cliente.Cpf.Value);
         Assert.Equal(novoNome, cliente.Nome);
-        Assert.Equal(novoEmail, cliente.Email.Address);
+    }
+
+    [Fact]
+    public void ChangeEmail_DadoQueONovoEmailEhValido_DeveAlterar()
+    {
+        // Arrange
+        var cliente = new Cliente("12345678900", "João da Silva", "joao@example.com");
+        var novoEmail = new EmailAddress("joao.da.silva@example.com");
+
+        // Act
+        cliente.ChangeEmail(novoEmail);
+
+        // Assert
+        Assert.Equal(novoEmail, cliente.Email);
     }
 }

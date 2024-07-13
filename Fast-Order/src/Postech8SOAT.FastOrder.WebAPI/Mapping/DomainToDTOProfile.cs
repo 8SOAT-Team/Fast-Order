@@ -15,6 +15,7 @@ public class DomainToDTOProfile : Profile
         CreateMap<Cliente, ClienteDTO>()
             .ForMember(c => c.Email, opt => opt.MapFrom(c => c.Email.Address))
             .ForMember(c => c.Cpf, opt => opt.MapFrom(c => c.Cpf.Value))
+            .AfterMap((c, dto) => dto.SetId(c.Id))
             .ReverseMap()
             .ForMember(c => c.Email, opt => opt.MapFrom(c => new EmailAddress(c.Email)))
             .ForMember(c => c.Cpf, opt => opt.MapFrom(c => new Cpf(c.Cpf)));
@@ -24,7 +25,5 @@ public class DomainToDTOProfile : Profile
 
         CreateMap<Pedido, PedidoDTO>()
             .ReverseMap();
-
-
     }
 }

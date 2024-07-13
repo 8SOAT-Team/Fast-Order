@@ -1,32 +1,32 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Produto:Entity
+public class Produto : Entity, IAggregateRoot
 {
     protected Produto()
     {
         this.Id = Guid.NewGuid();
     }
-    public string? Nome { get;  private set; }
+    public string? Nome { get; private set; }
     public string? Descricao { get; private set; }
-    public decimal Preco { get;  private set; }
+    public decimal Preco { get; private set; }
     public virtual Guid CategoriaId { get; set; }
     public virtual Categoria? Categoria { get; set; }
     public string? Imagem { get; private set; }
 
-    public Produto(string? nome, string? descricao, decimal preco,string imagem,Guid categoriaId)
+    public Produto(string? nome, string? descricao, decimal preco, string imagem, Guid categoriaId)
     {
-        ValidationDomain(nome, descricao, preco,imagem, categoriaId);
+        ValidationDomain(nome, descricao, preco, imagem, categoriaId);
     }
 
-    public Produto(Guid id,string? nome, string? descricao, decimal preco,string imagem, Guid categoriaId)
+    public Produto(Guid id, string? nome, string? descricao, decimal preco, string imagem, Guid categoriaId)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
         DomainExceptionValidation.When(id == null, "Id inválido");
         Id = id;
-        ValidationDomain(nome, descricao, preco,imagem, categoriaId);
+        ValidationDomain(nome, descricao, preco, imagem, categoriaId);
     }
-    private void ValidationDomain(string? nome, string? descricao, decimal preco,string image, Guid categoriaId)
+    private void ValidationDomain(string? nome, string? descricao, decimal preco, string image, Guid categoriaId)
     {
         DomainExceptionValidation.When(string.IsNullOrEmpty(nome), "Nome é obrigatório");
 
@@ -51,7 +51,7 @@ public class Produto:Entity
         DomainExceptionValidation.When(preco < 0, "Preço inválido");
         DomainExceptionValidation.When(categoriaId == Guid.Empty, "Id inválido");
         DomainExceptionValidation.When(categoriaId == null, "Id inválido");
-        
+
 
         this.Nome = nome;
         this.Descricao = descricao;
@@ -60,7 +60,7 @@ public class Produto:Entity
         this.CategoriaId = categoriaId;
     }
 
-    public void Update(string? nome, string? descricao, decimal preco,string imagem, Guid categoriaId)
+    public void Update(string? nome, string? descricao, decimal preco, string imagem, Guid categoriaId)
     {
         ValidationDomain(nome, descricao, preco, imagem, categoriaId);
     }

@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.WebAPI.DTOs;
 
 public class ClienteDTO
 {
+    [JsonPropertyName("id")]
+    [Display(Name = "Id")]
+    public Guid? ClienteId { get; private set; }
 
     [Display(Name = "CPF")]
     [Required(ErrorMessage = "CPF deve estar preenchido.")]
@@ -20,4 +24,6 @@ public class ClienteDTO
     [Required(ErrorMessage = "O email deve ser informado", AllowEmptyStrings = false)]
     [EmailAddress(ErrorMessage = "Formato do email inválido")]
     public string Email { get; set; } = null!;
+
+    public void SetId(Guid id) => ClienteId = id;
 }
