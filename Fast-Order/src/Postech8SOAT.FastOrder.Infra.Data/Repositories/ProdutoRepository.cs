@@ -13,10 +13,25 @@ public class ProdutoRepository : Repository<Produto>, IProdutoRepository
         this._context = context;
     }
 
-    public async Task<ICollection<Produto>> GetProdutosByCategoria(Guid categoriaId)
+    public Task<Categoria?> GetCategoriaByIdAsync(Guid categoriaId)
+    {
+       return _context.Categorias.FirstOrDefaultAsync(c => c.Id == categoriaId);
+    }
+
+    public async Task<ICollection<Produto>> GetProdutosByCategoriaAsync(Guid categoriaId)
     {
         return await _context.Produtos
             .Where(p => p.CategoriaId == categoriaId)
             .ToListAsync();
+    }
+
+    public Task<List<Categoria>> FindAllCategoriasAsync()
+    {
+        return _context.Categorias.ToListAsync();
+    }
+
+    public Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId)
+    {
+        return _context.Categorias.SingleOrDefaultAsync(c => c.Id == categoriaId);
     }
 }

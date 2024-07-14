@@ -6,6 +6,8 @@ namespace Postech8SOAT.FastOrder.WebAPI.DTOs;
 
 public class ProdutoDTO
 {
+    [DisplayName("Id")]
+    public Guid? Id { get; private set; }
 
     [Required(ErrorMessage = "O nome é requerido.")]
     [MinLength(3)]
@@ -32,5 +34,8 @@ public class ProdutoDTO
     [DisplayName("Imagem do produto.")]
     public string? Imagem { get;  set; }
 
-    
+    public void SetId(Guid id)
+    {
+        Id = id;
+    }    
 }
