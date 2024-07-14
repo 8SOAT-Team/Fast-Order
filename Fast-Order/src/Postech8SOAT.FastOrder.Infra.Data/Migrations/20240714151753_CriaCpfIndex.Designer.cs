@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using Postech8SOAT.FastOrder.Infra.Data.Context;
 namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
 {
     [DbContext(typeof(FastOrderContext))]
-    partial class FastOrderContextModelSnapshot : ModelSnapshot
+    [Migration("20240714151753_CriaCpfIndex")]
+    partial class CriaCpfIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,26 +49,20 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                         new
                         {
                             Id = new Guid("6224b6c0-26e9-42fa-8b04-dc0e9fd6b971"),
-                            Descricao = "Lanches",
-                            Nome = "Lanche"
+                            Descricao = "Coca-Cola 2L",
+                            Nome = "Coca-Cola"
                         },
                         new
                         {
                             Id = new Guid("0194d8c4-2d04-4172-a63a-4d381eadf729"),
-                            Descricao = "Acompanhamentos",
-                            Nome = "Acompanhamento"
+                            Descricao = "Hamburger X-Tudo",
+                            Nome = "Hamburger X-Tudo"
                         },
                         new
                         {
                             Id = new Guid("07c470aa-606f-4792-849a-02433c121117"),
-                            Descricao = "Bebidas",
-                            Nome = "Bebida"
-                        },
-                        new
-                        {
-                            Id = new Guid("b553a212-9930-4e5a-a780-138a0a4a0b78"),
-                            Descricao = "Sobremesas",
-                            Nome = "Sobremesa"
+                            Descricao = "Fritas a moda da casa.",
+                            Nome = "Batata Frita"
                         });
                 });
 

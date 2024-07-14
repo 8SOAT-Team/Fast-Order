@@ -3,65 +3,100 @@
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Produto : Entity, IAggregateRoot
 {
-    protected Produto()
-    {
-        this.Id = Guid.NewGuid();
-    }
-    public string? Nome { get; private set; }
-    public string? Descricao { get; private set; }
+    public string Nome { get; private set; } = null!;
+    public string Descricao { get; private set; } = null!;
     public decimal Preco { get; private set; }
     public virtual Guid CategoriaId { get; set; }
     public virtual Categoria? Categoria { get; set; }
-    public string? Imagem { get; private set; }
+    public string Imagem { get; private set; } = null!;
 
-    public Produto(string? nome, string? descricao, decimal preco, string imagem, Guid categoriaId)
-    {
-        ValidationDomain(nome, descricao, preco, imagem, categoriaId);
-    }
+    protected Produto() { }
 
-    public Produto(Guid id, string? nome, string? descricao, decimal preco, string imagem, Guid categoriaId)
+    public Produto(string nome, string descricao, decimal preco, string imagem, Guid categoriaId)
+        : this(Guid.NewGuid(), nome, descricao, preco, imagem, categoriaId) { }
+
+    public Produto(Guid id, string nome, string descricao, decimal preco, string imagem, Guid categoriaId)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
-        DomainExceptionValidation.When(id == null, "Id inválido");
-        Id = id;
         ValidationDomain(nome, descricao, preco, imagem, categoriaId);
+
+        Id = id;
+        Nome = nome;
+        Descricao = descricao;
+        Preco = preco;
+        Imagem = imagem;
+        CategoriaId = categoriaId;
     }
-    private void ValidationDomain(string? nome, string? descricao, decimal preco, string image, Guid categoriaId)
+
+    private static void ValidationDomain(string nome, string descricao, decimal preco, string imagem, Guid categoriaId)
+    {
+        ValidateDomainNome(nome);
+        ValidateDomainDescricao(descricao);
+        ValidateDomainImagem(imagem);
+        ValidateDomainCategoria(categoriaId);
+        ValidateDomainPreco(preco);
+    }
+
+    private static void ValidateDomainNome(string nome)
     {
         DomainExceptionValidation.When(string.IsNullOrEmpty(nome), "Nome é obrigatório");
-
-        DomainExceptionValidation.When(image!.Length < 3, "Endereço da imagem deve ter no mínimo 3 caracteres");
-
-        DomainExceptionValidation.When(image.Length > 150, "Endereço da imagem deve ter no máximo 100 caracteres");
-
         DomainExceptionValidation.When(nome!.Length < 3, "Nome deve ter no mínimo 3 caracteres");
-
         DomainExceptionValidation.When(nome.Length > 100, "Nome deve ter no máximo 100 caracteres");
+    }
 
-        DomainExceptionValidation.When(nome.Length < 3 || nome.Length > 100, "Nome deve ter entre 3 e 100 caracteres");
-
+    private static void ValidateDomainDescricao(string descricao)
+    {
         DomainExceptionValidation.When(string.IsNullOrEmpty(descricao), "Descrição é obrigatória");
 
         DomainExceptionValidation.When(descricao!.Length < 3, "Descrição deve ter no mínimo 3 caracteres");
 
         DomainExceptionValidation.When(descricao.Length > 100, "Descrição deve ter no máximo 100 caracteres");
-
-        DomainExceptionValidation.When(descricao.Length < 3 || descricao.Length > 100, "Descrição deve ter entre 3 e 100 caracteres");
-
-        DomainExceptionValidation.When(preco < 0, "Preço inválido");
-        DomainExceptionValidation.When(categoriaId == Guid.Empty, "Id inválido");
-        DomainExceptionValidation.When(categoriaId == null, "Id inválido");
-
-
-        this.Nome = nome;
-        this.Descricao = descricao;
-        this.Preco = preco;
-        this.Imagem = image;
-        this.CategoriaId = categoriaId;
     }
 
-    public void Update(string? nome, string? descricao, decimal preco, string imagem, Guid categoriaId)
+    private static void ValidateDomainImagem(string imagem)
     {
-        ValidationDomain(nome, descricao, preco, imagem, categoriaId);
+        DomainExceptionValidation.When(imagem!.Length < 3, "Endereço da imagem deve ter no mínimo 3 caracteres");
+        DomainExceptionValidation.When(imagem.Length > 150, "Endereço da imagem deve ter no máximo 100 caracteres");
+    }
+
+    private static void ValidateDomainCategoria(Guid categoriaId)
+    {
+        DomainExceptionValidation.When(categoriaId == Guid.Empty, "Id inválido");
+    }
+
+    private static void ValidateDomainPreco(decimal preco)
+    {
+        DomainExceptionValidation.When(preco < 0, "Preço inválido");
+    }
+
+    public void RenameTo(string nome)
+    {
+        ValidateDomainNome(nome);
+        Nome = nome;
+    }
+
+    public void DescribeAs(string descricao)
+    {
+        ValidateDomainDescricao(descricao);
+        Descricao = descricao;
+    }
+
+    public void SetPreco(decimal preco)
+    {
+        ValidateDomainPreco(preco);
+        Preco = preco;
+    }
+
+    public void SubstituteImagem(string imagem)
+    {
+        ValidateDomainImagem(imagem);
+        Imagem = imagem;
+    }
+
+    public void ChangeToCategory(Categoria categoria)
+    {
+        ValidateDomainCategoria(categoria.Id);
+        CategoriaId = categoria.Id;
+        Categoria = categoria;
     }
 }

@@ -26,15 +26,17 @@ public abstract class Repository<T> : IRepository<T> where T : class, IAggregate
         _context.Set<T>().Remove(entity);
     }
 
-    public async Task<ICollection<T>> FindAllAsync()
+    public Task<List<T>> FindAllAsync()
     {
-        return _context.Set<T>().ToList();
+        return _context.Set<T>().ToListAsync();
     }
 
-    public async Task<T> FindByAsync(Expression<Func<T, bool>> predicate)
+    public Task<T?> FindByAsync(Expression<Func<T, bool>> predicate)
     {
-        return await _context.Set<T>().SingleOrDefaultAsync(predicate);
+        return _context.Set<T>().SingleOrDefaultAsync(predicate);
     }
+
+    public Task<T?> FindByIdAsync(Guid id) => _context.Set<T>().SingleOrDefaultAsync(t => t.Id == id);
 
     public async Task<IEnumerable<T>> SearchAllPagedAsync(int page, int pageSize)
     {

@@ -9,5 +9,5 @@ public interface IClienteService
     Task<Cliente> CreateClienteAsync(Cliente cliente);
     Task<Cliente> UpdateClienteAsync(Cliente cliente);
     Task<Cliente> DeleteClienteAsync(Cliente cliente);
-    Task<ICollection<Cliente>> GetAllClientesAsync();
+    Task<List<Cliente>> GetAllClientesAsync();
 }

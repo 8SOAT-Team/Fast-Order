@@ -1,7 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Categoria : Entity, IAggregateRoot
+public class Categoria : Entity
 {
     protected Categoria()
     {
@@ -19,7 +19,6 @@ public class Categoria : Entity, IAggregateRoot
     public Categoria(Guid id, string? nome, string? descricao)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
-        DomainExceptionValidation.When(id == null, "Id inválido");
         Id = id;
         ValidationDomain(nome, descricao);
     }

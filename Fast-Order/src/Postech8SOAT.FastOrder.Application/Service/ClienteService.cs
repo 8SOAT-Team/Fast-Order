@@ -24,7 +24,7 @@ public class ClienteService : IClienteService
         return cliente;
     }
 
-    public Task<ICollection<Cliente>> GetAllClientesAsync()
+    public Task<List<Cliente>> GetAllClientesAsync()
     {
         return repository.FindAllAsync();
     }

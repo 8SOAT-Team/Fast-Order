@@ -18,10 +18,11 @@ public static class FastOrderRegisterDependencies
                 options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnectionContainer")));
 
         services.AddScoped<IClienteRepository, ClienteRepository>();
-        services.AddScoped<ICategoriaRepository, CategoriaRepository>();
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
         services.AddScoped<IPedidoRepository, PedidoRepository>();
+
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IProdutoService, ProdutoService>();
+        services.AddScoped<ICategoriaService, CategoriaService>();
     }
 }
