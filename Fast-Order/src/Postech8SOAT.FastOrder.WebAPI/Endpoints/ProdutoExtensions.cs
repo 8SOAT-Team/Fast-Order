@@ -8,7 +8,7 @@ namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
 
 public static class ProdutoExtensions
 {
-    public static void AddEnPointProdutos(this WebApplication app)
+    public static void AddEndPointProdutos(this WebApplication app)
     {
         const string ProdutoTag = "Produto";
         const string CategoriaTag = "Produto:Categoria";
@@ -36,7 +36,7 @@ public static class ProdutoExtensions
 
         }).WithTags(ProdutoTag).WithSummary("Obtenha um produto pelo seu identificador.").WithOpenApi();
 
-        app.MapPut("/produto", async ([FromServices] IMapper mapper, [FromServices] IProdutoService service, [FromBody] ProdutoDTO request) =>
+        app.MapPost("/produto", async ([FromServices] IMapper mapper, [FromServices] IProdutoService service, [FromBody] ProdutoDTO request) =>
         {
             var produto = mapper.Map<Produto>(request);
             produto = await service.CreateProdutoAsync(produto);

@@ -1,80 +1,103 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
+using System.Collections.Immutable;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Pedido : Entity, IAggregateRoot
 {
-    protected Pedido()
-    {
-        this.Id = Guid.NewGuid();
-    }
+    private const StatusPedido StatusInicial = StatusPedido.Recebido;
+    private const StatusPedido StatusFinal = StatusPedido.Finalizado;
+    private static readonly ImmutableHashSet<StatusPedido> StatusPedidoPermiteAlteracao =
+        [StatusPedido.Recebido, StatusPedido.EmPreparacao];
+
+    protected Pedido() { }
+
     public DateTime DataPedido { get; private set; }
-    public StatusPedido? StatusPedido { get; private set; }
+    public StatusPedido StatusPedido { get; private set; }
     public virtual Guid ClienteId { get; set; }
     public virtual Cliente? Cliente { get; set; }
-    public virtual ICollection<ItemDoPedido>? ItensDoPedido { get; set; }
-    public Decimal ValorTotal { get; private set; }
+    public virtual ICollection<ItemDoPedido> ItensDoPedido { get; set; }
+    public decimal ValorTotal { get; private set; }
 
     public event Action<decimal> ValorTotalCalculado = delegate { };
 
     public void AdicionarProduto(ItemDoPedido item)
     {
-        this.ItensDoPedido.Add(item);
+        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
+
+        this.ItensDoPedido?.Add(item);
         ValorTotalCalculado.Invoke(CalcularValorTotal());
     }
 
     public void RemoverProduto(ItemDoPedido item)
     {
-        this.ItensDoPedido.Remove(item);
+        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
+
+        this.ItensDoPedido?.Remove(item);
         ValorTotalCalculado.Invoke(CalcularValorTotal());
     }
 
     public decimal CalcularValorTotal()
     {
         decimal total = 0;
-        foreach (var item in this.ItensDoPedido)
-        {
-            total += item.Produto.Preco;
-        }
+        ItensDoPedido?.Aggregate(total, (acc, item) => acc += item.Produto.Preco);
         return total;
     }
 
-    public Pedido(string? dataPedido, StatusPedido? statusPedido, Guid clienteId, List<ItemDoPedido>? itens, decimal valortotal)
+    public Pedido(Guid clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
+
+    public Pedido(Guid id, Guid clienteId, List<ItemDoPedido> itens)
     {
-        ValidationDomain(dataPedido, statusPedido, clienteId, itens, valortotal);
+        ValidationDomain(id, clienteId, itens);
+
+        Id = id;
+        DataPedido = DateTime.Now;
+        StatusPedido = StatusInicial;
+        ClienteId = clienteId;
+        ItensDoPedido = itens;
+        ValorTotal = CalcularValorTotal();
     }
 
-    public Pedido(Guid id, string? dataPedido, StatusPedido? statusPedido, Guid clienteId, List<ItemDoPedido>? itens, decimal valortotal)
+    private static void ValidationDomain(Guid id, Guid clienteId, List<ItemDoPedido> itens)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
-        DomainExceptionValidation.When(id == null, "Id inválido");
-        Id = id;
-        ValidationDomain(dataPedido, statusPedido, clienteId, itens, valortotal);
+        DomainExceptionValidation.When(clienteId == Guid.Empty, "Informar um id de cliente válido é obrigatório");
+        DomainExceptionValidation.When(itens.Count <= 0, "O pedido deve conter pelo menos um item");
     }
 
-    public void Update(string? dataPedido, StatusPedido? statusPedido, Guid clienteId, List<ItemDoPedido>? itens, decimal valortotal)
+    public Pedido IniciarPreparo()
     {
-        ValidationDomain(dataPedido, statusPedido, clienteId, itens, valortotal);
+        DomainExceptionValidation.When(StatusPedido != StatusPedido.Recebido,
+            $"Status do pedido não permite iniciar preparo. O status deve ser {StatusPedido.Recebido} para iniciar o preparo.");
+
+        StatusPedido = StatusPedido.EmPreparacao;
+        return this;
     }
 
-    private void ValidationDomain(string? dataPedido, StatusPedido? statusPedido, Guid clienteId, List<ItemDoPedido>? itens, decimal valortotal)
+    public Pedido FinalizarPreparo()
     {
-        DomainExceptionValidation.When(string.IsNullOrEmpty(dataPedido), "Data do pedido é obrigatória");
+        DomainExceptionValidation.When(StatusPedido != StatusPedido.EmPreparacao,
+            $"Status do pedido não permite finalizar o preparo. O status deve ser {StatusPedido.EmPreparacao} para finalizar o preparo.");
 
-        DomainExceptionValidation.When(statusPedido == null, "Status do pedido é obrigatório");
+        StatusPedido = StatusPedido.Pronto;
+        return this;
+    }
 
-        DomainExceptionValidation.When(clienteId == null, "Cliente é obrigatório");
+    public Pedido Entregar()
+    {
+        DomainExceptionValidation.When(StatusPedido != StatusPedido.Pronto,
+            $"O pedido deve estar {StatusPedido.Pronto} para realizar a entrega.");
 
-        DomainExceptionValidation.When(itens == null, "Itens são obrigatórios");
+        StatusPedido = StatusFinal;
+        return this;
+    }
 
-        DomainExceptionValidation.When(valortotal < 0, "Valor total inválido");
+    public Pedido Cancelar()
+    {
+        DomainExceptionValidation.When(StatusPedido == StatusFinal,
+            $"O pedido não pode ser cancelado após ser {StatusFinal}.");
 
-        DomainExceptionValidation.When(valortotal == 0, "Valor total inválido");
-
-        this.DataPedido = Convert.ToDateTime(dataPedido);
-        this.StatusPedido = statusPedido;
-        this.ClienteId = clienteId;
-        this.ItensDoPedido = itens;
-        this.ValorTotal = valortotal;
+        StatusPedido = StatusPedido.Cancelado;
+        return this;
     }
 }

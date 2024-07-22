@@ -28,7 +28,7 @@ public static class ClienteExtensions
 
         }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu Identificador").WithOpenApi();
 
-        app.MapPut("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromBody] ClienteDTO request) =>
+        app.MapPost("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromBody] ClienteDTO request) =>
         {
             var cliente = mapper.Map<Cliente>(request);
             cliente = await service.CreateClienteAsync(cliente);

@@ -30,7 +30,7 @@ app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeade
 app.UseSwagger();
 
 //Adicionar os endpoints
-app.AddEnPointProdutos();
+app.AddEndPointProdutos();
 app.AddEndpointClientes();
 
 app.UseHttpsRedirection();
