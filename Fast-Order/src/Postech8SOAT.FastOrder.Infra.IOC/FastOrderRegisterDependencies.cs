@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Postech8SOAT.FastOrder.Application.Commands.Pedidos;
 using Postech8SOAT.FastOrder.Application.Service;
 using Postech8SOAT.FastOrder.Domain.Ports.Repository;
 using Postech8SOAT.FastOrder.Domain.Ports.Service;
@@ -24,5 +25,7 @@ public static class FastOrderRegisterDependencies
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IProdutoService, ProdutoService>();
         services.AddScoped<ICategoriaService, CategoriaService>();
+        services.AddScoped<IPedidoService, PedidoService>();
+        services.AddSingleton<IPedidoServiceCommandInvoker, PedidoServiceCommandInvoker>();
     }
 }

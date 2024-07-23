@@ -51,6 +51,7 @@ public abstract class Repository<T> : IRepository<T> where T : class, IAggregate
     {
         _context.Entry(entity).State = EntityState.Modified;
         _context.Set<T>().Update(entity);
+        await _context.SaveChangesAsync();
     }
 
     public Task<T?> GetById(Guid id)

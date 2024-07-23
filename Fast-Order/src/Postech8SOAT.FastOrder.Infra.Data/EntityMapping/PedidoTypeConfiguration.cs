@@ -4,7 +4,7 @@ using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 
 namespace Postech8SOAT.FastOrder.Infra.Data.EntityMapping;
-internal class PedidoTypeConfiguration:IEntityTypeConfiguration<Pedido>
+internal class PedidoTypeConfiguration : IEntityTypeConfiguration<Pedido>
 {
     public void Configure(EntityTypeBuilder<Pedido> builder)
     {
@@ -13,10 +13,7 @@ internal class PedidoTypeConfiguration:IEntityTypeConfiguration<Pedido>
         builder.Property(p => p.DataPedido).IsRequired();
         builder.Property(p => p.ValorTotal).HasPrecision(18, 2);
         builder.Property(p => p.StatusPedido)
-              .HasConversion(
-                           fromObj => fromObj.ToString(),
-                                          fromDb => (StatusPedido)Enum.Parse(typeof(StatusPedido), fromDb)
-                                                     );
+              .HasConversion(fromObj => Convert.ToInt32(fromObj), fromDb => (StatusPedido)fromDb);
         builder.HasOne(p => p.Cliente).WithMany().HasForeignKey(p => p.ClienteId);
     }
 }

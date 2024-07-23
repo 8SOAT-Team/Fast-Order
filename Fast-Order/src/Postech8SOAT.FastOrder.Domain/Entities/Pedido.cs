@@ -40,7 +40,7 @@ public class Pedido : Entity, IAggregateRoot
     public decimal CalcularValorTotal()
     {
         decimal total = 0;
-        ItensDoPedido?.Aggregate(total, (acc, item) => acc += item.Produto.Preco);
+        ItensDoPedido?.Aggregate(total, (acc, item) => acc += /*item.Produto.Preco*/ 1 * item.Quantidade);
         return total;
     }
 
@@ -51,10 +51,10 @@ public class Pedido : Entity, IAggregateRoot
         ValidationDomain(id, clienteId, itens);
 
         Id = id;
-        DataPedido = DateTime.Now;
-        StatusPedido = StatusInicial;
         ClienteId = clienteId;
         ItensDoPedido = itens;
+        DataPedido = DateTime.Now;
+        StatusPedido = StatusInicial;
         ValorTotal = CalcularValorTotal();
     }
 
