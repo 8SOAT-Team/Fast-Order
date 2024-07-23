@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Http.Json;
 using Postech8SOAT.FastOrder.Infra.IOC;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints;
 using Postech8SOAT.FastOrder.WebAPI.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +14,10 @@ builder.Services.AddAutoMapper(typeof(Program));
 IConfiguration configuration = builder.Configuration;
 builder.Services.ConfigureDI(configuration);
 
+builder.Services.Configure<JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 builder.Services.AddCors();
 var app = builder.Build();
-
 //Executar as migrações pendentes
 MigracoesPendentes.ExecuteMigration(app);
 
@@ -30,8 +33,9 @@ app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeade
 app.UseSwagger();
 
 //Adicionar os endpoints
-app.AddEnPointProdutos();
+app.AddEndPointProdutos();
 app.AddEndpointClientes();
+app.AddEndpointPedidos();
 
 app.UseHttpsRedirection();
 app.Run();
