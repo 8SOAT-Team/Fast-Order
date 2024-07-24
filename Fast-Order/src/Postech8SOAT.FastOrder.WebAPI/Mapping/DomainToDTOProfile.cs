@@ -32,5 +32,6 @@ public class DomainToDTOProfile : Profile
         CreateMap<ItemDoPedido, ItemDoPedidoDTO>()
             .AfterMap((c, dto) => dto.SetId(c.Id))
             .ReverseMap();
+
     }
 }

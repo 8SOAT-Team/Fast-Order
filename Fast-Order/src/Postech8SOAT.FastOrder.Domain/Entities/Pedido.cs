@@ -18,30 +18,29 @@ public class Pedido : Entity, IAggregateRoot
     public virtual Cliente? Cliente { get; set; }
     public virtual ICollection<ItemDoPedido> ItensDoPedido { get; set; }
     public decimal ValorTotal { get; private set; }
-
-    public event Action<decimal> ValorTotalCalculado = delegate { };
-
+       
     public void AdicionarProduto(ItemDoPedido item)
     {
         DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-
+                
         this.ItensDoPedido?.Add(item);
-        ValorTotalCalculado.Invoke(CalcularValorTotal());
+        this.CalcularValorTotal();
+
     }
 
     public void RemoverProduto(ItemDoPedido item)
     {
         DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-
+       
         this.ItensDoPedido?.Remove(item);
-        ValorTotalCalculado.Invoke(CalcularValorTotal());
+        this.CalcularValorTotal();
+
     }
 
     public decimal CalcularValorTotal()
     {
-        decimal total = 0;
-        ItensDoPedido?.Aggregate(total, (acc, item) => acc += /*item.Produto.Preco*/ 1 * item.Quantidade);
-        return total;
+        this.ValorTotal = ItensDoPedido?.Sum(item => item.Produto.Preco * item.Quantidade) ?? 0;
+        return this.ValorTotal;
     }
 
     public Pedido(Guid clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
@@ -55,7 +54,7 @@ public class Pedido : Entity, IAggregateRoot
         ItensDoPedido = itens;
         DataPedido = DateTime.Now;
         StatusPedido = StatusInicial;
-        ValorTotal = CalcularValorTotal();
+        ValorTotal = 0;
     }
 
     private static void ValidationDomain(Guid id, Guid clienteId, List<ItemDoPedido> itens)

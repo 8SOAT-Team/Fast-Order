@@ -18,8 +18,8 @@ public class ItemDoPedido : Entity
 
     public virtual Pedido Pedido { get; init; } = null!;
     public Guid ProdutoId { get; init; }
-    public virtual Produto Produto { get; init; } = null!;
-    public int Quantidade { get; private set; }
+    public virtual Produto Produto { get; set; } = null!;
+    public int Quantidade { get; set; }
 
     private static void ValidateDomain(Guid pedidoId, Guid produtoId, int quantidade)
     {
