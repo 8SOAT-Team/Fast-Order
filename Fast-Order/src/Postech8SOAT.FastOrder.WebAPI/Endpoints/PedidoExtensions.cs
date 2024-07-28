@@ -15,11 +15,21 @@ public static class PedidoExtensions
 
         app.MapPost("/pedido", async ([FromServices] IMapper mapper,
             [FromServices] IPedidoService service,
+            [FromServices] IProdutoService prodService,
             [FromBody] NovoPedidoDTO request,
             [FromServices] LinkGenerator linkGenerator,
             HttpContext httpContext) =>
             {
                 var pedido = mapper.Map<Pedido>(request);
+                
+                
+                foreach (var item in pedido.ItensDoPedido)
+                {                                      
+                    item.Produto=prodService.GetProdutoByIdAsync(item.ProdutoId).Result!;                              
+                }
+                
+                pedido.CalcularValorTotal();
+
                 var pedidoCriado = await service.CreatePedidoAsync(pedido);
                 var pedidoResposta = mapper.Map<PedidoResponseDTO>(pedidoCriado);
                 return Results.Created($"/pedido/{pedidoCriado.Id}", pedidoResposta);
