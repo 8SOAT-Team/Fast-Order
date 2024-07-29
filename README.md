@@ -4,15 +4,15 @@ Breve descrição do que é o projeto e seu propósito.
 
 ## Pré-requisitos
 - Docker
-- Docker Compose
-
-## Instalação
-
-1. Certifique-se de que o Docker está instalado:
-    - [Instruções para instalar o Docker - Windows](https://docs.docker.com/desktop/install/windows-install/)
+    - [Instruções para instalar o Docker - Windows](https://docs.docker.com/desktop/install/windows-install/)   
     - [Instruções para instalar o Docker - Linux](https://docs.docker.com/desktop/install/linux-install/)
     - [Instruções para instalar o Docker - MacOs](https://docs.docker.com/desktop/install/mac-install/)
+- Docker Compose
     - [Instruções para instalar o Docker Compose](https://docs.docker.com/compose/install/)
+
+
+## Executando
+1. Abra o "Docker Desktop"
 
 2. Clone o repositório:
    ```bash
@@ -29,7 +29,7 @@ Breve descrição do que é o projeto e seu propósito.
   
 ## Documentação da API
 A documentação completa da API pode ser encontrada em https://localhost:57399/swagger/index.html
-  
+
 ## Uso
 
 A API deve estar rodando em https://localhost:57399/.
