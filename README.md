@@ -16,7 +16,7 @@ Breve descrição do que é o projeto e seu propósito.
 
 2. Clone o repositório:
    ```bash
-   git clone https://github.com/8SOAT-Team/fast-order.git
+   git clone https://github.com/8SOAT-Team/Fast-Order.git
 
 3. Acesse a raíz do projeto
    ```bash
