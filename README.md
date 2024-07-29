@@ -20,7 +20,6 @@ Breve descrição do que é o projeto e seu propósito.
 
 3. Acesse a raíz do projeto
    ```bash
-   cd fast-order
    cd Fast-Order
 
 4. Construa e inicie os containers Docker  
