@@ -1,27 +1,34 @@
-version: '3.9'
+version: '3.4'
 
 services:
-  postgres:
-    image: postgres:13
-    container_name: fast-order-db
-    restart: always
-    shm_size: 128mb
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: fast_order
+  postech8soat.fastorder.webapi:
+    image: ${DOCKER_REGISTRY-}postech8soatfastorderwebapi
+    build:
+      context: .
+      dockerfile: src/Postech8SOAT.FastOrder.WebAPI/Dockerfile
+    ports:
+      - '57398:57398'
+      - '57399:57399'
+    environment: 
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=https://+:57399;http://+57398
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=fiap@123
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/fastorder.pfx  
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-    - "5433:5432"
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+        - ./certs:/app/certs
+    depends_on:
+      - sqlserver
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    hostname: 'sqlserver-fc'
     environment:
-      ADMINER_DEFAULT_SERVER: postgres
-
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: "tech#2024"
+    volumes:
+      - sql_data:/var/opt/mssql3
+    ports:
+      - '11433:1433'
+    expose:
+      - 1433
 volumes:
-  postgres_data:
+  sql_data:
