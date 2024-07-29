@@ -3,79 +3,46 @@
 Breve descrição do que é o projeto e seu propósito.
 
 ## Pré-requisitos
-
 - Docker
 - Docker Compose
 
 ## Instalação
 
-1. Clone o repositório:
+1. Certifique-se de que o Docker está instalado:
+    - [Instruções para instalar o Docker - Windows](https://docs.docker.com/desktop/install/windows-install/)
+    - [Instruções para instalar o Docker - Linux](https://docs.docker.com/desktop/install/linux-install/)
+    - [Instruções para instalar o Docker - MacOs](https://docs.docker.com/desktop/install/mac-install/)
+    - [Instruções para instalar o Docker Compose](https://docs.docker.com/compose/install/)
+
+2. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-projeto.git
-   cd seu-projeto
-2. Certifique-se de que o Docker está instalado:
-  - Instruções para instalar o Docker
-  - Instruções para instalar o Docker Compose
-    
-## Configuração
-Crie um arquivo .env baseado no arquivo .env.example:
+   git clone https://github.com/8SOAT-Team/fast-order.git
 
-```bash
-cp .env.example .env
-```
+3. Acesse a raíz do projeto
+   ```bash
+   cd fast-order
+   cd Fast-Order
 
-Atualize as variáveis de ambiente no arquivo .env conforme necessário.
+4. Construa e inicie os containers Docker  
+   ```bash
+   docker-compose up --build
+  
+## Documentação da API
+A documentação completa da API pode ser encontrada em https://localhost:57399/swagger/index.html
+  
+## Uso
 
-## Como Rodar o Projeto
-Construa e inicie os containers Docker:
-
-```bash
-docker-compose up --build
-```
-
-A API deve estar rodando em http://localhost:5011.
+A API deve estar rodando em https://localhost:57399/.
 
 Será iniciado um container com o postgres, rodando na porta 5432 e expondo na porta 5433.
 Outro container será iniciado com o adminer na porta 8080 auxiliando na visualização do schema de banco de dados.
 
-## Uso
-### Exemplos de Endpoints
-```
-GET /api/v1/resource
-```
-Descrição: Retorna uma lista de recursos.
-Exemplo de resposta:
-
-```json
-
-[
-  {
-    "id": 1,
-    "name": "Recurso 1"
-  }
-]
-```
-
-```
-POST /api/v1/resource
-```
-
-Descrição: Cria um novo recurso.
-Exemplo de corpo de requisição:
-```json
-{
-  "name": "Novo Recurso"
-}
-```
 
 ## Teste
 Para rodar os testes, use:
 ```bash
 docker-compose run api npm test
 ```
-
-## Documentação da API
-A documentação completa da API pode ser encontrada em http://localhost:8080/docs.
 
 ## Contribuição
 ### Fork o projeto
