@@ -18,20 +18,21 @@ public class Pedido : Entity, IAggregateRoot
     public virtual Cliente? Cliente { get; set; }
     public virtual ICollection<ItemDoPedido> ItensDoPedido { get; set; }
     public decimal ValorTotal { get; private set; }
-       
+    public Pagamento? Pagamento { get; private set; }
+
+
     public void AdicionarProduto(ItemDoPedido item)
     {
         DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-                
+
         this.ItensDoPedido?.Add(item);
         this.CalcularValorTotal();
-
     }
 
     public void RemoverProduto(ItemDoPedido item)
     {
         DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-       
+
         this.ItensDoPedido?.Remove(item);
         this.CalcularValorTotal();
 
@@ -69,6 +70,9 @@ public class Pedido : Entity, IAggregateRoot
         DomainExceptionValidation.When(StatusPedido != StatusPedido.Recebido,
             $"Status do pedido não permite iniciar preparo. O status deve ser {StatusPedido.Recebido} para iniciar o preparo.");
 
+        DomainExceptionValidation.When(Pagamento?.EstaAutorizado() is not true,
+            $"O pedido não tem um pagamento confirmado. Não é possível iniciar o preparo.");
+
         StatusPedido = StatusPedido.EmPreparacao;
         return this;
     }
@@ -98,5 +102,13 @@ public class Pedido : Entity, IAggregateRoot
 
         StatusPedido = StatusPedido.Cancelado;
         return this;
+    }
+
+    public void Pagar(Pagamento pagamento)
+    {
+        DomainExceptionValidation.When(StatusPedido != StatusInicial,
+         $"Status do pedido não permite pagamento. O status deve ser {StatusPedido.Recebido} para realizar o pagamento.");
+
+        Pagamento = pagamento;
     }
 }
