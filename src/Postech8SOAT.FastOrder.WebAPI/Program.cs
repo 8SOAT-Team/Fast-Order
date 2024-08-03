@@ -36,6 +36,7 @@ app.UseSwagger();
 app.AddEndPointProdutos();
 app.AddEndpointClientes();
 app.AddEndpointPedidos();
+app.AddEndpointPagamentos();
 
 app.UseHttpsRedirection();
 app.Run();

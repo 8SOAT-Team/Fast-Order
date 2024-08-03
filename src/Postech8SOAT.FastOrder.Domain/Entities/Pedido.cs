@@ -14,38 +14,15 @@ public class Pedido : Entity, IAggregateRoot
 
     public DateTime DataPedido { get; private set; }
     public StatusPedido StatusPedido { get; private set; }
-    public virtual Guid ClienteId { get; set; }
+    public virtual Guid? ClienteId { get; set; }
     public virtual Cliente? Cliente { get; set; }
     public virtual ICollection<ItemDoPedido> ItensDoPedido { get; set; }
     public decimal ValorTotal { get; private set; }
-       
-    public void AdicionarProduto(ItemDoPedido item)
-    {
-        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-                
-        this.ItensDoPedido?.Add(item);
-        this.CalcularValorTotal();
+    public virtual Pagamento? Pagamento { get; private set; }
 
-    }
+    public Pedido(Guid? clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
 
-    public void RemoverProduto(ItemDoPedido item)
-    {
-        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-       
-        this.ItensDoPedido?.Remove(item);
-        this.CalcularValorTotal();
-
-    }
-
-    public decimal CalcularValorTotal()
-    {
-        this.ValorTotal = ItensDoPedido?.Sum(item => item.Produto.Preco * item.Quantidade) ?? 0;
-        return this.ValorTotal;
-    }
-
-    public Pedido(Guid clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
-
-    public Pedido(Guid id, Guid clienteId, List<ItemDoPedido> itens)
+    public Pedido(Guid id, Guid? clienteId, List<ItemDoPedido> itens)
     {
         ValidationDomain(id, clienteId, itens);
 
@@ -57,7 +34,29 @@ public class Pedido : Entity, IAggregateRoot
         ValorTotal = 0;
     }
 
-    private static void ValidationDomain(Guid id, Guid clienteId, List<ItemDoPedido> itens)
+    public void AdicionarProduto(ItemDoPedido item)
+    {
+        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
+
+        this.ItensDoPedido?.Add(item);
+        this.CalcularValorTotal();
+    }
+
+    public void RemoverProduto(ItemDoPedido item)
+    {
+        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
+
+        this.ItensDoPedido?.Remove(item);
+        this.CalcularValorTotal();
+
+    }
+
+    public decimal CalcularValorTotal()
+    {
+        this.ValorTotal = ItensDoPedido?.Sum(item => item.Produto.Preco * item.Quantidade) ?? 0;
+        return this.ValorTotal;
+    }
+    private static void ValidationDomain(Guid id, Guid? clienteId, List<ItemDoPedido> itens)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
         DomainExceptionValidation.When(clienteId == Guid.Empty, "Informar um id de cliente válido é obrigatório");
@@ -68,6 +67,9 @@ public class Pedido : Entity, IAggregateRoot
     {
         DomainExceptionValidation.When(StatusPedido != StatusPedido.Recebido,
             $"Status do pedido não permite iniciar preparo. O status deve ser {StatusPedido.Recebido} para iniciar o preparo.");
+
+        DomainExceptionValidation.When(Pagamento?.EstaAutorizado() is not true,
+            $"O pedido não tem um pagamento confirmado. Não é possível iniciar o preparo.");
 
         StatusPedido = StatusPedido.EmPreparacao;
         return this;
@@ -98,5 +100,13 @@ public class Pedido : Entity, IAggregateRoot
 
         StatusPedido = StatusPedido.Cancelado;
         return this;
+    }
+
+    public void Pagar(Pagamento pagamento)
+    {
+        DomainExceptionValidation.When(StatusPedido != StatusInicial,
+         $"Status do pedido não permite pagamento. O status deve ser {StatusPedido.Recebido} para realizar o pagamento.");
+
+        Pagamento = pagamento;
     }
 }
