@@ -17,17 +17,16 @@ public static class PedidoExtensions
             [FromServices] IPedidoService service,
             [FromServices] IProdutoService prodService,
             [FromBody] NovoPedidoDTO request,
-            [FromServices] LinkGenerator linkGenerator,
             HttpContext httpContext) =>
             {
                 var pedido = mapper.Map<Pedido>(request);
-                
-                
+
+
                 foreach (var item in pedido.ItensDoPedido)
-                {                                      
-                    item.Produto=prodService.GetProdutoByIdAsync(item.ProdutoId).Result!;                              
+                {
+                    item.Produto = prodService.GetProdutoByIdAsync(item.ProdutoId).Result!;
                 }
-                
+
                 pedido.CalcularValorTotal();
 
                 var pedidoCriado = await service.CreatePedidoAsync(pedido);

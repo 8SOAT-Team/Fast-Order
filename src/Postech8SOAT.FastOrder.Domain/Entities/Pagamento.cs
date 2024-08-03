@@ -17,7 +17,7 @@ public class Pagamento : Entity, IAggregateRoot
 
     protected Pagamento() { }
 
-    public Pagamento(Guid id, Guid pedidoId, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string pagamentoExternoId)
+    public Pagamento(Guid id, Guid pedidoId, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string? pagamentoExternoId)
     {
         ValidationDomain(id, pedido, metodoDePagamento, valorTotal);
 
@@ -27,13 +27,14 @@ public class Pagamento : Entity, IAggregateRoot
         MetodoDePagamento = metodoDePagamento;
         ValorTotal = valorTotal;
         PagamentoExternoId = pagamentoExternoId;
+        Status = StatusPagamento.Pendente;
     }
 
-    public Pagamento(Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string pagamentoExternoId)
+    public Pagamento(Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string? pagamentoExternoId)
     : this(Guid.NewGuid(), pedido.Id, pedido, metodoDePagamento, valorTotal, pagamentoExternoId) { }
 
     public Guid PedidoId { get; init; }
-    public string PagamentoExternoId { get; init; }
+    public string? PagamentoExternoId { get; private set; }
     public virtual Pedido Pedido { get; init; } = null!;
     public StatusPagamento Status { get; private set; }
     public MetodoDePagamento MetodoDePagamento { get; init; }
@@ -51,6 +52,11 @@ public class Pagamento : Entity, IAggregateRoot
     {
         DomainExceptionValidation.When(Status != StatusPagamento.Pendente, $"Pagamento só pode ser cancelado quando o status atual é {StatusPagamento.Pendente}");
         Status = StatusPagamento.Cancelado;
+    }
+
+    public void AssociarPagamentoExterno(string pagamentoExternoId)
+    {
+        PagamentoExternoId = pagamentoExternoId;
     }
 
     private static void ValidationDomain(Guid id, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal)

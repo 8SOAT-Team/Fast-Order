@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using Postech8SOAT.FastOrder.Infra.Data.Context;
 namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
 {
     [DbContext(typeof(FastOrderContext))]
-    partial class FastOrderContextModelSnapshot : ModelSnapshot
+    [Migration("20240803130651_CriaPagamentosEntity")]
+    partial class CriaPagamentosEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ClienteId")
+                    b.Property<Guid>("ClienteId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DataPedido")
@@ -246,7 +249,9 @@ namespace Postech8SOAT.FastOrder.Infra.Data.Migrations
                 {
                     b.HasOne("Postech8SOAT.FastOrder.Domain.Entities.Cliente", "Cliente")
                         .WithMany()
-                        .HasForeignKey("ClienteId");
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cliente");
                 });

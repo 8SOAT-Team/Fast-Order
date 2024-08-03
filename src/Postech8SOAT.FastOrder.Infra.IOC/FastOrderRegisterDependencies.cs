@@ -21,11 +21,13 @@ public static class FastOrderRegisterDependencies
         services.AddScoped<IClienteRepository, ClienteRepository>();
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
         services.AddScoped<IPedidoRepository, PedidoRepository>();
+        services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IProdutoService, ProdutoService>();
         services.AddScoped<ICategoriaService, CategoriaService>();
         services.AddScoped<IPedidoService, PedidoService>();
         services.AddSingleton<IPedidoServiceCommandInvoker, PedidoServiceCommandInvoker>();
+        services.AddScoped<IPagamentoService, PagamentoService>();
     }
 }

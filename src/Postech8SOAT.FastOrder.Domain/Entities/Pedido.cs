@@ -14,12 +14,25 @@ public class Pedido : Entity, IAggregateRoot
 
     public DateTime DataPedido { get; private set; }
     public StatusPedido StatusPedido { get; private set; }
-    public virtual Guid ClienteId { get; set; }
+    public virtual Guid? ClienteId { get; set; }
     public virtual Cliente? Cliente { get; set; }
     public virtual ICollection<ItemDoPedido> ItensDoPedido { get; set; }
     public decimal ValorTotal { get; private set; }
-    public Pagamento? Pagamento { get; private set; }
+    public virtual Pagamento? Pagamento { get; private set; }
 
+    public Pedido(Guid? clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
+
+    public Pedido(Guid id, Guid? clienteId, List<ItemDoPedido> itens)
+    {
+        ValidationDomain(id, clienteId, itens);
+
+        Id = id;
+        ClienteId = clienteId;
+        ItensDoPedido = itens;
+        DataPedido = DateTime.Now;
+        StatusPedido = StatusInicial;
+        ValorTotal = 0;
+    }
 
     public void AdicionarProduto(ItemDoPedido item)
     {
@@ -43,22 +56,7 @@ public class Pedido : Entity, IAggregateRoot
         this.ValorTotal = ItensDoPedido?.Sum(item => item.Produto.Preco * item.Quantidade) ?? 0;
         return this.ValorTotal;
     }
-
-    public Pedido(Guid clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
-
-    public Pedido(Guid id, Guid clienteId, List<ItemDoPedido> itens)
-    {
-        ValidationDomain(id, clienteId, itens);
-
-        Id = id;
-        ClienteId = clienteId;
-        ItensDoPedido = itens;
-        DataPedido = DateTime.Now;
-        StatusPedido = StatusInicial;
-        ValorTotal = 0;
-    }
-
-    private static void ValidationDomain(Guid id, Guid clienteId, List<ItemDoPedido> itens)
+    private static void ValidationDomain(Guid id, Guid? clienteId, List<ItemDoPedido> itens)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
         DomainExceptionValidation.When(clienteId == Guid.Empty, "Informar um id de cliente válido é obrigatório");
