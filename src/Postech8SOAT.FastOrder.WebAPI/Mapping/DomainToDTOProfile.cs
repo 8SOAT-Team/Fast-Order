@@ -33,5 +33,8 @@ public class DomainToDTOProfile : Profile
             .AfterMap((c, dto) => dto.SetId(c.Id))
             .ReverseMap();
 
+        CreateMap<Pagamento, PagamentoDTO>()
+            .ConstructUsing(p => PagamentoDTO.Create(p.Id, p.PedidoId, p.PagamentoExternoId, p.Status, p.MetodoDePagamento, p.ValorTotal))
+            .ReverseMap();
     }
 }

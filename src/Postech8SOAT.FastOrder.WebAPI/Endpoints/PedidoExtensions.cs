@@ -60,6 +60,6 @@ public static class PedidoExtensions
             {
                 await commandInvoker.ExecutarComandoAsync(request.NovoStatus, id, service);
                 return Results.Accepted($"/pedido/{id}");
-            }).WithTags(PedidoTag).WithSummary("Liste pedidos").WithOpenApi();
+            }).WithTags(PedidoTag).WithSummary("Atualize o status de um pedido").WithOpenApi();
     }
 }

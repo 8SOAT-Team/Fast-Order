@@ -20,8 +20,14 @@ public class PagamentoService : IPagamentoService
 
     public async Task<Pagamento> CreatePagamentoAsync(Pedido pedido, MetodoDePagamento metodoDePagamento)
     {
+        var pagamentoPedido = await _pagamentoRepository.GetByPedidoId(pedido.Id);
+
+        DomainExceptionValidation.When(pagamentoPedido is not null, () => $"Já existe um pagamento para o pedido id: {pagamentoPedido!.Id}");
+
         var pagamento = new Pagamento(pedido, metodoDePagamento, pedido.ValorTotal, null);
+
         await _pagamentoRepository.AddAsync(pagamento);
+
         return pagamento;
     }
 
@@ -44,12 +50,14 @@ public class PagamentoService : IPagamentoService
         DomainExceptionValidation.When(pagamento is null, "Pagamento não localizado.");
         DomainExceptionValidation.When(_statusPagamentosPodemConfirmar.Contains(status) is false, $"{status} inválido para confirmar o pagamento");
 
-        if(status == StatusPagamento.Cancelado)
+        if (status == StatusPagamento.Cancelado)
         {
             pagamento!.CancelarPagamento();
             return;
         }
 
         pagamento!.FinalizarPagamento(status is StatusPagamento.Autorizado);
+
+        await _pagamentoRepository.UpdateAsync(pagamento);
     }
 }
