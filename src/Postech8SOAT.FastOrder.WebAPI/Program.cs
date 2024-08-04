@@ -14,7 +14,11 @@ builder.Services.AddAutoMapper(typeof(Program));
 IConfiguration configuration = builder.Configuration;
 builder.Services.ConfigureDI(configuration);
 
-builder.Services.Configure<JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());   
+});
 
 builder.Services.AddCors();
 var app = builder.Build();
@@ -22,11 +26,9 @@ var app = builder.Build();
 MigracoesPendentes.ExecuteMigration(app);
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
 

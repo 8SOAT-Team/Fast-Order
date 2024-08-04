@@ -1,13 +1,15 @@
 ﻿namespace Postech8SOAT.FastOrder.Domain.Exceptions;
 public class DomainExceptionValidation(string error) : Exception(error)
 {
-    public static void When(bool hasError, string error)
+    public static void When(bool hasError, Func<string> error)
     {
         if (hasError)
         {
-            throw new DomainExceptionValidation(error);
+            throw new DomainExceptionValidation(error());
         }
     }
+
+    public static void When(bool hasError, string error) => When(hasError, () => error);
 
     public static void When<TException>(bool hasError) where TException : DomainExceptionValidation
     {
