@@ -55,7 +55,6 @@ public static class PedidoExtensions
             [FromServices] IPedidoServiceCommandInvoker commandInvoker,
             [FromRoute] Guid id,
             [FromBody] AtualizarStatusDoPedidoDTO request,
-            [FromServices] LinkGenerator linkGenerator,
             HttpContext httpContext) =>
             {
                 await commandInvoker.ExecutarComandoAsync(request.NovoStatus, id, service);

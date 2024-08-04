@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.Json;
+using Polferov.SwaggerEnumsAsStrings;
 using Postech8SOAT.FastOrder.Infra.IOC;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints;
 using Postech8SOAT.FastOrder.WebAPI.Services;
@@ -7,7 +8,10 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddEnumsAsStringsFilter();
+});
 
 //Registrando as dependências
 builder.Services.AddAutoMapper(typeof(Program));
@@ -17,7 +21,7 @@ builder.Services.ConfigureDI(configuration);
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());   
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
 builder.Services.AddCors();
