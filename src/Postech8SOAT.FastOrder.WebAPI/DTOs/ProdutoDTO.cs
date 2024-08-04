@@ -28,8 +28,10 @@ public class ProdutoDTO
     [DisplayName("Preço")]
     public decimal Preco { get;  set; }
 
+    [Required]
     [DisplayName("Categoria")]
     public Guid CategoriaId { get; set; }
+
     [MaxLength(250)]
     [DisplayName("Imagem do produto.")]
     public string? Imagem { get;  set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Ports.Service;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
+using System.ComponentModel.DataAnnotations;
 
 namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
 
@@ -12,7 +13,7 @@ public static class ClienteExtensions
     {
         const string EndpointTag = "Clientes";
 
-        app.MapGet("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromQuery] string cpf) =>
+        app.MapGet("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromQuery, Required] string cpf) =>
         {
             var cliente = await service.GetClienteByCpfAsync(cpf);
             var clienteDto = mapper.Map<ClienteDTO>(cliente);
