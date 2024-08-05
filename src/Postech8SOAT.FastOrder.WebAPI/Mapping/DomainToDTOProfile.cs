@@ -25,7 +25,8 @@ public class DomainToDTOProfile : Profile
         CreateMap<Categoria, CategoriaDTO>();
 
         CreateMap<NovoPedidoDTO, Pedido>()
-            .ConstructUsing((dto, ctx) => new Pedido(dto.ClienteId, ctx.Mapper.Map<List<ItemDoPedido>>(dto.ItensDoPedido)));
+            .ConstructUsing((dto, ctx) => new Pedido(dto.ClienteId, ctx.Mapper.Map<List<ItemDoPedido>>(dto.ItensDoPedido)))
+            .ReverseMap();
 
         CreateMap<Pedido, PedidoResponseDTO>();
 

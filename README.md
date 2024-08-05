@@ -1,6 +1,39 @@
 # fast-order
 
-Breve descrição do que é o projeto e seu propósito.
+É uma implementação dos domínios de negócio de uma lanchonete utilizando arquitetura hexagonal, disponibilizando um Driven webapi.
+
+O projeto implementa os fluxos descritos no [Event Storming (miro board)](https://miro.com/app/board/uXjVK5PtxF0=/?share_link_id=847017542278) 
+
+## Categorias do negócio
+
+O requisito de negócio determina quais categorias um produto pode ser alocado. 
+Este projeto trata a categoria como uma entidade, portanto as mesmas são referenciadas por Ids, mas não há atualmente gestão de categorias, apenas listagem.
+O mapeamento das categorias segue:
+```json
+[
+  {
+    "id": "07c470aa-606f-4792-849a-02433c121117",
+    "nome": "Bebida",
+    "descricao": "Bebidas"
+  },
+  {
+    "id": "b553a212-9930-4e5a-a780-138a0a4a0b78",
+    "nome": "Sobremesa",
+    "descricao": "Sobremesas"
+  },
+  {
+    "id": "0194d8c4-2d04-4172-a63a-4d381eadf729",
+    "nome": "Acompanhamento",
+    "descricao": "Acompanhamentos"
+  },
+  {
+    "id": "6224b6c0-26e9-42fa-8b04-dc0e9fd6b971",
+    "nome": "Lanche",
+    "descricao": "Lanches"
+  }
+]
+```
+
 
 ## Pré-requisitos
 - Docker
@@ -12,7 +45,7 @@ Breve descrição do que é o projeto e seu propósito.
 
 
 ## Executando
-1. Abra o "Docker Desktop"
+1. Tenha certeza de que o Docker está rodando, você pode fazer isso abrindo o Docker Desktop
 
 2. Clone o repositório:
    ```bash
@@ -31,29 +64,35 @@ A documentação completa da API pode ser encontrada em https://localhost:57399/
 
 ## Uso
 
-A API deve estar rodando em https://localhost:57399/.
+A API deve estar rodando em https://localhost:57399/
 
-Será iniciado um container com o postgres, rodando na porta 5432 e expondo na porta 5433.
-Outro container será iniciado com o adminer na porta 8080 auxiliando na visualização do schema de banco de dados.
+Será iniciado um container com o MS SqlServer, rodando na porta 11433 e expondo na porta 11433.
 
+# Contribuindo
 
-## Teste
-Para rodar os testes, use:
-```bash
-docker-compose run api npm test
-```
+## Rodando as migrações
 
-## Contribuição
-### Fork o projeto
-Crie uma branch para sua feature (git checkout -b feature/nova-feature)
-Commit suas alterações (git commit -m 'Adiciona nova feature')
-Push para a branch (git push origin feature/nova-feature)
-Abra um Pull Request
+- Após realizar alterações nos modelos de dados, gere a migração
+   ```bash
+   dotnet ef migrations add <NomeDaMigracao> --startup-project Postech8SOAT.FastOrder.WebAPI --project Postech8SOAT.FastOrder.Infra.Data
+   ```
+
+- Caso precise desfazer a migração (antes de atualizar o banco de dados)
+   ```bash
+   dotnet ef migrations remove --startup-project Postech8SOAT.FastOrder.WebAPI --project Postech8SOAT.FastOrder.Infra.Data
+   ```
+
+Ao iniciar a aplicação WEB API todas as migrações pendentes são aplicadas, fazendo com que não seja necessário rodar o comando ```ef database update```
+
+# Fluxo de utilização esperado
+
+[Fluxo de execução esperado](flow.md)
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
 
 ## Autores
+### Fiap turma 8SOAT - Grupo 7
 
 - André Bessa - RM357159
 - Fernanda - RM357346
