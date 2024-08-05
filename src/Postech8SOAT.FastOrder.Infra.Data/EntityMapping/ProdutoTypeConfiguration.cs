@@ -13,7 +13,7 @@ internal class ProdutoTypeConfiguration : IEntityTypeConfiguration<Produto>
         builder.Property(p => p.Descricao).IsRequired().HasMaxLength(100);
         builder.Property(p => p.CategoriaId);
         builder.Property(p => p.Preco).HasPrecision(18, 2);
-        builder.Property(p => p.Imagem).IsRequired().HasMaxLength(100);
+        builder.Property(p => p.Imagem).IsRequired().HasMaxLength(300);
         builder.HasOne(p => p.Categoria).WithMany(p => p.Produtos).HasForeignKey(p => p.CategoriaId);
     }
 }
