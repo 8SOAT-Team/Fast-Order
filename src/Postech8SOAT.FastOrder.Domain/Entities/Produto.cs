@@ -56,7 +56,7 @@ public class Produto : Entity, IAggregateRoot
     private static void ValidateDomainImagem(string imagem)
     {
         DomainExceptionValidation.When(imagem!.Length < 3, "Endereço da imagem deve ter no mínimo 3 caracteres");
-        DomainExceptionValidation.When(imagem.Length > 150, "Endereço da imagem deve ter no máximo 100 caracteres");
+        DomainExceptionValidation.When(imagem.Length > 300, "Endereço da imagem deve ter no máximo 300 caracteres");
     }
 
     private static void ValidateDomainCategoria(Guid categoriaId)

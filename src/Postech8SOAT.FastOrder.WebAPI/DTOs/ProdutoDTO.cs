@@ -32,7 +32,7 @@ public class ProdutoDTO
     [DisplayName("Categoria")]
     public Guid CategoriaId { get; set; }
 
-    [MaxLength(250)]
+    [MaxLength(300)]
     [DisplayName("Imagem do produto.")]
     public string? Imagem { get;  set; }
 
