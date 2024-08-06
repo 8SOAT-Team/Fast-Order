@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Ports.Service;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
+using Postech8SOAT.FastOrder.WebAPI.Middlewares;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
 
@@ -37,6 +39,9 @@ public static class ClienteExtensions
             var clienteDto = mapper.Map<ClienteDTO>(cliente);
 
             return Results.Ok(clienteDto);
-        }).WithTags(EndpointTag).WithSummary("Cadastre um novo cliente").WithOpenApi();    
+        }).WithTags(EndpointTag).WithSummary("Cadastre um novo cliente")
+        .Produces<ClienteDTO>((int)HttpStatusCode.OK)
+        .Produces<ErrorDetails>((int)HttpStatusCode.BadRequest)
+        .WithOpenApi();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
+using System.Text.Encodings.Web;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Produto : Entity, IAggregateRoot
@@ -57,6 +58,7 @@ public class Produto : Entity, IAggregateRoot
     {
         DomainExceptionValidation.When(imagem!.Length < 3, "Endereço da imagem deve ter no mínimo 3 caracteres");
         DomainExceptionValidation.When(imagem.Length > 300, "Endereço da imagem deve ter no máximo 300 caracteres");
+        DomainExceptionValidation.When(Uri.IsWellFormedUriString(imagem, UriKind.Absolute) is false, "URL da imagem inválida.");
     }
 
     private static void ValidateDomainCategoria(Guid categoriaId)
