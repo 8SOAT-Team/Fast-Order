@@ -21,4 +21,22 @@ public class ItemDoPedidoTest
         //Assert
         Assert.Throws<DomainExceptionValidation>(() => act());
     }
+
+    [Fact]
+    public void DeveLancarExceptionAoCriarNovoItemDoPedidoComIdProdutoInvalido()
+    {
+        //Act
+        Action act = () => new ItemDoPedido(Guid.NewGuid(), Guid.Empty, 2);
+        //Assert
+        Assert.Throws<DomainExceptionValidation>(() => act());
+    }
+
+    [Fact]
+    public void DeveLancarExceptionAoCriarNovoItemDoPedidoComIdPedidoInvalido()
+    {
+        //Act
+        Action act = () => new ItemDoPedido(Guid.Empty, Guid.NewGuid(), 2);
+        //Assert
+        Assert.Throws<DomainExceptionValidation>(() => act());
+    }
 }
