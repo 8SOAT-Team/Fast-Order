@@ -60,7 +60,7 @@ O mapeamento das categorias segue:
    docker-compose up --build
   
 ## Documentação da API
-A documentação completa da API pode ser encontrada em https://localhost:57399/swagger/index.html
+A documentação completa da API pode ser encontrada em https://localhost:57399 (permita em seu navegador conexão não confiável)
 
 ## Uso
 

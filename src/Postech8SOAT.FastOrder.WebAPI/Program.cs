@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Extensions.Options;
 using Polferov.SwaggerEnumsAsStrings;
 using Postech8SOAT.FastOrder.Infra.IOC;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints;
@@ -37,11 +38,14 @@ MigracoesPendentes.ExecuteMigration(app);
 // Configure the HTTP request pipeline.
 
 app.UseSwagger();
-app.UseSwaggerUI();
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Fast Order v1");
+    options.RoutePrefix = string.Empty;
+});
 
 app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
-
-app.UseSwagger();
 
 //Adicionar os endpoints
 app.AddEndPointProdutos();
