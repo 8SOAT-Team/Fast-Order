@@ -1,18 +1,13 @@
 ﻿using CleanArch.UseCase.Faults;
+using CleanArch.UseCase.Options;
 
 namespace CleanArch.UseCase;
 
-public interface IUseCase<TCommand>
+public interface IUseCase<TCommand, TOut> where TOut : class
 {
-    public Task Resolve(TCommand command);
+    public Task<Any<TOut>> ResolveAsync(TCommand command);
 
-    public bool IsFaulted { get; }
+    public bool IsFailure { get; }
 
     public IReadOnlyCollection<UseCaseError> GetErrors();
-
-}
-
-public interface IUseCase<TCommand, TOut> : IUseCase<TCommand>
-{
-    TOut? UseCaseResult { get; }
 }
