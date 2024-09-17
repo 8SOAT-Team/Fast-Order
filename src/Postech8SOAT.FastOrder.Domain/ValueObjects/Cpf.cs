@@ -29,4 +29,17 @@ public record Cpf
         _sanitazedValue ??= Expression.DigitsOnly().Replace(Value, "");
         return _sanitazedValue!;
     }
+
+    public static bool TryCreate(string document, out Cpf cpf)
+    {
+        cpf = null!;
+
+        if (string.IsNullOrWhiteSpace(document) || Expression.HasCpfLength().IsMatch(document) is false)
+        {
+            return false;
+        }
+
+        cpf = new Cpf(document);
+        return true;
+    }
 }
