@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Postech8SOAT.FastOrder.Application.Adapters.Controllers.Cliente;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Ports.Service;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
@@ -16,16 +15,11 @@ public static class ClienteExtensions
     {
         const string EndpointTag = "Clientes";
 
-        app.MapGet("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteController controller, [FromQuery, Required] string cpf) =>
+        app.MapGet("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromQuery, Required] string cpf) =>
         {
-            var cliente = await controller.IdentificarClienteAsync(cpf);
-
-            if (cliente.HasValue)
-            {
-                return Results.Ok(cliente.Value);
-            }
-
-            return Results.NotFound();
+            var cliente = await service.GetClienteByCpfAsync(cpf);
+            var clienteDto = mapper.Map<ClienteDTO>(cliente);
+            return Results.Ok(clienteDto);
 
         }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu CPF").WithOpenApi();
 
