@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Postech8SOAT.FastOrder.Domain.Entities.Enums;
-using Postech8SOAT.FastOrder.Domain.Ports.Service;
+using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
 
 namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
@@ -12,8 +11,8 @@ public static class PagamentoExtensions
     public static void AddEndpointPagamentos(this WebApplication app)
     {
         app.MapPost("/pagamento/pedido/{pedidoId:guid}", async ([FromServices] IMapper mapper,
-            [FromServices] IPagamentoService service,
-            [FromServices] IPedidoService pedidoService,
+            [FromServices] IPagamentoUseCase service,
+            [FromServices] IPedidoUseCase pedidoService,
             [FromRoute] Guid pedidoId,
             [FromBody] NovoPagamentoDTO request,
             HttpContext httpContext) =>
@@ -34,7 +33,7 @@ public static class PagamentoExtensions
         }).WithTags(PagamentoTag).WithSummary("Inicialize um pagamento de um pedido.").WithOpenApi();
 
         app.MapPatch("/pagamento/{pagamentoId:guid}", async ([FromServices] IMapper mapper,
-           [FromServices] IPagamentoService service,
+           [FromServices] IPagamentoUseCase service,
            [FromRoute] Guid pagamentoId,
            [FromBody] ConfirmarPagamentoDTO request,
            HttpContext httpContext) =>
@@ -45,7 +44,7 @@ public static class PagamentoExtensions
 
 
         app.MapGet("/pagamento/pedido/{pedidoId:guid}", async ([FromServices] IMapper mapper,
-            [FromServices] IPagamentoService service,
+            [FromServices] IPagamentoUseCase service,
             [FromRoute] Guid pedidoId,
             HttpContext httpContext) =>
         {
@@ -55,7 +54,7 @@ public static class PagamentoExtensions
         }).WithTags(PagamentoTag).WithSummary("Obtenha os dados de um pagamento pelo id do pedido.").WithOpenApi();
 
         app.MapGet("/pagamento/{pagamentoId:guid}", async ([FromServices] IMapper mapper,
-            [FromServices] IPagamentoService service,
+            [FromServices] IPagamentoUseCase service,
             [FromRoute] Guid pagamentoId,
             HttpContext httpContext) =>
         {
@@ -65,8 +64,8 @@ public static class PagamentoExtensions
         }).WithTags(PagamentoTag).WithSummary("Obtenha os dados de um pagamento pelo id do pagamento.").WithOpenApi();
 
         app.MapGet("/pagamento", async ([FromServices] IMapper mapper,
-            [FromServices] IPagamentoService service,
-            [FromServices] IPedidoService pedidoService,
+            [FromServices] IPagamentoUseCase service,
+            [FromServices] IPedidoUseCase pedidoService,
             HttpContext httpContext) =>
         {
             var pagamento = await service.ListPagamentos();

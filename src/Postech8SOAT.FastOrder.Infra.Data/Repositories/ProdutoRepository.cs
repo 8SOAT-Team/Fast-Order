@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Ports.Repository;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Base;
+using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
 
 namespace Postech8SOAT.FastOrder.Infra.Data.Repositories;
 public class ProdutoRepository : Repository<Produto>, IProdutoRepository

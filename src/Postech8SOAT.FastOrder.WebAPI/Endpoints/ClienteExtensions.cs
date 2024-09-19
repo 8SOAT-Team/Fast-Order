@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Ports.Service;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
 using Postech8SOAT.FastOrder.WebAPI.Middlewares;
 using System.ComponentModel.DataAnnotations;
@@ -15,26 +15,26 @@ public static class ClienteExtensions
     {
         const string EndpointTag = "Clientes";
 
-        app.MapGet("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromQuery, Required] string cpf) =>
+        app.MapGet("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteController controller, [FromQuery, Required] string cpf) =>
         {
-            var cliente = await service.GetClienteByCpfAsync(cpf);
+            var cliente = await controller.GetClienteByCpfAsync(cpf);
             var clienteDto = mapper.Map<ClienteDTO>(cliente);
             return Results.Ok(clienteDto);
 
         }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu CPF").WithOpenApi();
 
-        app.MapGet("/cliente/{id:guid}", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromRoute] Guid id) =>
+        app.MapGet("/cliente/{id:guid}", async ([FromServices] IMapper mapper, [FromServices] IClienteController controller, [FromRoute] Guid id) =>
         {
-            var cliente = await service.GetClienteByIdAsync(id);
+            var cliente = await controller.GetClienteByIdAsync(id);
             var clienteDto = mapper.Map<ClienteDTO>(cliente);
             return Results.Ok(clienteDto);
 
         }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu Identificador").WithOpenApi();
 
-        app.MapPost("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteService service, [FromBody] ClienteDTO request) =>
+        app.MapPost("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteController controller, [FromBody] ClienteDTO request) =>
         {
             var cliente = mapper.Map<Cliente>(request);
-            cliente = await service.CreateClienteAsync(cliente);
+            cliente = await controller.CreateClienteAsync(cliente);
 
             var clienteDto = mapper.Map<ClienteDTO>(cliente);
 

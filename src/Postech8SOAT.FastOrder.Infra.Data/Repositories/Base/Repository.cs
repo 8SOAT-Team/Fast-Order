@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Ports.Repository.Base;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
+using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository.Base;
 using System.Linq.Expressions;
 
 namespace Postech8SOAT.FastOrder.Infra.Data.Repositories.Base;
