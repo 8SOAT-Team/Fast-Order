@@ -1,5 +1,6 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
+using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 
@@ -7,34 +8,32 @@ namespace Postech8SOAT.FastOrder.UseCases.Service;
 
 public class PedidoUseCase : IPedidoUseCase
 {
-    private readonly IPedidoRepository _pedidoRepository;
+    private readonly IPedidoGateway _pedidoGateway;
 
-    public PedidoUseCase(IPedidoRepository pedidoRepository)
+    public PedidoUseCase(IPedidoGateway pedidoGateway)
     {
-        _pedidoRepository = pedidoRepository;
+        _pedidoGateway = pedidoGateway;
     }
 
 
     private async Task<Pedido> DeveEncontrarPedido(Guid id)
     {
-        var pedido = await _pedidoRepository.GetById(id);
+        var pedido = await _pedidoGateway.GetPedidoByIdAsync(id);
 
         DomainExceptionValidation.When(pedido is null, "Pedido não encontrado");
 
         return pedido!;
     }
 
-    private Task SalvarPedido(Pedido pedido) => _pedidoRepository.UpdateAsync(pedido);
-
     public async Task<Pedido> CreatePedidoAsync(Pedido pedido)
     {
-        await _pedidoRepository.AddAsync(pedido);
+        await _pedidoGateway.CreatePedidoAsync(pedido);
         return pedido;
     }
 
     public Task<List<Pedido>> GetAllPedidosAsync()
     {
-        return _pedidoRepository.FindAllAsync();
+        return _pedidoGateway.GetAllPedidosAsync();
     }
 
     public async Task<Pedido> GetPedidoByIdAsync(Guid id)
@@ -46,33 +45,21 @@ public class PedidoUseCase : IPedidoUseCase
 
     public async Task<Pedido> IniciarPreparo(Guid id)
     {
-        var pedido = await DeveEncontrarPedido(id);
-        pedido.IniciarPreparo();
-        await SalvarPedido(pedido);
-        return pedido;
+        return await _pedidoGateway.IniciarPreparo(id);
     }
 
     public async Task<Pedido> FinalizarPreparo(Guid id)
     {
-        var pedido = await DeveEncontrarPedido(id);
-        pedido.FinalizarPreparo();
-        await SalvarPedido(pedido);
-        return pedido;
+        return await _pedidoGateway.FinalizarPreparo(id);
     }
 
     public async Task<Pedido> Entregar(Guid id)
     {
-        var pedido = await DeveEncontrarPedido(id);
-        pedido.Entregar();
-        await SalvarPedido(pedido);
-        return pedido;
+       return await _pedidoGateway.Entregar(id);
     }
 
     public async Task<Pedido> Cancelar(Guid id)
     {
-        var pedido = await DeveEncontrarPedido(id);
-        pedido.Cancelar();
-        await SalvarPedido(pedido);
-        return pedido;
+        return await _pedidoGateway.Cancelar(id);
     }
 }

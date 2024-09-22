@@ -1,5 +1,6 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
+using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 
@@ -7,10 +8,12 @@ namespace Postech8SOAT.FastOrder.UseCases.Service;
 public class ProdutoUseCase : IProdutoUseCase
 {
     private readonly IProdutoRepository _produtoRepository;
+    private readonly ICategoriaGateway _categoriaGateway;    
 
-    public ProdutoUseCase(IProdutoRepository produtoRepository)
+    public ProdutoUseCase(IProdutoRepository produtoRepository,ICategoriaGateway categoriaGateway)
     {
         _produtoRepository = produtoRepository;
+        _categoriaGateway = categoriaGateway;
     }
 
     public async Task<Produto> CreateProdutoAsync(Produto produto)
@@ -51,7 +54,7 @@ public class ProdutoUseCase : IProdutoUseCase
 
     public Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId)
     {
-        return _produtoRepository.FindCategoriaByIdAsync(categoriaId);
+        return _categoriaGateway.GetCategoriaByIdAsync(categoriaId);
     }
 
     public async Task<Produto> UpdateProdutoAsync(Produto produto)

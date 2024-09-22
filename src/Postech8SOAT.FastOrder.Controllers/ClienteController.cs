@@ -1,7 +1,6 @@
 ﻿
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 
 namespace Postech8SOAT.FastOrder.Controllers;
@@ -9,7 +8,7 @@ public class ClienteController: IClienteController
 { 
     private readonly IClienteUseCase clienteUseCase;
 
-    public ClienteController(IClienteGateway gateway, IClienteUseCase useCase)
+    public ClienteController(IClienteUseCase useCase)
     {
         
         this.clienteUseCase = useCase;

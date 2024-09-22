@@ -34,8 +34,15 @@ public static class FastOrderRegisterDependencies
         services.AddSingleton<IPedidoServiceUseCaseInvoker, PedidoServiceUseCaseInvoker>();
         services.AddScoped<IPagamentoUseCase, PagamentoUseCase>();
 
+        //Gateways
         services.AddScoped<IClienteGateway, ClienteGateway>();
-        services.AddScoped<IClienteController, ClienteController>();
+        services.AddScoped<ICategoriaGateway, CategoriaGateway>();
+        services.AddScoped<IPagamentoGateway,PagamentoGateway>();
+        services.AddScoped<IPedidoGateway, PedidoGateway>();
 
+        //Controllers
+        services.AddScoped<IClienteController, ClienteController>();         services.AddScoped<ICategoriaController,CategoriaController>();
+        services.AddScoped<IPagamentoController, PagamentoController>();
+        services.AddScoped<IPedidoController, PedidoController>();
     }
 }

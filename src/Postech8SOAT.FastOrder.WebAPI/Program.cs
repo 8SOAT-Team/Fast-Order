@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.Extensions.Options;
 using Polferov.SwaggerEnumsAsStrings;
 using Postech8SOAT.FastOrder.Infra.IOC;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints;

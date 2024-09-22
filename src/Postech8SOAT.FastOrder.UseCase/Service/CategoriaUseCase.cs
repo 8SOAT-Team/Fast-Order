@@ -1,25 +1,25 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
+using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 
 namespace Postech8SOAT.FastOrder.UseCases.Service;
 
 public class CategoriaUseCase : ICategoriaUseCase
 {
-    private readonly IProdutoRepository _produtoRepository;
+    private readonly ICategoriaGateway _categoriaGateway;
 
-    public CategoriaUseCase(IProdutoRepository produtoRepository)
+    public CategoriaUseCase(ICategoriaGateway _categoriaGateway)
     {
-        _produtoRepository = produtoRepository;
+        this._categoriaGateway = _categoriaGateway;
     }
 
     public Task<List<Categoria>> GetAllCategoriasAsync()
     {
-        return _produtoRepository.FindAllCategoriasAsync();
+        return _categoriaGateway.GetAllCategoriasAsync();
     }
 
     public Task<Categoria?> GetCategoriaByIdAsync(Guid id)
     {
-        return _produtoRepository.GetCategoriaByIdAsync(id);
+        return _categoriaGateway.GetCategoriaByIdAsync(id);
     }
 }

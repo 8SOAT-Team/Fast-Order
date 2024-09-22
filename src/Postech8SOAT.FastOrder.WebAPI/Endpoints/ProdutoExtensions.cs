@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
@@ -54,9 +55,9 @@ public static class ProdutoExtensions
 
         }).WithTags(CategoriaTag).WithSummary("Listagem de produtos por categoria.").WithOpenApi();
 
-        app.MapGet("/produto/categoria", async ([FromServices] IMapper mapper, [FromServices] ICategoriaUseCase service) =>
+        app.MapGet("/produto/categoria", async ([FromServices] IMapper mapper, [FromServices] ICategoriaController controller) =>
         {
-            var categoriasDto = mapper.Map<ICollection<Categoria>, ICollection<CategoriaDTO>>(await service.GetAllCategoriasAsync());
+            var categoriasDto = mapper.Map<ICollection<Categoria>, ICollection<CategoriaDTO>>(await controller.GetAllCategoriasAsync());
 
             return Results.Ok(await Task.FromResult(categoriasDto));
 
