@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Postech8SOAT.FastOrder.Controllers\Postech8SOAT.FastOrder.Controllers.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
   </ItemGroup>
 

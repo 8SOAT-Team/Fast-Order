@@ -5,8 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Gateways\Postech8SOAT.FastOrder.Gateways.csproj" />
+    <ProjectReference Include="..\Postech8SOAT.FastOrder.Presenters\Postech8SOAT.FastOrder.Presenters.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.UseCase\Postech8SOAT.FastOrder.UseCases.csproj" />
   </ItemGroup>
 

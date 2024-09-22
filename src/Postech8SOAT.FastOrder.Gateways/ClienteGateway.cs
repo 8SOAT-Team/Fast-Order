@@ -4,7 +4,7 @@ using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
 
 namespace Postech8SOAT.FastOrder.Gateways;
-public class ClienteGateway: IClienteGateway
+public class ClienteGateway : IClienteGateway
 {
     private readonly IClienteRepository repository;
     public ClienteGateway(IClienteRepository repository)
