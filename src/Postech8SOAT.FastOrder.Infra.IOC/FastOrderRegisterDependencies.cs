@@ -20,7 +20,7 @@ public static class FastOrderRegisterDependencies
     {
         //Registrar no container nativo de injeção de dependências.
         services.AddDbContext<FastOrderContext>(options =>
-                options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnectionContainer")));
 
         services.AddScoped<IClienteRepository, ClienteRepository>();
         services.AddScoped<IProdutoRepository, ProdutoRepository>();

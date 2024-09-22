@@ -6,13 +6,12 @@ using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 
 namespace Postech8SOAT.FastOrder.Controllers;
 public class ClienteController: IClienteController
-{
-    private readonly IClienteGateway gateway;
+{ 
     private readonly IClienteUseCase clienteUseCase;
 
     public ClienteController(IClienteGateway gateway, IClienteUseCase useCase)
     {
-        this.gateway = gateway;
+        
         this.clienteUseCase = useCase;
     }
 
