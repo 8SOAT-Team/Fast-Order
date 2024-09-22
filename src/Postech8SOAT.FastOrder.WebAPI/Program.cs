@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.AddEnumsAsStringsFilter();
+   c.AddEnumsAsStringsFilter();
 });
 
 //Registrando as dependências

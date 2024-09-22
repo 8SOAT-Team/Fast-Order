@@ -26,6 +26,13 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Postech8SOAT.FastOrder.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+# Copiar certificados para pasta app o container
+COPY ./certs/ /app/certs/
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./Postech8SOAT.FastOrder.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
