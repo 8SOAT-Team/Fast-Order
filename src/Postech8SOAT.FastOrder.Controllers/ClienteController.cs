@@ -9,8 +9,7 @@ public class ClienteController: IClienteController
     private readonly IClienteUseCase clienteUseCase;
 
     public ClienteController(IClienteUseCase useCase)
-    {
-        
+    {        
         this.clienteUseCase = useCase;
     }
 

@@ -38,11 +38,14 @@ public static class FastOrderRegisterDependencies
         services.AddScoped<IClienteGateway, ClienteGateway>();
         services.AddScoped<ICategoriaGateway, CategoriaGateway>();
         services.AddScoped<IPagamentoGateway,PagamentoGateway>();
+        services.AddScoped<IProdutoGateway,ProdutoGateway>();
         services.AddScoped<IPedidoGateway, PedidoGateway>();
 
         //Controllers
-        services.AddScoped<IClienteController, ClienteController>();         services.AddScoped<ICategoriaController,CategoriaController>();
+        services.AddScoped<IClienteController, ClienteController>();         
+        services.AddScoped<ICategoriaController,CategoriaController>();
         services.AddScoped<IPagamentoController, PagamentoController>();
+        services.AddScoped<IProdutoController, ProdutoController>();
         services.AddScoped<IPedidoController, PedidoController>();
     }
 }
