@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
-using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.WebAPI.DTOs;
-using Postech8SOAT.FastOrder.WebAPI.Middlewares;
+using Postech8SOAT.FastOrder.Types.Results;
+using Postech8SOAT.FastOrder.WebAPI.Endpoints.Extensions;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
@@ -15,33 +14,24 @@ public static class ClienteExtensions
     {
         const string EndpointTag = "Clientes";
 
-        app.MapGet("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteController controller, [FromQuery, Required] string cpf) =>
+        app.MapGet("/cliente", async ([FromServices] IClienteController controller, [FromQuery, Required] string cpf) =>
         {
-            var cliente = await controller.GetClienteByCpfAsync(cpf);
-            var clienteDto = mapper.Map<ClienteDTO>(cliente);
-            return Results.Ok(clienteDto);
+            var useCaseResult = await controller.IdentificarClienteAsync(cpf);
+            return useCaseResult.GetResult();
+        }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu CPF")
+        .Produces<ClienteIdentificadoDto>((int)HttpStatusCode.OK)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+        .Produces((int)HttpStatusCode.NotFound)
+        .WithOpenApi();
 
-        }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu CPF").WithOpenApi();
-
-        app.MapGet("/cliente/{id:guid}", async ([FromServices] IMapper mapper, [FromServices] IClienteController controller, [FromRoute] Guid id) =>
+        app.MapPost("/cliente", async ([FromServices] IClienteController controller, [FromBody] NovoClienteDto request) =>
         {
-            var cliente = await controller.GetClienteByIdAsync(id);
-            var clienteDto = mapper.Map<ClienteDTO>(cliente);
-            return Results.Ok(clienteDto);
+            var useCaseResult = await controller.CriarNovoClienteAsync(request);
 
-        }).WithTags(EndpointTag).WithSummary("Identifique um cliente pelo seu Identificador").WithOpenApi();
-
-        app.MapPost("/cliente", async ([FromServices] IMapper mapper, [FromServices] IClienteController controller, [FromBody] ClienteDTO request) =>
-        {
-            var cliente = mapper.Map<Cliente>(request);
-            cliente = await controller.CreateClienteAsync(cliente);
-
-            var clienteDto = mapper.Map<ClienteDTO>(cliente);
-
-            return Results.Ok(clienteDto);
+            return useCaseResult.GetResult();
         }).WithTags(EndpointTag).WithSummary("Cadastre um novo cliente")
-        .Produces<ClienteDTO>((int)HttpStatusCode.OK)
-        .Produces<ErrorDetails>((int)HttpStatusCode.BadRequest)
+        .Produces<ClienteIdentificadoDto>((int)HttpStatusCode.OK)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
         .WithOpenApi();
     }
 }

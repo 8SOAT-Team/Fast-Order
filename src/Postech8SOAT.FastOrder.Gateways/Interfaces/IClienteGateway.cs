@@ -1,4 +1,5 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
+using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
 public interface IClienteGateway
@@ -17,4 +18,7 @@ public interface IClienteGateway
 
     Task<Cliente> UpdateClienteAsync(Cliente cliente);
 
+
+    Task<Cliente?> GetClienteByCpfAsync(Cpf cpf);
+    Task<Cliente> InsertCliente(Cliente cliente);
 }

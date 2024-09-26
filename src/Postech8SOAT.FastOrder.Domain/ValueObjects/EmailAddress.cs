@@ -18,4 +18,17 @@ public partial record EmailAddress
     public override string? ToString() => Address;
 
     private static bool IsValidEmail(string email) => string.IsNullOrEmpty(email) is false && Expression.ValidEmail().IsMatch(email);
+
+    public static bool TryCreate(string email, out EmailAddress result)
+    {
+        result = null!;
+
+        if (IsValidEmail(email))
+        {
+            result = new EmailAddress(email);
+            return true;
+        }
+
+        return false;
+    }
 }
