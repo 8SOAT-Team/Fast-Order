@@ -2,6 +2,7 @@
 using CleanArch.UseCase.Logging;
 using CleanArch.UseCase.Options;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace CleanArch.UseCase;
 
@@ -9,6 +10,11 @@ public abstract class UseCaseBase<TCommand, TOut> : IUseCase<TCommand, TOut> whe
 {
     protected readonly ILogger _logger;
     private readonly List<UseCaseError> _useCaseError = [];
+
+    private static readonly JsonSerializerOptions jsonSerializerOptions = new()
+    {
+        ReferenceHandler = ReferenceHandler.IgnoreCycles,
+    };
 
     protected UseCaseBase(ILogger logger)
     {
@@ -23,7 +29,7 @@ public abstract class UseCaseBase<TCommand, TOut> : IUseCase<TCommand, TOut> whe
     public async Task<Any<TOut>> ResolveAsync(TCommand command)
     {
         _logger.LogInfo($"Iniciando Resolve {typeof(TCommand)}");
-        _logger.LogDebug($"Comando recebido: {JsonSerializer.Serialize(command)}");
+        _logger.LogDebug($"Comando recebido: {JsonSerializer.Serialize(command, jsonSerializerOptions)}");
 
         try
         {
@@ -32,7 +38,7 @@ public abstract class UseCaseBase<TCommand, TOut> : IUseCase<TCommand, TOut> whe
             var result = await Execute(command);
 
             _logger.LogInfo($"Execucao concluida {typeof(TCommand)}");
-            _logger.LogDebug($"Resultado {JsonSerializer.Serialize(result)}");
+            _logger.LogDebug($"Resultado {JsonSerializer.Serialize(result, jsonSerializerOptions)}");
 
             return result.ToAny();
         }

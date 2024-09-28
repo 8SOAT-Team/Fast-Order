@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
+using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
 using Postech8SOAT.FastOrder.Domain.Entities;
+using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.UseCases.Commands.Pedidos;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
+using Postech8SOAT.FastOrder.WebAPI.Endpoints.Extensions;
+using System.Net;
 
 namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
 
@@ -20,20 +25,22 @@ public static class PedidoExtensions
             [FromBody] NovoPedidoDTO request,
             HttpContext httpContext) =>
             {
-                var pedido = mapper.Map<Pedido>(request);
+                var pedidoCriado = await pedidoController.CreatePedidoAsync(request);
 
+                IResult result = null!;
 
-                foreach (var item in pedido.ItensDoPedido)
-                {
-                    item.Produto = prodService.GetProdutoByIdAsync(item.ProdutoId).Result!;
-                }
+                pedidoCriado.Match(
+                    onSuccess: (p) => result = Results.Created($"/pedido/{p.Id}", p),
+                    onFailure: (errors) => result = pedidoCriado.GetFailureResult());
 
-                pedido.CalcularValorTotal();
+                return result;
 
-                var pedidoCriado = await pedidoController.CreatePedidoAsync(pedido);
-                var pedidoResposta = mapper.Map<PedidoResponseDTO>(pedidoCriado);
-                return Results.Created($"/pedido/{pedidoCriado.Id}", pedidoResposta);
-            }).WithTags(PedidoTag).WithSummary("Crie um pedido informando os itens.").WithOpenApi();
+            }).WithTags(PedidoTag)
+            .Produces<PedidoCriadoDTO>((int)HttpStatusCode.Created)
+            .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+            .Produces((int)HttpStatusCode.NotFound)
+            .WithSummary("Crie um pedido informando os itens.")
+            .WithOpenApi();
 
         app.MapGet("/pedido/{id:guid}", async ([FromServices] IMapper mapper, [FromServices] IPedidoController pedidoController, [FromRoute] Guid id) =>
         {
@@ -52,7 +59,7 @@ public static class PedidoExtensions
             }).WithTags(PedidoTag).WithSummary("Liste pedidos").WithOpenApi();
 
         app.MapPut("/pedido/{id:guid}/status", async ([FromServices] IMapper mapper,
-            [FromServices] IPedidoController pedidoController,        
+            [FromServices] IPedidoController pedidoController,
             [FromRoute] Guid id,
             [FromBody] AtualizarStatusDoPedidoDTO request,
             HttpContext httpContext) =>

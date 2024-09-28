@@ -1,18 +1,20 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
+using Postech8SOAT.FastOrder.Infra.Data.Context;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
 
 namespace Postech8SOAT.FastOrder.Gateways;
-public class PedidoGateway: IPedidoGateway
+public class PedidoGateway : IPedidoGateway
 {
-    private readonly IPedidoRepository _pedidoRepository;    
+    private readonly IPedidoRepository _pedidoRepository;
+    private readonly FastOrderContext _dbContext;
 
-    public PedidoGateway(IPedidoRepository pedidoRepository)
+    public PedidoGateway(IPedidoRepository pedidoRepository, FastOrderContext dbContext)
     {
         _pedidoRepository = pedidoRepository;
+        _dbContext = dbContext;
     }
 
     private async Task<Pedido> DeveEncontrarPedido(Guid id)
@@ -29,7 +31,8 @@ public class PedidoGateway: IPedidoGateway
     public async Task<Pedido> CreatePedidoAsync(Pedido pedido)
     {
         await _pedidoRepository.AddAsync(pedido);
-        return pedido;
+        var pedidoCriado = await _pedidoRepository.GetById(pedido.Id);
+        return pedidoCriado!;
     }
 
     public Task<List<Pedido>> GetAllPedidosAsync()
@@ -74,5 +77,12 @@ public class PedidoGateway: IPedidoGateway
         await SalvarPedido(pedido);
         return pedido;
     }
-     
+
+    public Task<Pedido?> GetPedidoCompletoAsync(Guid id)
+    {
+        return _dbContext.Pedidos.Include(p => p.ItensDoPedido)
+             .ThenInclude(i => i.Produto)
+             .Include(i => i.Cliente)
+             .SingleOrDefaultAsync(i => i.Id == id);
+    }
 }

@@ -1,72 +1,25 @@
 ﻿using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
-using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.UseCases.Clientes;
-using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.UseCases.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Problems;
 using Postech8SOAT.FastOrder.Presenters.Clientes;
 
-namespace Postech8SOAT.FastOrder.Controllers;
+namespace Postech8SOAT.FastOrder.Controllers.Clientes;
 public class ClienteController : IClienteController
 {
-    private readonly IClienteUseCase clienteUseCase;
     private readonly ILogger _logger;
     private readonly IClienteGateway _clienteGateway;
 
-    public ClienteController(IClienteUseCase useCase, ILogger logger, IClienteGateway clienteGateway)
+    public ClienteController(ILogger logger, IClienteGateway clienteGateway)
     {
-        this.clienteUseCase = useCase;
         _logger = logger;
         _clienteGateway = clienteGateway;
     }
-
-    public async Task<Cliente> CreateClienteAsync(Cliente cliente)
-    {
-        var clienteCreated = await clienteUseCase.CreateClienteAsync(cliente);
-        return await Task.FromResult(clienteCreated);
-    }
-
-    public async Task<Cliente> DeleteClienteAsync(Cliente cliente)
-    {
-        var clienteDeleted = await clienteUseCase.DeleteClienteAsync(cliente);
-        return await Task.FromResult(clienteDeleted);
-    }
-
-    public async Task<List<Cliente>> GetAllClientesAsync()
-    {
-        var clientes = await clienteUseCase.GetAllClientesAsync();
-        return await Task.FromResult(clientes);
-    }
-
-    public async Task<Cliente?> GetClienteByCpfAsync(string cpf)
-    {
-        var cliente = await clienteUseCase.GetClienteByCpfAsync(cpf);
-        return await Task.FromResult(cliente);
-    }
-
-    public async Task<Cliente?> GetClienteByEmailAsync(string email)
-    {
-        var cliente = await clienteUseCase.GetClienteByEmailAsync(email);
-        return await Task.FromResult(cliente);
-    }
-
-    public async Task<Cliente> GetClienteByIdAsync(Guid id)
-    {
-        var cliente = await clienteUseCase.GetClienteByIdAsync(id);
-        return await Task.FromResult(cliente);
-    }
-
-    public async Task<Cliente> UpdateClienteAsync(Cliente cliente)
-    {
-        var clienteUpdated = await clienteUseCase.UpdateClienteAsync(cliente);
-        return await Task.FromResult(clienteUpdated);
-    }
-
 
     public async Task<Result<ClienteIdentificadoDto>> IdentificarClienteAsync(string document)
     {

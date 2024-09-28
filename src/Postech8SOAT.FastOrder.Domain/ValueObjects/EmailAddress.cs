@@ -31,4 +31,6 @@ public partial record EmailAddress
 
         return false;
     }
+
+    public static implicit operator string(EmailAddress email) => email.Address;
 }

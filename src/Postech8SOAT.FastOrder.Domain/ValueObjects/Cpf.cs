@@ -42,4 +42,6 @@ public record Cpf
         cpf = new Cpf(document);
         return true;
     }
+
+    public static implicit operator string(Cpf cpf) => cpf.Value;
 }

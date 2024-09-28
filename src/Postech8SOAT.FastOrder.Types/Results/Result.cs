@@ -30,3 +30,18 @@ public class Result<TValue>
     public static Result<TValue> Failure(List<AppProblemDetails> details) => new(details);
     public static Result<TValue> Empty() => new();
 }
+
+public static class ResultExtension
+{
+    public static void Match<T>(this Result<T> result, Action<T> onSuccess,
+        Action<List<AppProblemDetails>> onFailure)
+    {
+        if (result.HasValue)
+        {
+            onSuccess(result.Value!);
+            return;
+        }
+
+        onFailure(result.ProblemDetails);
+    }
+}

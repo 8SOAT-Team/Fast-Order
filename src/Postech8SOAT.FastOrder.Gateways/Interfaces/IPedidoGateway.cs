@@ -1,5 +1,4 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 
 namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
 public interface IPedidoGateway
@@ -11,4 +10,5 @@ public interface IPedidoGateway
     Task<Pedido> Entregar(Guid id);
     Task<Pedido> Cancelar(Guid id);
     Task<List<Pedido>> GetAllPedidosAsync();  
+    Task<Pedido?> GetPedidoCompletoAsync(Guid id);  
 }
