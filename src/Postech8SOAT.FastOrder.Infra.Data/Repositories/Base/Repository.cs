@@ -15,10 +15,11 @@ public abstract class Repository<T> : IRepository<T> where T : class, IAggregate
         this._context = context;
     }
 
-    public virtual async Task AddAsync(T entity)
+    public virtual async Task<T> AddAsync(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
+        var inserted = await _context.Set<T>().AddAsync(entity);
         _context.SaveChanges();
+        return inserted.Entity;
     }
 
     public async Task DeleteAsync(T entity)

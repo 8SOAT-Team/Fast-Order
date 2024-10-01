@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Domain.Entities;
+using Postech8SOAT.FastOrder.Types.Results;
+using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
+using Postech8SOAT.FastOrder.WebAPI.Endpoints.Extensions;
+using System.Net;
 
 namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
 
@@ -37,15 +42,15 @@ public static class ProdutoExtensions
 
         }).WithTags(ProdutoTag).WithSummary("Obtenha um produto pelo seu identificador.").WithOpenApi();
 
-        app.MapPost("/produto", async ([FromServices] IMapper mapper, [FromServices] IProdutoUseCase service, [FromBody] ProdutoDTO request) =>
+        app.MapPost("/produto", async ([FromServices] IProdutoController controller, [FromBody] NovoProdutoDTO request) =>
         {
-            var produto = mapper.Map<Produto>(request);
-            produto = await service.CreateProdutoAsync(produto);
-
-            var produtoDto = mapper.Map<ProdutoDTO>(produto);
-
-            return Results.Ok(produtoDto);
-        }).WithTags(ProdutoTag).WithSummary("Inclua novos produtos.").WithOpenApi();
+            var produtoCriado = await controller.CreateProdutoAsync(request);
+            return produtoCriado.GetResult();
+        }).WithTags(ProdutoTag).WithSummary("Inclua novos produtos")
+        .Produces<ProdutoCriadoDTO>((int)HttpStatusCode.OK)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+        .Produces((int)HttpStatusCode.NotFound)
+        .WithOpenApi();
 
         app.MapGet("/produto/categoria/{categoriaId}", async ([FromServices] IMapper mapper, [FromServices] IProdutoUseCase service, [FromRoute] Guid categoriaId) =>
         {

@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
+﻿using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Exceptions;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
+using Postech8SOAT.FastOrder.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Postech8SOAT.FastOrder.Gateways;
 public class ProdutoGateway : IProdutoGateway
 {
     private readonly IProdutoRepository _produtoRepository;
     private readonly ICategoriaGateway _categoriaGateway;
+    private readonly FastOrderContext _dbContext;
 
-    public ProdutoGateway(IProdutoRepository produtoRepository, ICategoriaGateway categoriaGateway)
+    public ProdutoGateway(IProdutoRepository produtoRepository, ICategoriaGateway categoriaGateway, FastOrderContext dbContext)
     {
         _produtoRepository = produtoRepository;
         _categoriaGateway = categoriaGateway;
+        _dbContext = dbContext;
     }
 
     public async Task<Produto> CreateProdutoAsync(Produto produto)
     {
-        var categoria = await _produtoRepository.GetCategoriaByIdAsync(produto.CategoriaId);
-        DomainExceptionValidation.When(categoria is null, "CategoriaId não existe");
-        await _produtoRepository.AddAsync(produto);
-        return produto;
+        var inserted = await _produtoRepository.AddAsync(produto);
+        return inserted;
     }
 
     public async Task DeleteProdutoAsync(Produto produto)
@@ -65,4 +60,9 @@ public class ProdutoGateway : IProdutoGateway
         return produto;
     }
 
+    public Task<Produto?> GetProdutoCompletoByIdAsync(Guid id)
+    {
+        return _dbContext.Set<Produto>().Include(x => x.Categoria)
+             .FirstOrDefaultAsync(x => x.Id == id);
+    }
 }

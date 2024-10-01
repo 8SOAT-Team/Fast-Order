@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Postech8SOAT.FastOrder.Domain.Entities;
+﻿using Postech8SOAT.FastOrder.Domain.Entities;
 
 namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
 public interface IProdutoGateway
@@ -16,5 +10,7 @@ public interface IProdutoGateway
     Task DeleteProdutoAsync(Produto produto);
     Task<ICollection<Produto>> GetAllProdutosAsync();
     Task<ICollection<Produto>> GetProdutosByCategoria(Guid categoriaId);
-    Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId);    
+    Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId);
+
+    Task<Produto?> GetProdutoCompletoByIdAsync(Guid id);
 }
