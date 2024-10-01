@@ -10,6 +10,7 @@ public abstract class UseCaseBase<TCommand, TOut> : IUseCase<TCommand, TOut> whe
 {
     protected readonly ILogger _logger;
     private readonly List<UseCaseError> _useCaseError = [];
+    protected virtual bool ThrowExceptionOnFailure => false;
 
     private static readonly JsonSerializerOptions jsonSerializerOptions = new()
     {
@@ -26,7 +27,7 @@ public abstract class UseCaseBase<TCommand, TOut> : IUseCase<TCommand, TOut> whe
     protected void AddError(UseCaseError error) => _useCaseError.Add(error);
     protected void AddError(IEnumerable<UseCaseError> errors) => _useCaseError.AddRange(errors);
 
-    public async Task<Any<TOut>> ResolveAsync(TCommand command)
+    public virtual async Task<Any<TOut>> ResolveAsync(TCommand command)
     {
         _logger.LogInfo($"Iniciando Resolve {typeof(TCommand)}");
         _logger.LogDebug($"Comando recebido: {JsonSerializer.Serialize(command, jsonSerializerOptions)}");
@@ -38,7 +39,7 @@ public abstract class UseCaseBase<TCommand, TOut> : IUseCase<TCommand, TOut> whe
             var result = await Execute(command);
 
             _logger.LogInfo($"Execucao concluida {typeof(TCommand)}");
-            _logger.LogDebug($"Resultado {JsonSerializer.Serialize(result, jsonSerializerOptions)}");
+            _logger.LogDebug($"Resultado {(result is null ? null : JsonSerializer.Serialize(result, jsonSerializerOptions))}");
 
             return result.ToAny();
         }
@@ -49,6 +50,11 @@ public abstract class UseCaseBase<TCommand, TOut> : IUseCase<TCommand, TOut> whe
         }
         catch (Exception ex)
         {
+            if (ThrowExceptionOnFailure)
+            {
+                throw;
+            }
+
             AddError(new UseCaseError(UseCaseErrorType.InternalError, ex.Message));
             _logger.LogError(ex.Message, ex.InnerException);
         }

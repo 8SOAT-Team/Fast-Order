@@ -18,6 +18,7 @@ public class CriarNovoClienteUseCase(ILogger logger, IClienteGateway clienteGate
         if (existingCliente != null)
         {
             AddError(new CleanArch.UseCase.Faults.UseCaseError(CleanArch.UseCase.Faults.UseCaseErrorType.BadRequest, "Cpf já cadastrado!"));
+            return null;
         }
 
         var cliente = new Cliente(Guid.NewGuid(), novoCliente.Cpf, novoCliente.Nome, novoCliente.Email);
