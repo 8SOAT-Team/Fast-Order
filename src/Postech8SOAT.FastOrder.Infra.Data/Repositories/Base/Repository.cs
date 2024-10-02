@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Ports.Repository.Base;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
+using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository.Base;
 using System.Linq.Expressions;
 
 namespace Postech8SOAT.FastOrder.Infra.Data.Repositories.Base;
@@ -15,10 +15,11 @@ public abstract class Repository<T> : IRepository<T> where T : class, IAggregate
         this._context = context;
     }
 
-    public virtual async Task AddAsync(T entity)
+    public virtual async Task<T> AddAsync(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
+        var inserted = await _context.Set<T>().AddAsync(entity);
         _context.SaveChanges();
+        return inserted.Entity;
     }
 
     public async Task DeleteAsync(T entity)

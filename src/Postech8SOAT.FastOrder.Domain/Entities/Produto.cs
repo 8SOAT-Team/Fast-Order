@@ -1,5 +1,4 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
-using System.Text.Encodings.Web;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Produto : Entity, IAggregateRoot
