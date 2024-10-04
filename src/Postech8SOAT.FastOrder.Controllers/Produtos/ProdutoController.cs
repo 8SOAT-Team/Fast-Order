@@ -1,9 +1,11 @@
 ﻿using CleanArch.UseCase.Logging;
+using CleanArch.UseCase.Options;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Produtos;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
+using Postech8SOAT.FastOrder.UseCases.Common;
 using Postech8SOAT.FastOrder.UseCases.Produtos;
 using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
@@ -12,20 +14,17 @@ namespace Postech8SOAT.FastOrder.Controllers;
 
 public class ProdutoController : IProdutoController
 {
-    private readonly IProdutoUseCase _produtoUseCase;
     private readonly ICategoriaUseCase _categoriaUseCase;
 
     private readonly ILogger _logger;
     private readonly IProdutoGateway _produtoGateway;
     private readonly ICategoriaGateway _categoriaGateway;
 
-    public ProdutoController(IProdutoUseCase produtoUseCase,
-     ICategoriaUseCase categoriaUseCase,
+    public ProdutoController(ICategoriaUseCase categoriaUseCase,
      ILogger logger,
      IProdutoGateway produtoGateway,
      ICategoriaGateway categoriaGateway)
     {
-        _produtoUseCase = produtoUseCase;
         _categoriaUseCase = categoriaUseCase;
         _logger = logger;
         _produtoGateway = produtoGateway;
@@ -58,36 +57,29 @@ public class ProdutoController : IProdutoController
             .Build();
     }
 
-    public async Task DeleteProdutoAsync(Produto produto)
+    public async Task<Result<ICollection<ProdutoDTO>>> GetAllProdutosAsync()
     {
-        await _produtoUseCase.DeleteProdutoAsync(produto);
+        var useCase = new ListarTodosProdutosUseCase(_logger, _produtoGateway);
+        var useCaseResult = await useCase.ResolveAsync();
+
+        return ControllerResultBuilder<ICollection<ProdutoDTO>, ICollection<Produto>>
+            .ForUseCase(useCase)
+            .WithInstance("produtos")
+            .WithResult(useCaseResult)
+            .AdaptUsing(ProdutoPresenter.AdaptProduto)
+            .Build();
     }
 
-
-    public async Task<ICollection<Produto>> GetAllProdutosAsync()
+    public async Task<Result<ProdutoDTO?>> GetProdutoByIdAsync(Guid id)
     {
-        return await _produtoUseCase.GetAllProdutosAsync();
-    }
+        var useCase = new EncontrarProdutoPorIdUseCase(_logger, _produtoGateway);
+        var useCaseResult = await useCase.ResolveAsync(id);
 
-    public Task<Produto?> GetProdutoByIdAsync(Guid id)
-    {
-        return _produtoUseCase.GetProdutoByIdAsync(id);
+        return ControllerResultBuilder<ProdutoDTO?, Produto>
+            .ForUseCase(useCase)
+            .WithInstance(id)
+            .WithResult(useCaseResult)
+            .AdaptUsing(ProdutoPresenter.AdaptProduto)
+            .Build();
     }
-
-    public Task<Produto?> GetProdutoByNomeAsync(string nome)
-    {
-        return _produtoUseCase.GetProdutoByNomeAsync(nome);
-    }
-
-    public Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId)
-    {
-        return _categoriaUseCase.GetCategoriaByIdAsync(categoriaId);
-    }
-
-    public async Task<Produto> UpdateProdutoAsync(Produto produto)
-    {
-        await _produtoUseCase.UpdateProdutoAsync(produto);
-        return produto;
-    }
-
 }

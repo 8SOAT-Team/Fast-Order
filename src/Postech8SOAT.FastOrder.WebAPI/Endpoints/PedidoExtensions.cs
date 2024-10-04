@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
-using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Types.Results;
-using Postech8SOAT.FastOrder.UseCases.Commands.Pedidos;
-using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints.Extensions;
 using System.Net;
@@ -21,7 +17,6 @@ public static class PedidoExtensions
 
         app.MapPost("/pedido", async ([FromServices] IMapper mapper,
             [FromServices] IPedidoController pedidoController,
-            [FromServices] IProdutoUseCase prodService,
             [FromBody] NovoPedidoDTO request,
             HttpContext httpContext) =>
             {

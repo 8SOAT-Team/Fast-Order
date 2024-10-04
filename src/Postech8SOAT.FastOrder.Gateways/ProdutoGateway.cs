@@ -24,38 +24,10 @@ public class ProdutoGateway : IProdutoGateway
         return inserted;
     }
 
-    public async Task DeleteProdutoAsync(Produto produto)
-    {
-        await _produtoRepository.DeleteAsync(produto);
-    }
-
-    public async Task<ICollection<Produto>> GetAllProdutosAsync()
-    {
-        return await _produtoRepository.FindAllAsync();
-    }
-
     public Task<Produto?> GetProdutoByIdAsync(Guid id)
     {
         return _produtoRepository.FindByAsync(x => x.Id == id);
     }
-
-    public Task<Produto?> GetProdutoByNomeAsync(string nome)
-    {
-        return _produtoRepository.FindByAsync(x => x.Nome!.Equals(nome));
-    }
-
-
-    public Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId)
-    {
-        return _categoriaGateway.GetCategoriaByIdAsync(categoriaId);
-    }
-
-    public async Task<Produto> UpdateProdutoAsync(Produto produto)
-    {
-        await _produtoRepository.UpdateAsync(produto);
-        return produto;
-    }
-
 
 
     public Task<Produto?> GetProdutoCompletoByIdAsync(Guid id)
@@ -69,5 +41,10 @@ public class ProdutoGateway : IProdutoGateway
         return await _dbContext.Set<Produto>().Include(x => x.Categoria)
             .Where(x => x.CategoriaId == categoriaId)
             .ToListAsync();
+    }
+
+    public async Task<ICollection<Produto>> ListarTodosProdutosAsync()
+    {
+        return await _dbContext.Set<Produto>().Include(x => x.Categoria).ToListAsync();
     }
 }

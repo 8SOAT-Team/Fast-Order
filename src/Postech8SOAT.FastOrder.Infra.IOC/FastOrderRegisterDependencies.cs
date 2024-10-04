@@ -30,7 +30,6 @@ public static class FastOrderRegisterDependencies
         services.AddScoped<IPagamentoRepository, PagamentoRepository>();
 
         services.AddScoped<IClienteUseCase, ClienteUseCase>();
-        services.AddScoped<IProdutoUseCase, ProdutoUseCase>();
         services.AddScoped<ICategoriaUseCase, CategoriaUseCase>();
         services.AddScoped<IPedidoUseCase, PedidoUseCase>();
         services.AddSingleton<IPedidoServiceUseCaseInvoker, PedidoServiceUseCaseInvoker>();

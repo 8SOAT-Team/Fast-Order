@@ -6,6 +6,17 @@ using Postech8SOAT.FastOrder.Domain.Exceptions;
 
 namespace Postech8SOAT.FastOrder.UseCases.Common;
 
+public static class UseCaseExtension
+{
+    public static Task<Any<TOut>> ResolveAsync<TCommand, TOut>(this UseCase<TCommand, TOut> usecase)
+        where TOut : class
+        where TCommand : Empty<object>, new()
+    {
+        var r = usecase.ResolveAsync(new TCommand());
+        return r;
+    }
+}
+
 public abstract class UseCase<TCommand, TOut>(ILogger logger) : UseCaseBase<TCommand, TOut>(logger) where TOut : class
 {
     protected override bool ThrowExceptionOnFailure => true;
