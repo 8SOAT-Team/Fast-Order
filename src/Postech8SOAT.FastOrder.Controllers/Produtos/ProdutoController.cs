@@ -1,17 +1,15 @@
 ﻿using CleanArch.UseCase.Logging;
-using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Produtos;
-using Postech8SOAT.FastOrder.Controllers.Problems;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
-using Postech8SOAT.FastOrder.Presenters.Clientes;
 using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.UseCases.Produtos;
 using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 
 namespace Postech8SOAT.FastOrder.Controllers;
+
 public class ProdutoController : IProdutoController
 {
     private readonly IProdutoUseCase _produtoUseCase;
@@ -39,22 +37,25 @@ public class ProdutoController : IProdutoController
         var useCase = new CriarProdutoUseCase(_logger, _categoriaGateway, _produtoGateway);
         var useCaseResult = await useCase.ResolveAsync(novoProduto);
 
-        if (useCase.IsFailure)
-        {
-            var errors = useCase.GetErrors();
-            var firstError = errors.First();
-            var isBadRequest = firstError.Code == CleanArch.UseCase.Faults.UseCaseErrorType.BadRequest;
+        return ControllerResultBuilder<ProdutoCriadoDTO, Produto>
+            .ForUseCase(useCase)
+            .WithInstance(novoProduto.Nome)
+            .WithResult(useCaseResult)
+            .AdaptUsing(ProdutoPresenter.AdaptProdutoCriado)
+            .Build();
+    }
 
-            if (isBadRequest)
-            {
-                return Result<ProdutoCriadoDTO>.Failure(new AppBadRequestProblemDetails(firstError.Description, novoProduto.Nome));
-            }
+    public async Task<Result<ICollection<ProdutoDTO>>> ListarProdutoPorCategoriaAsync(Guid categoriaId)
+    {
+        var useCase = new ListarProdutoPorCategoriaUseCase(_logger, _produtoGateway);
+        var useCaseResult = await useCase.ResolveAsync(categoriaId);
 
-            return Result<ProdutoCriadoDTO>.Failure(errors.AdaptUseCaseErrors().ToList());
-        }
-
-        return useCaseResult.HasValue ? Result<ProdutoCriadoDTO>.Succeed(ProdutoPresenter.AdaptProdutoCriado(useCaseResult.Value!))
-            : Result<ProdutoCriadoDTO>.Empty();
+        return ControllerResultBuilder<ICollection<ProdutoDTO>, ICollection<Produto>>
+            .ForUseCase(useCase)
+            .WithInstance(categoriaId)
+            .WithResult(useCaseResult)
+            .AdaptUsing(ProdutoPresenter.AdaptProduto)
+            .Build();
     }
 
     public async Task DeleteProdutoAsync(Produto produto)
@@ -76,11 +77,6 @@ public class ProdutoController : IProdutoController
     public Task<Produto?> GetProdutoByNomeAsync(string nome)
     {
         return _produtoUseCase.GetProdutoByNomeAsync(nome);
-    }
-
-    public Task<ICollection<Produto>> GetProdutosByCategoria(Guid categoriaId)
-    {
-        return _produtoUseCase.GetProdutosByCategoria(categoriaId);
     }
 
     public Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId)

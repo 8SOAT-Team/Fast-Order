@@ -11,8 +11,9 @@ public interface IProdutoController
     Task<Produto> UpdateProdutoAsync(Produto produto);
     Task DeleteProdutoAsync(Produto produto);
     Task<ICollection<Produto>> GetAllProdutosAsync();
-    Task<ICollection<Produto>> GetProdutosByCategoria(Guid categoriaId);
     Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId);
+
+    Task<Result<ICollection<ProdutoDTO>>> ListarProdutoPorCategoriaAsync(Guid categoriaId);
 
 
 }

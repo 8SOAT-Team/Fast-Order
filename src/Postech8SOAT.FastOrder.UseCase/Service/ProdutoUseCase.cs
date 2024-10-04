@@ -12,11 +12,6 @@ public class ProdutoUseCase : IProdutoUseCase
         _produtoGateway = produtoGateway;
     }
 
-    public async Task<Produto> CreateProdutoAsync(Produto produto)
-    {
-        await _produtoGateway.CreateProdutoAsync(produto);
-        return produto;
-    }
 
     public async Task DeleteProdutoAsync(Produto produto)
     {
@@ -37,11 +32,6 @@ public class ProdutoUseCase : IProdutoUseCase
     public Task<Produto?> GetProdutoByNomeAsync(string nome)
     {
         return _produtoGateway.GetProdutoByNomeAsync(nome);
-    }
-
-    public Task<ICollection<Produto>> GetProdutosByCategoria(Guid categoriaId)
-    {
-        return _produtoGateway.GetProdutosByCategoria(categoriaId);
     }
 
     public Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId)

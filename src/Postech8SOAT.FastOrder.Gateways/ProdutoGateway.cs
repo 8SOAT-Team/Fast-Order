@@ -44,10 +44,6 @@ public class ProdutoGateway : IProdutoGateway
         return _produtoRepository.FindByAsync(x => x.Nome!.Equals(nome));
     }
 
-    public Task<ICollection<Produto>> GetProdutosByCategoria(Guid categoriaId)
-    {
-        return _produtoRepository.GetProdutosByCategoriaAsync(categoriaId);
-    }
 
     public Task<Categoria?> FindCategoriaByIdAsync(Guid categoriaId)
     {
@@ -60,9 +56,18 @@ public class ProdutoGateway : IProdutoGateway
         return produto;
     }
 
+
+
     public Task<Produto?> GetProdutoCompletoByIdAsync(Guid id)
     {
         return _dbContext.Set<Produto>().Include(x => x.Categoria)
              .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ICollection<Produto>> GetProdutosByCategoriaAsync(Guid categoriaId)
+    {
+        return await _dbContext.Set<Produto>().Include(x => x.Categoria)
+            .Where(x => x.CategoriaId == categoriaId)
+            .ToListAsync();
     }
 }

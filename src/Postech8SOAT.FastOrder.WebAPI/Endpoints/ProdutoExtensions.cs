@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Types.Results;
@@ -9,6 +8,7 @@ using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints.Extensions;
 using System.Net;
+using ProdutoDTO = Postech8SOAT.FastOrder.UseCases.Produtos.Dtos.ProdutoDTO;
 
 namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
 
@@ -21,24 +21,24 @@ public static class ProdutoExtensions
 
         app.MapGet("/produto", async ([FromServices] IMapper mapper, [FromServices] IProdutoUseCase service) =>
         {
-            var produtosDTO = mapper.Map<ICollection<Produto>, ICollection<ProdutoDTO>>(await service.GetAllProdutosAsync());
+            //var produtosDTO = mapper.Map<ICollection<Produto>, ICollection<ProdutoDTO>>(await service.GetAllProdutosAsync());
 
-            return Results.Ok(await Task.FromResult(produtosDTO));
+            //return Results.Ok(await Task.FromResult(produtosDTO));
 
         }).WithTags(ProdutoTag).WithSummary("Listagem de produtos cadastrados.").WithOpenApi();
 
         app.MapGet("/produto/{id:guid}", async ([FromServices] IMapper mapper, [FromServices] IProdutoUseCase service, [FromRoute] Guid id) =>
         {
-            var produto = await service.GetProdutoByIdAsync(id);
+            //var produto = await service.GetProdutoByIdAsync(id);
 
-            if (produto is null)
-            {
-                return Results.NotFound("Produto não encontrado");
-            }
+            //if (produto is null)
+            //{
+            //    return Results.NotFound("Produto não encontrado");
+            //}
 
-            var produtosDTO = mapper.Map<Produto, ProdutoDTO>(produto);
+            //var produtosDTO = mapper.Map<Produto, ProdutoDTO>(produto);
 
-            return Results.Ok(await Task.FromResult(produtosDTO));
+            //return Results.Ok(await Task.FromResult(produtosDTO));
 
         }).WithTags(ProdutoTag).WithSummary("Obtenha um produto pelo seu identificador.").WithOpenApi();
 
@@ -52,13 +52,16 @@ public static class ProdutoExtensions
         .Produces((int)HttpStatusCode.NotFound)
         .WithOpenApi();
 
-        app.MapGet("/produto/categoria/{categoriaId}", async ([FromServices] IMapper mapper, [FromServices] IProdutoUseCase service, [FromRoute] Guid categoriaId) =>
+        app.MapGet("/produto/categoria/{categoriaId}", async ([FromServices] IProdutoController controller, [FromRoute] Guid categoriaId) =>
         {
-            var produtosDTO = mapper.Map<ICollection<Produto>, ICollection<ProdutoDTO>>(await service.GetProdutosByCategoria(categoriaId));
-
-            return Results.Ok(await Task.FromResult(produtosDTO));
-
-        }).WithTags(CategoriaTag).WithSummary("Listagem de produtos por categoria.").WithOpenApi();
+            var produtos = await controller.ListarProdutoPorCategoriaAsync(categoriaId);
+            return produtos.GetResult();
+        }).WithTags(CategoriaTag)
+        .WithSummary("Listagem de produtos por categoria.")
+        .Produces<ICollection<ProdutoDTO>>((int)HttpStatusCode.OK)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+        .Produces((int)HttpStatusCode.NotFound)
+        .WithOpenApi();
 
         app.MapGet("/produto/categoria", async ([FromServices] IMapper mapper, [FromServices] ICategoriaController controller) =>
         {

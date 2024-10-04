@@ -10,5 +10,12 @@ public static class UseCasePresenter
          e.Code.ToString(),
          e.Description,
          entityId!));
+
+    public static AppProblemDetails AdaptUseCaseError(this UseCaseError error, string? title = null, string? useCaseName = null, string? entityId = null)
+     => new(title!,
+         string.IsNullOrEmpty(useCaseName) ? "Erro ao executar caso de uso" : $"Erro ao executar caso de uso {useCaseName}",
+         error.Code.ToString(),
+         error.Description,
+         entityId!);
 }
 
