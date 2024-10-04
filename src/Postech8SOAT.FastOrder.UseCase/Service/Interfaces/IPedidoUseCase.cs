@@ -10,4 +10,5 @@ public interface IPedidoUseCase
     Task<Pedido> Entregar(Guid id);
     Task<Pedido> Cancelar(Guid id);
     Task<List<Pedido>> GetAllPedidosAsync();
+    Task<List<Pedido>> GetAllPedidosShowStatusAsync();
 }

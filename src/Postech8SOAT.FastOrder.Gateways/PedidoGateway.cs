@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
+using Postech8SOAT.FastOrder.Domain.ValueObjects;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
@@ -84,5 +86,11 @@ public class PedidoGateway : IPedidoGateway
              .ThenInclude(i => i.Produto)
              .Include(i => i.Cliente)
              .SingleOrDefaultAsync(i => i.Id == id);
+    }
+
+    public Task<List<Pedido>> GetAllPedidosShowStatusAsync()
+    {
+        const string query = "SELECT * FROM Pedidos WHERE StatusPedido IN (3, 2, 1) ORDER BY StatusPedido DESC, DataPedido ASC";
+        return _dbContext.Pedidos.FromSqlRaw(query).ToListAsync();
     }
 }

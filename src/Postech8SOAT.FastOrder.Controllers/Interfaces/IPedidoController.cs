@@ -13,5 +13,6 @@ public interface IPedidoController
     Task<Pedido> Entregar(Guid id);
     Task<Pedido> Cancelar(Guid id);
     Task<List<Pedido>> GetAllPedidosAsync();
+    Task<Result<List<Pedido>>> GetAllPedidosShowStatusAsync();
     Task AtualizaStatus(StatusPedido status, Guid pedidoId);
 }

@@ -10,5 +10,7 @@ public interface IPedidoGateway
     Task<Pedido> Entregar(Guid id);
     Task<Pedido> Cancelar(Guid id);
     Task<List<Pedido>> GetAllPedidosAsync();  
+    Task<List<Pedido>> GetAllPedidosShowStatusAsync();  
     Task<Pedido?> GetPedidoCompletoAsync(Guid id);  
+
 }
