@@ -1,24 +1,25 @@
-﻿using Postech8SOAT.FastOrder.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
-using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
+using Postech8SOAT.FastOrder.Infra.Data.Context;
 
 namespace Postech8SOAT.FastOrder.Gateways;
 public class CategoriaGateway : ICategoriaGateway
 {
-    private readonly IProdutoRepository _produtoRepository;
+    private readonly FastOrderContext _dbContext;
 
-    public CategoriaGateway(IProdutoRepository produtoRepository)
+    public CategoriaGateway(FastOrderContext dbContext)
     {
-        _produtoRepository = produtoRepository;
+        _dbContext = dbContext;
     }
 
-    public Task<List<Categoria>> GetAllCategoriasAsync()
+    public async Task<ICollection<Categoria>> GetAllCategoriasAsync()
     {
-        return _produtoRepository.FindAllCategoriasAsync();
+        return await _dbContext.Set<Categoria>().ToListAsync();
     }
 
     public Task<Categoria?> GetCategoriaByIdAsync(Guid id)
     {
-        return _produtoRepository.GetCategoriaByIdAsync(id);
+        return _dbContext.Set<Categoria>().FirstOrDefaultAsync(c => c.Id == id);
     }
 }

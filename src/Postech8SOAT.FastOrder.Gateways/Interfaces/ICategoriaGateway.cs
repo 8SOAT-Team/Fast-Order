@@ -3,6 +3,6 @@
 namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
 public interface ICategoriaGateway
 {
-    Task<List<Categoria>> GetAllCategoriasAsync();
+    Task<ICollection<Categoria>> GetAllCategoriasAsync();
     Task<Categoria?> GetCategoriaByIdAsync(Guid id);
 }

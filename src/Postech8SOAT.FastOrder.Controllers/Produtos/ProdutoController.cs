@@ -1,5 +1,4 @@
 ﻿using CleanArch.UseCase.Logging;
-using CleanArch.UseCase.Options;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Produtos;
 using Postech8SOAT.FastOrder.Domain.Entities;
@@ -8,24 +7,19 @@ using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.UseCases.Common;
 using Postech8SOAT.FastOrder.UseCases.Produtos;
 using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
-using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 
 namespace Postech8SOAT.FastOrder.Controllers;
 
 public class ProdutoController : IProdutoController
 {
-    private readonly ICategoriaUseCase _categoriaUseCase;
-
     private readonly ILogger _logger;
     private readonly IProdutoGateway _produtoGateway;
     private readonly ICategoriaGateway _categoriaGateway;
 
-    public ProdutoController(ICategoriaUseCase categoriaUseCase,
-     ILogger logger,
+    public ProdutoController(ILogger logger,
      IProdutoGateway produtoGateway,
      ICategoriaGateway categoriaGateway)
     {
-        _categoriaUseCase = categoriaUseCase;
         _logger = logger;
         _produtoGateway = produtoGateway;
         _categoriaGateway = categoriaGateway;

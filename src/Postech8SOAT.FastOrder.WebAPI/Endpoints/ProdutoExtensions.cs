@@ -51,9 +51,14 @@ public static class ProdutoExtensions
 
         app.MapGet("/produto/categoria", async ([FromServices] ICategoriaController controller) =>
         {
-            
-
-        }).WithTags(CategoriaTag).WithSummary("Obtenha a lista de todas as categorias.").WithOpenApi();
+            var categorias = await controller.GetAllCategoriasAsync();
+            return categorias.GetResult();
+        }).WithTags(CategoriaTag)
+        .WithSummary("Obtenha a lista de todas as categorias.")
+        .Produces<ICollection<ProdutoCategoriaDTO>>((int)HttpStatusCode.OK)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+        .Produces((int)HttpStatusCode.NotFound)
+        .WithOpenApi();
 
         app.MapGet("/produto/{id:guid}", async ([FromRoute] Guid id, [FromServices] IProdutoController controller) =>
         {

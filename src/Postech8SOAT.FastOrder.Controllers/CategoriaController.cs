@@ -1,24 +1,23 @@
 ﻿using Postech8SOAT.FastOrder.Controllers.Interfaces;
+using Postech8SOAT.FastOrder.Controllers.Presenters.Produtos;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
+using Postech8SOAT.FastOrder.Gateways.Interfaces;
+using Postech8SOAT.FastOrder.Types.Results;
+using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
 
 namespace Postech8SOAT.FastOrder.Controllers;
-public class CategoriaController:ICategoriaController
+public class CategoriaController : ICategoriaController
 {
-    private readonly ICategoriaUseCase categoriaUseCase;
+        private readonly ICategoriaGateway _categoriaGateway;
 
-    public CategoriaController(ICategoriaUseCase categoriaUseCase)
+    public CategoriaController(ICategoriaGateway categoriaGateway)
     {
-        this.categoriaUseCase = categoriaUseCase;
+        _categoriaGateway = categoriaGateway;
     }
 
-    public Task<List<Categoria>> GetAllCategoriasAsync()
+    public async Task<Result<ICollection<ProdutoCategoriaDTO>>> GetAllCategoriasAsync()
     {
-        return categoriaUseCase.GetAllCategoriasAsync();
-    }
-
-    public Task<Categoria?> GetCategoriaByIdAsync(Guid id)
-    {
-        return categoriaUseCase.GetCategoriaByIdAsync(id);
+        var categorias = await _categoriaGateway.GetAllCategoriasAsync();
+        return Result<ICollection<ProdutoCategoriaDTO>>.Succeed(CategoriaAdapter.AdaptCategoria(categorias));
     }
 }

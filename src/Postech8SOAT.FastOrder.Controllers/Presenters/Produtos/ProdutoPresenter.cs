@@ -14,11 +14,7 @@ internal static class ProdutoPresenter
             Descricao = produto.Descricao,
             Preco = produto.Preco,
             Imagem = produto.Imagem,
-            Categoria = new ProdutoCategoriaDTO
-            {
-                Id = produto.Categoria!.Id,
-                Nome = produto.Categoria.Nome!
-            }
+            Categoria = CategoriaAdapter.AdaptCategoria(produto.Categoria!)
         };
     }
 
@@ -33,11 +29,7 @@ internal static class ProdutoPresenter
             Descricao = produto.Descricao,
             Preco = produto.Preco,
             Imagem = produto.Imagem,
-            Categoria = new ProdutoCategoriaDTO
-            {
-                Id = produto.Categoria!.Id,
-                Nome = produto.Categoria.Nome!
-            }
+            Categoria = CategoriaAdapter.AdaptCategoria(produto.Categoria!)
         };
     }
 }
