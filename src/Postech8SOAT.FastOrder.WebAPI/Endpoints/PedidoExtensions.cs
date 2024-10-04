@@ -29,7 +29,6 @@ public static class PedidoExtensions
                     onFailure: (errors) => result = pedidoCriado.GetFailureResult());
 
                 return result;
-
             }).WithTags(PedidoTag)
             .Produces<PedidoCriadoDTO>((int)HttpStatusCode.Created)
             .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
