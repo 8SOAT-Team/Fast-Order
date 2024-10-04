@@ -53,6 +53,12 @@ public static class PedidoExtensions
                 return Results.Ok(listaDePedidos);
             }).WithTags(PedidoTag).WithSummary("Liste pedidos").WithOpenApi();
 
+        app.MapGet("/pedido/status", async ([FromServices] IPedidoController pedidoController) =>
+        {
+            var pedidos = await pedidoController.GetAllPedidosShowStatusAsync();
+            return pedidos.GetResult();
+        }).WithTags(PedidoTag).WithSummary("Lista de pedidos baseado no status").WithOpenApi();
+
         app.MapPut("/pedido/{id:guid}/status", async ([FromServices] IMapper mapper,
             [FromServices] IPedidoController pedidoController,
             [FromRoute] Guid id,

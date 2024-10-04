@@ -2,14 +2,20 @@
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Pedidos;
+using Postech8SOAT.FastOrder.Controllers.Presenters.Produtos;
 using Postech8SOAT.FastOrder.Controllers.Problems;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
+using Postech8SOAT.FastOrder.Gateways;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.UseCases.Commands.Pedidos;
 using Postech8SOAT.FastOrder.UseCases.Pedidos;
+using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
+using Postech8SOAT.FastOrder.UseCases.Produtos;
 using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
+using Postech8SOAT.FastOrder.UseCases.Service;
+using System.Collections.Generic;
 
 namespace Postech8SOAT.FastOrder.Controllers.Pedidos;
 public class PedidoController : IPedidoController
@@ -72,6 +78,13 @@ public class PedidoController : IPedidoController
     public Task<List<Pedido>> GetAllPedidosAsync()
     {
         return pedidoUseCase.GetAllPedidosAsync();
+    }
+
+    public async Task<Result<List<Pedido>>> GetAllPedidosShowStatusAsync()
+    {
+        var useCase = new PedidoUseCase(_pedidoGateway);
+        var result = await useCase.GetAllPedidosShowStatusAsync();
+        return Result<List<Pedido>>.Succeed(result);
     }
 
     public Task<Pedido> IniciarPreparo(Guid id)

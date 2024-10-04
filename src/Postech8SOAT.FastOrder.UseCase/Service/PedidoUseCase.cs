@@ -35,6 +35,11 @@ public class PedidoUseCase : IPedidoUseCase
     {
         return _pedidoGateway.GetAllPedidosAsync();
     }
+    
+    public Task<List<Pedido>> GetAllPedidosShowStatusAsync()
+    {
+        return _pedidoGateway.GetAllPedidosShowStatusAsync();
+    }
 
     public async Task<Pedido> GetPedidoByIdAsync(Guid id)
     {
