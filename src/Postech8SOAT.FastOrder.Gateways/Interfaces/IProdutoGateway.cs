@@ -8,4 +8,5 @@ public interface IProdutoGateway
     Task<Produto?> GetProdutoCompletoByIdAsync(Guid id);
     Task<ICollection<Produto>> GetProdutosByCategoriaAsync(Guid categoriaId);
     Task<ICollection<Produto>> ListarTodosProdutosAsync();
+    Task<ICollection<Produto>> ListarProdutosByIdAsync(ICollection<Guid> ids);
 }

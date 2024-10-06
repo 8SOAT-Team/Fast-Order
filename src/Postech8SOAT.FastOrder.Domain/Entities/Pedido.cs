@@ -31,7 +31,7 @@ public class Pedido : Entity, IAggregateRoot
         ItensDoPedido = itens;
         DataPedido = DateTime.Now;
         StatusPedido = StatusInicial;
-        ValorTotal = 0;
+        CalcularValorTotal();
     }
 
     public void AdicionarProduto(ItemDoPedido item)

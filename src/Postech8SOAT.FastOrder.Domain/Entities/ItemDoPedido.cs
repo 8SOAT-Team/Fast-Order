@@ -16,10 +16,21 @@ public class ItemDoPedido : Entity
         Quantidade = quantidade;
     }
 
+    public ItemDoPedido(Guid pedidoId, Produto produto, int quantidade)
+    {
+        ValidateDomain(pedidoId, produto.Id, quantidade);
+        Id = Guid.NewGuid();
+        PedidoId = pedidoId;
+        ProdutoId = produto.Id;
+        Produto = produto;
+        Quantidade = quantidade;
+    }
+
     public virtual Pedido Pedido { get; init; } = null!;
     public Guid ProdutoId { get; init; }
     public virtual Produto Produto { get; set; } = null!;
     public int Quantidade { get; set; }
+    public decimal ValorTotal => Produto.Preco * Quantidade;
 
     private static void ValidateDomain(Guid pedidoId, Guid produtoId, int quantidade)
     {

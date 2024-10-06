@@ -13,21 +13,18 @@ using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
 using Postech8SOAT.FastOrder.UseCases.Service;
 
 namespace Postech8SOAT.FastOrder.Controllers.Pedidos;
-public class PedidoController : IPedidoController
+public class PedidoController(
+    IPedidoUseCase pedidoUseCase,
+    ILogger logger,
+    IPedidoGateway pedidoGateway,
+    IPedidoServiceUseCaseInvoker commandInvoker,
+    IProdutoGateway produtoGateway) : IPedidoController
 {
-    private readonly IPedidoUseCase pedidoUseCase;
-    private readonly IPedidoServiceUseCaseInvoker commandInvoker;
-    private readonly ILogger _logger;
-    private readonly IPedidoGateway _pedidoGateway;
-
-    public PedidoController(IPedidoUseCase pedidoUseCase, ILogger logger, IPedidoGateway pedidoGateway
-        , IPedidoServiceUseCaseInvoker commandInvoker)
-    {
-        this.pedidoUseCase = pedidoUseCase;
-        this._logger = logger;
-        _pedidoGateway = pedidoGateway;
-        this.commandInvoker = commandInvoker;
-    }
+    private readonly IPedidoUseCase pedidoUseCase = pedidoUseCase;
+    private readonly IPedidoServiceUseCaseInvoker commandInvoker = commandInvoker;
+    private readonly ILogger _logger = logger;
+    private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
+    private readonly IProdutoGateway _produtoGateway = produtoGateway;
 
     public Task<Pedido> Cancelar(Guid id)
     {
@@ -36,7 +33,7 @@ public class PedidoController : IPedidoController
 
     public async Task<Result<PedidoCriadoDTO>> CreatePedidoAsync(NovoPedidoDTO novoPedido)
     {
-        var useCase = new CriarNovoPedidoUseCase(_logger, _pedidoGateway);
+        var useCase = new CriarNovoPedidoUseCase(_logger, _pedidoGateway, _produtoGateway);
         var result = await useCase.ResolveAsync(novoPedido);
 
         if (useCase.IsFailure)
@@ -44,15 +41,15 @@ public class PedidoController : IPedidoController
             return Result<PedidoCriadoDTO>.Failure(useCase.GetErrors().AdaptUseCaseErrors().ToList());
         }
 
-        if(result.HasValue is false)
+        if (result.HasValue is false)
         {
             return Result<PedidoCriadoDTO>.Empty();
         }
 
-       var pedido = await _pedidoGateway.GetPedidoCompletoAsync(result.Value!.Id);
+        var pedido = await _pedidoGateway.GetPedidoCompletoAsync(result.Value!.Id);
 
         return Result<PedidoCriadoDTO>.Succeed(PedidoPresenter.ToPedidoCriadoDTO(pedido!));
-       
+
     }
 
     public Task<Pedido> Entregar(Guid id)

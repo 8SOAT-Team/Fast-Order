@@ -43,6 +43,13 @@ public class ProdutoGateway : IProdutoGateway
             .ToListAsync();
     }
 
+    public async Task<ICollection<Produto>> ListarProdutosByIdAsync(ICollection<Guid> ids)
+    {
+        return await _dbContext.Set<Produto>().Include(x => x.Categoria)
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+    }
+
     public async Task<ICollection<Produto>> ListarTodosProdutosAsync()
     {
         return await _dbContext.Set<Produto>().Include(x => x.Categoria).ToListAsync();
