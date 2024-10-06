@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
+using Postech8SOAT.FastOrder.Controllers.Pagamentos.Dtos;
+using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.WebAPI.DTOs;
+using Postech8SOAT.FastOrder.WebAPI.Endpoints.Extensions;
+using System.Net;
 
 namespace Postech8SOAT.FastOrder.WebAPI.Endpoints;
 
@@ -10,27 +14,20 @@ public static class PagamentoExtensions
     private const string PagamentoTag = "Pagamentos";
     public static void AddEndpointPagamentos(this WebApplication app)
     {
-        app.MapPost("/pagamento/pedido/{pedidoId:guid}", async ([FromServices] IMapper mapper,
+        app.MapPost("/pagamento/pedido/{pedidoId:guid}", async (
             [FromServices] IPagamentoController pagamentoController,
-            [FromServices] IPedidoController pedidoController,
             [FromRoute] Guid pedidoId,
-            [FromBody] NovoPagamentoDTO request,
-            HttpContext httpContext) =>
+            [FromBody] NovoPagamentoDTO request) =>
         {
-            var pedido = await pedidoController.GetPedidoByIdAsync(pedidoId);
+            var useCaseResult = await pagamentoController.IniciarPagamento(pedidoId, request.MetodoDePagamento);
+            return useCaseResult.GetResult();
 
-            if (pedido is null)
-            {
-                return Results.NotFound($"Pedido {pedidoId} não localizado.");
-            }
-
-            var pagamento = await pagamentoController.CreatePagamentoAsync(pedido, request.MetodoDePagamento);
-
-            var pagamentoResponse = mapper.Map<PagamentoDTO>(pagamento);
-
-            return Results.Ok(pagamentoResponse);
-
-        }).WithTags(PagamentoTag).WithSummary("Inicialize um pagamento de um pedido.").WithOpenApi();
+        }).WithTags(PagamentoTag)
+        .WithSummary("Inicialize um pagamento de um pedido.")
+        .Produces<PagamentoIniciadoDto>((int)HttpStatusCode.Created)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+        .Produces((int)HttpStatusCode.NotFound)
+        .WithOpenApi();
 
         app.MapPatch("/pagamento/{pagamentoId:guid}", async ([FromServices] IMapper mapper,
            [FromServices] IPagamentoController pagamentoController,
@@ -52,25 +49,5 @@ public static class PagamentoExtensions
             var pagamentoResponse = mapper.Map<PagamentoDTO>(pagamento);
             return Results.Ok(pagamentoResponse);
         }).WithTags(PagamentoTag).WithSummary("Obtenha os dados de um pagamento pelo id do pedido.").WithOpenApi();
-
-        app.MapGet("/pagamento/{pagamentoId:guid}", async ([FromServices] IMapper mapper,
-            [FromServices] IPagamentoController pagamentoController,
-            [FromRoute] Guid pagamentoId,
-            HttpContext httpContext) =>
-        {
-            var pagamento = await pagamentoController.GetPagamentoAsync(pagamentoId);
-            var pagamentoResponse = mapper.Map<PagamentoDTO>(pagamento);
-            return Results.Ok(pagamentoResponse);
-        }).WithTags(PagamentoTag).WithSummary("Obtenha os dados de um pagamento pelo id do pagamento.").WithOpenApi();
-
-        app.MapGet("/pagamento", async ([FromServices] IMapper mapper,
-            [FromServices] IPagamentoController pagamentoController,
-            [FromServices] IPedidoController pedidoController,
-            HttpContext httpContext) =>
-        {
-            var pagamento = await pagamentoController.ListPagamentos();
-            var pagamentoResponse = mapper.Map<List<PagamentoDTO>>(pagamento);
-            return Results.Ok(pagamentoResponse);
-        }).WithTags(PagamentoTag).WithSummary("Liste os pagamentos já criados.").WithOpenApi();
     }
 }

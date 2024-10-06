@@ -5,7 +5,7 @@ using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
 
 namespace Postech8SOAT.FastOrder.Gateways;
-public class PagamentoGateway:IPagamentoGateway
+public class PagamentoGateway : IPagamentoGateway
 {
     private readonly IPagamentoRepository _pagamentoRepository;
 

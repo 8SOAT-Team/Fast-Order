@@ -42,6 +42,8 @@ public class Pagamento : Entity, IAggregateRoot
 
     public bool EstaAutorizado() => Status == StatusPagamento.Autorizado;
 
+    public bool AguardandoConfirmacao() => Status == StatusPagamento.Pendente;
+
     public void FinalizarPagamento(bool autorizado)
     {
         DomainExceptionValidation.When(Status != StatusPagamento.Pendente, $"Pagamento só pode ser confirmado quando o status atual é {StatusPagamento.Pendente}");

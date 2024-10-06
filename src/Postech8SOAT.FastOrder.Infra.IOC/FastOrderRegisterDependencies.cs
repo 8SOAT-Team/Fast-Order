@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Postech8SOAT.FastOrder.Controllers;
 using Postech8SOAT.FastOrder.Controllers.Clientes;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
+using Postech8SOAT.FastOrder.Controllers.Pagamentos;
 using Postech8SOAT.FastOrder.Controllers.Pedidos;
 using Postech8SOAT.FastOrder.Gateways;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
@@ -43,9 +44,9 @@ public static class FastOrderRegisterDependencies
         //Controllers
         services.AddScoped<IClienteController, ClienteController>();         
         services.AddScoped<ICategoriaController,CategoriaController>();
-        services.AddScoped<IPagamentoController, PagamentoController>();
         services.AddScoped<IProdutoController, ProdutoController>();
         services.AddScoped<IPedidoController, PedidoController>();
+        services.AddScoped<IPagamentoController, PagamentoController>();
 
         services.AddScoped<IClienteController, ClienteController>();
         services.AddScoped<IClienteGateway, ClienteGateway>(); 

@@ -1,4 +1,4 @@
-﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
+﻿using Postech8SOAT.FastOrder.Controllers.Pagamentos.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -8,5 +8,5 @@ public record NovoPagamentoDTO
 {
     [Required]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public MetodoDePagamento MetodoDePagamento { get; init; }
+    public MetodosDePagamento MetodoDePagamento { get; init; }
 }

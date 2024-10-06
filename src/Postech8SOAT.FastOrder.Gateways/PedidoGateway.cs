@@ -1,8 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
-using Postech8SOAT.FastOrder.Domain.ValueObjects;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using Postech8SOAT.FastOrder.Infra.Data.Repositories.Repository;
@@ -92,5 +90,13 @@ public class PedidoGateway : IPedidoGateway
     {
         const string query = "SELECT * FROM Pedidos WHERE StatusPedido IN (3, 2, 1) ORDER BY StatusPedido DESC, DataPedido ASC";
         return _dbContext.Pedidos.FromSqlRaw(query).ToListAsync();
+    }
+
+    public async Task<Pedido> AtualizarPedidoPagamentoIniciadoAsync(Pedido pedido)
+    {
+        _dbContext.Entry(pedido).State = EntityState.Modified;
+        _dbContext.Entry(pedido.Pagamento!).State = EntityState.Added;
+        var pedidoAtualizado = await _dbContext.SaveChangesAsync();
+        return pedidoAtualizado > 0 ? pedido : throw new Exception("Erro ao atualizar pedido");
     }
 }

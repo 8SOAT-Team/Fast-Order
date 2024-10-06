@@ -102,11 +102,11 @@ public class Pedido : Entity, IAggregateRoot
         return this;
     }
 
-    public void Pagar(Pagamento pagamento)
+    public void IniciarPagamento(MetodoDePagamento metodoDePagamento)
     {
         DomainExceptionValidation.When(StatusPedido != StatusInicial,
          $"Status do pedido não permite pagamento. O status deve ser {StatusPedido.Recebido} para realizar o pagamento.");
 
-        Pagamento = pagamento;
+        Pagamento = new Pagamento(this, metodoDePagamento, this.ValorTotal, null);
     }
 }
