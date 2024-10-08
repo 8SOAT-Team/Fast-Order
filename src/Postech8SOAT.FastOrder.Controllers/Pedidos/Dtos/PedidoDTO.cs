@@ -3,7 +3,7 @@ using Postech8SOAT.FastOrder.Domain.Entities;
 
 namespace Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
 
-public record PedidoCriadoDTO
+public record PedidoDTO
 {
     public Guid Id { get; init; }
     public DateTime DataPedido { get; init; }

@@ -1,91 +1,98 @@
 ﻿using CleanArch.UseCase.Logging;
+using CleanArch.UseCase.Options;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Pedidos;
-using Postech8SOAT.FastOrder.Controllers.Problems;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
-using Postech8SOAT.FastOrder.UseCases.Commands.Pedidos;
 using Postech8SOAT.FastOrder.UseCases.Pedidos;
-using Postech8SOAT.FastOrder.UseCases.Service.Interfaces;
-using Postech8SOAT.FastOrder.UseCases.Service;
+using Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos;
+using NovoPedidoDTO = Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos.NovoPedidoDTO;
+using UseCaseNovoPedidoDTO = Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos.NovoPedidoDTO;
+using ItemDoPedidoDTO = Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos.ItemDoPedidoDTO;
 
 namespace Postech8SOAT.FastOrder.Controllers.Pedidos;
 public class PedidoController(
-    IPedidoUseCase pedidoUseCase,
     ILogger logger,
     IPedidoGateway pedidoGateway,
-    IPedidoServiceUseCaseInvoker commandInvoker,
     IProdutoGateway produtoGateway) : IPedidoController
 {
-    private readonly IPedidoUseCase pedidoUseCase = pedidoUseCase;
-    private readonly IPedidoServiceUseCaseInvoker commandInvoker = commandInvoker;
     private readonly ILogger _logger = logger;
     private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
     private readonly IProdutoGateway _produtoGateway = produtoGateway;
 
-    public Task<Pedido> Cancelar(Guid id)
+    public async Task<Result<PedidoDTO>> AtualizarStatusDePreparacaoDoPedido(StatusPedido novoStatus, Guid pedidoId)
     {
-        return pedidoUseCase.Cancelar(id);
+        var useCase = new AtualizarStatusDePreparoPedidoUseCase(_logger, _pedidoGateway);
+        var useCaseResult = await useCase.ResolveAsync(new NovoStatusDePedidoDTO()
+        {
+            NovoStatus = novoStatus,
+            PedidoId = pedidoId
+        });
+
+        return ControllerResultBuilder<PedidoDTO, Pedido>
+           .ForUseCase(useCase)
+           .WithInstance(pedidoId)
+           .WithResult(useCaseResult)
+           .AdaptUsing(PedidoPresenter.ToPedidoDTO)
+           .Build();
     }
 
-    public async Task<Result<PedidoCriadoDTO>> CreatePedidoAsync(NovoPedidoDTO novoPedido)
+    public async Task<Result<PedidoDTO>> CreatePedidoAsync(NovoPedidoDTO pedido)
     {
         var useCase = new CriarNovoPedidoUseCase(_logger, _pedidoGateway, _produtoGateway);
-        var result = await useCase.ResolveAsync(novoPedido);
-
-        if (useCase.IsFailure)
+        var useCaseResult = await useCase.ResolveAsync(new UseCaseNovoPedidoDTO()
         {
-            return Result<PedidoCriadoDTO>.Failure(useCase.GetErrors().AdaptUseCaseErrors().ToList());
-        }
+            ClienteId = pedido.ClienteId,
+            ItensDoPedido = pedido.ItensDoPedido.Select(i => new ItemDoPedidoDTO()
+            {
+                ProdutoId = i.ProdutoId,
+                Quantidade = i.Quantidade
+            }).ToList()
+        });
 
-        if (result.HasValue is false)
-        {
-            return Result<PedidoCriadoDTO>.Empty();
-        }
-
-        var pedido = await _pedidoGateway.GetPedidoCompletoAsync(result.Value!.Id);
-
-        return Result<PedidoCriadoDTO>.Succeed(PedidoPresenter.ToPedidoCriadoDTO(pedido!));
-
+        return ControllerResultBuilder<PedidoDTO, Pedido>
+            .ForUseCase(useCase)
+            .WithResult(useCaseResult)
+            .AdaptUsing(PedidoPresenter.ToPedidoDTO)
+            .Build();
     }
 
-    public Task<Pedido> Entregar(Guid id)
+    public async Task<Result<List<PedidoDTO>>> GetAllPedidosAsync()
     {
-        return pedidoUseCase.Entregar(id);
+        var useCase = new ListarTodosPedidosUseCase(_logger, _pedidoGateway);
+        var useCaseResult = await useCase.ResolveAsync(Any<object>.Empty);
+
+        return ControllerResultBuilder<List<PedidoDTO>, List<Pedido>>
+            .ForUseCase(useCase)
+            .WithResult(useCaseResult)
+            .AdaptUsing(PedidoPresenter.ToListPedidoDTO)
+            .Build();
     }
 
-    public Task<Pedido> FinalizarPreparo(Guid id)
+    public async Task<Result<List<PedidoDTO>>> GetAllPedidosPending()
     {
-        return pedidoUseCase.FinalizarPreparo(id);
+        var useCase = new ObterListaPedidosPendentesUseCase(_logger, _pedidoGateway);
+        var useCaseResult = await useCase.ResolveAsync(Any<object>.Empty);
+
+        return ControllerResultBuilder<List<PedidoDTO>, List<Pedido>>
+            .ForUseCase(useCase)
+            .WithResult(useCaseResult)
+            .AdaptUsing(PedidoPresenter.ToListPedidoDTO)
+            .Build();
     }
 
-    public Task<Pedido> GetPedidoByIdAsync(Guid id)
+    public async Task<Result<PedidoDTO>> GetPedidoByIdAsync(Guid id)
     {
-        return pedidoUseCase.GetPedidoByIdAsync(id);
-    }
+        var useCase = new EncontrarPedidoPorIdUseCase(_logger, _pedidoGateway);
+        var useCaseResult = await useCase.ResolveAsync(id);
 
-    public Task<List<Pedido>> GetAllPedidosAsync()
-    {
-        return pedidoUseCase.GetAllPedidosAsync();
-    }
-
-    public async Task<Result<List<Pedido>>> GetAllPedidosShowStatusAsync()
-    {
-        var useCase = new PedidoUseCase(_pedidoGateway);
-        var result = await useCase.GetAllPedidosShowStatusAsync();
-        return Result<List<Pedido>>.Succeed(result);
-    }
-
-    public Task<Pedido> IniciarPreparo(Guid id)
-    {
-        return pedidoUseCase.IniciarPreparo(id);
-    }
-
-    public async Task AtualizaStatus(StatusPedido status, Guid pedidoId)
-    {
-        await commandInvoker.ExecutarComandoAsync(status, pedidoId, pedidoUseCase);
+        return ControllerResultBuilder<PedidoDTO, Pedido>
+            .ForUseCase(useCase)
+            .WithResult(useCaseResult)
+            .AdaptUsing(PedidoPresenter.ToPedidoDTO)
+            .Build();
     }
 }

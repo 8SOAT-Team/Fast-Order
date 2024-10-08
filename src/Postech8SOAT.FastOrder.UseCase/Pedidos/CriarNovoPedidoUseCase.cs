@@ -1,15 +1,15 @@
-﻿using CleanArch.UseCase;
-using CleanArch.UseCase.Faults;
+﻿using CleanArch.UseCase.Faults;
 using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
+using Postech8SOAT.FastOrder.UseCases.Common;
 using Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos;
 
 namespace Postech8SOAT.FastOrder.UseCases.Pedidos;
 
 public class CriarNovoPedidoUseCase(ILogger logger,
     IPedidoGateway pedidoGateway,
-    IProdutoGateway produtoGateway) : UseCaseBase<NovoPedidoDTO, Pedido>(logger)
+    IProdutoGateway produtoGateway) : UseCase<NovoPedidoDTO, Pedido>(logger)
 {
     private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
     private readonly IProdutoGateway _produtoGateway = produtoGateway;
@@ -30,7 +30,7 @@ public class CriarNovoPedidoUseCase(ILogger logger,
         var orderItems = command.ItensDoPedido.Select(i => MapItemDoPedido(i, pedidoId, productsEntityList.First(p => p.Id == i.ProdutoId))).ToList();
 
         var pedido = new Pedido(pedidoId, command.ClienteId, orderItems);
-        var pedidoEntity = await _pedidoGateway.CreatePedidoAsync(pedido);
+        var pedidoEntity = await _pedidoGateway.CreateAsync(pedido);
 
         return pedidoEntity;
     }

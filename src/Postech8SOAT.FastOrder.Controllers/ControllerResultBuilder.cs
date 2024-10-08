@@ -41,7 +41,7 @@ public class ControllerResultBuilder<TResultValue, TEntity>
 
     public ControllerResultBuilder<TResultValue, TEntity> WithInstance(Guid instance) => WithInstance(instance.ToString());
 
-    public ControllerResultBuilder<TResultValue, TEntity> WithInstance(string instance)
+    public ControllerResultBuilder<TResultValue, TEntity> WithInstance(string instance = null!)
     {
         if (!_isFailure)
         {

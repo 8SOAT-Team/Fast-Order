@@ -1,13 +1,13 @@
-﻿using CleanArch.UseCase;
-using CleanArch.UseCase.Logging;
+﻿using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.UseCases.Clientes.Dtos;
+using Postech8SOAT.FastOrder.UseCases.Common;
 
 namespace Postech8SOAT.FastOrder.UseCases.Clientes;
 
 public class CriarNovoClienteUseCase(ILogger logger, IClienteGateway clienteGateway)
-     : UseCaseBase<CriarNovoClienteDto, Cliente>(logger)
+     : UseCase<CriarNovoClienteDto, Cliente>(logger)
 {
     private readonly IClienteGateway _clienteGateway = clienteGateway;
 

@@ -1,18 +1,13 @@
 ﻿using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
-using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.Types.Results;
 
 namespace Postech8SOAT.FastOrder.Controllers.Interfaces;
 public interface IPedidoController
 {
-    Task<Pedido> GetPedidoByIdAsync(Guid id);
-    Task<Result<PedidoCriadoDTO>> CreatePedidoAsync(NovoPedidoDTO pedido);
-    Task<Pedido> IniciarPreparo(Guid id);
-    Task<Pedido> FinalizarPreparo(Guid id);
-    Task<Pedido> Entregar(Guid id);
-    Task<Pedido> Cancelar(Guid id);
-    Task<List<Pedido>> GetAllPedidosAsync();
-    Task<Result<List<Pedido>>> GetAllPedidosShowStatusAsync();
-    Task AtualizaStatus(StatusPedido status, Guid pedidoId);
+    Task<Result<PedidoDTO>> GetPedidoByIdAsync(Guid id);
+    Task<Result<PedidoDTO>> CreatePedidoAsync(NovoPedidoDTO pedido);
+    Task<Result<List<PedidoDTO>>> GetAllPedidosAsync();
+    Task<Result<List<PedidoDTO>>> GetAllPedidosPending();
+    Task<Result<PedidoDTO>> AtualizarStatusDePreparacaoDoPedido(StatusPedido status, Guid pedidoId);
 }

@@ -1,8 +1,8 @@
-﻿using CleanArch.UseCase;
-using CleanArch.UseCase.Faults;
+﻿using CleanArch.UseCase.Faults;
 using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
+using Postech8SOAT.FastOrder.UseCases.Common;
 using Postech8SOAT.FastOrder.UseCases.Pagamentos.Dtos;
 
 namespace Postech8SOAT.FastOrder.UseCases.Pagamentos;
@@ -11,14 +11,14 @@ namespace Postech8SOAT.FastOrder.UseCases.Pagamentos;
 public class IniciarPagamentoUseCase(
     ILogger logger,
     IPedidoGateway pedidoGateway,
-    IPagamentoGateway pagamentoGateway) : UseCaseBase<IniciarPagamentoDto, Pagamento>(logger)
+    IPagamentoGateway pagamentoGateway) : UseCase<IniciarPagamentoDto, Pagamento>(logger)
 {
     private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
     private readonly IPagamentoGateway _pagamentoGateway = pagamentoGateway;
 
     protected override async Task<Pagamento?> Execute(IniciarPagamentoDto command)
     {
-        var pedido = await _pedidoGateway.GetPedidoByIdAsync(command.PedidoId);
+        var pedido = await _pedidoGateway.GetByIdAsync(command.PedidoId);
 
         if (pedido is null)
         {
