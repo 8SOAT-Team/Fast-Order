@@ -12,12 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-   c.AddEnumsAsStringsFilter();
+    c.AddEnumsAsStringsFilter();
 });
 
 //Registrando as dependências
 builder.Services.AddAutoMapper(typeof(Program));
-IConfiguration configuration = builder.Configuration;
+
+IConfiguration configuration = builder.Configuration.AddEnvironmentVariables().Build();
 builder.Services.ConfigureDI(configuration);
 
 builder.Services.Configure<JsonOptions>(options =>
