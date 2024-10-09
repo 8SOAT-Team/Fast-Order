@@ -19,6 +19,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 IConfiguration configuration = builder.Configuration.AddEnvironmentVariables().Build();
+
+Console.WriteLine(configuration["DefaultConnectionContainer"]);
+
 builder.Services.ConfigureDI(configuration);
 
 builder.Services.Configure<JsonOptions>(options =>
