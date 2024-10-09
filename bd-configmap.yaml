@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-configmap
+data:
+  MSSQL_SA_PASSWORD: "tech#2024"
+  ACCEPT_EULA: "Y"
