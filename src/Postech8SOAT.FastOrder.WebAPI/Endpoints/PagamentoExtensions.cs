@@ -49,5 +49,11 @@ public static class PagamentoExtensions
             var pagamentoResponse = mapper.Map<PagamentoDTO>(pagamento);
             return Results.Ok(pagamentoResponse);
         }).WithTags(PagamentoTag).WithSummary("Obtenha os dados de um pagamento pelo id do pedido.").WithOpenApi();
+
+        app.MapPost("/pagamento/webhook", async ([FromBody] object payload) =>
+        {
+            await Console.Out.WriteLineAsync("Funcionou!!!");
+            return Results.Ok(payload);
+        });
     }
 }
