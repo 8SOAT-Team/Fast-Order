@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fo-deployment
+  labels:
+    app: fo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fo-crud
+  template:
+    metadata:
+      labels:
+        app: fo-crud
+    spec:
+      containers:
+        - name: fo-container
+          image: feehvecch/fast-order:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 57398
+            - name: https
+              containerPort: 57399

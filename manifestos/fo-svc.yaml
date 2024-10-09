@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fo-svc
+spec:
+  selector:
+    app: fo-crud
+  type: NodePort
+  ports:
+    - protocol: TCP
+      name: http
+      port: 57398
+      targetPort: 57398
+      nodePort: 30010
+    - protocol: TCP
+      name: https
+      port: 57399
+      targetPort: 57399
+      nodePort: 30012
