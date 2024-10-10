@@ -1,49 +1,24 @@
-﻿using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Domain.Entities.Enums;
+﻿using Microsoft.EntityFrameworkCore;
+using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
+using Postech8SOAT.FastOrder.Infra.Data.Context;
 
 namespace Postech8SOAT.FastOrder.Gateways;
-public class PagamentoGateway : IPagamentoGateway
+public class PagamentoGateway(FastOrderContext dbContext) : IPagamentoGateway
 {
 
-    private static readonly StatusPagamento[] _statusPagamentosPodemConfirmar = [StatusPagamento.Autorizado, StatusPagamento.Rejeitado, StatusPagamento.Cancelado];
-
-    public PagamentoGateway()
-    {
-    }
-
-    public Task ConfirmarPagamento(Guid pagamentoId, StatusPagamento status)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Pagamento> CreatePagamentoAsync(Pedido pedido, MetodoDePagamento metodoDePagamento)
-    {
-        throw new NotImplementedException();
-    }
+    private readonly FastOrderContext _dbContext = dbContext;
 
     public Task<List<Pagamento>> FindPagamentoByPedidoId(Guid pedidoId)
     {
-        throw new NotImplementedException();
+        return _dbContext.Pagamentos.Where(p => p.PedidoId == pedidoId).ToListAsync();
     }
 
-    public Task<Pagamento?> GetPagamentoAsync(Guid pagamentoId)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<Pagamento?> GetPagamentoByPedidoAsync(Guid pedidoId)
+    public async Task<Pagamento> UpdatePagamentoAsync(Pagamento pagamento)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<Pagamento>> ListPagamentos()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Pagamento> UpdatePagamentoAsync(Pagamento pagamento)
-    {
-        throw new NotImplementedException();
+        _dbContext.Pagamentos.Update(pagamento);
+        await _dbContext.SaveChangesAsync();
+        return pagamento;
     }
 }

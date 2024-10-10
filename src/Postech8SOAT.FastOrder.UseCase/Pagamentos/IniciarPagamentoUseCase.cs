@@ -7,7 +7,6 @@ using Postech8SOAT.FastOrder.UseCases.Pagamentos.Dtos;
 
 namespace Postech8SOAT.FastOrder.UseCases.Pagamentos;
 
-
 public class IniciarPagamentoUseCase(
     ILogger logger,
     IPedidoGateway pedidoGateway,

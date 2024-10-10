@@ -18,26 +18,34 @@ public class PagamentoController(ILogger logger, IPedidoGateway pedidoGateway, I
     private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
     private readonly IPagamentoGateway _pagamentoGateway = pagamentoGateway;
 
-    public Task<Result<PagamentoIniciadoDto>> ConfirmarPagamento(Guid pagamentoId, StatusPagamento status)
+    public Task<Result<PagamentoResponseDTO>> ConfirmarPagamento(Guid pagamentoId, StatusPagamento status)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result<PagamentoIniciadoDto>> GetPagamentoByPedidoAsync(Guid pedidoId)
+    public async Task<Result<List<PagamentoResponseDTO>>> GetPagamentoByPedidoAsync(Guid pedidoId)
     {
-        throw new NotImplementedException();
+        var useCase = new ObterPagamentoByPedidoUseCase(_logger, _pagamentoGateway);
+        var useCaseResult = await useCase.ResolveAsync(pedidoId);
+
+        return ControllerResultBuilder<List<PagamentoResponseDTO>, List<Pagamento>>
+           .ForUseCase(useCase)
+           .WithInstance(pedidoId)
+           .WithResult(useCaseResult)
+           .AdaptUsing(PagamentoPresenter.ToListPagamentoDTO)
+           .Build();
     }
 
-    public async Task<Result<PagamentoIniciadoDto>> IniciarPagamento(Guid pedidoId, MetodosDePagamento metodoDePagamento)
+    public async Task<Result<PagamentoResponseDTO>> IniciarPagamento(Guid pedidoId, MetodosDePagamento metodoDePagamento)
     {
         var useCase = new IniciarPagamentoUseCase(_logger, _pedidoGateway, _pagamentoGateway);
         var useCaseResult = await useCase.ResolveAsync(new IniciarPagamentoDto(pedidoId, (MetodoDePagamento)metodoDePagamento));
 
-        return ControllerResultBuilder<PagamentoIniciadoDto, Pagamento>
+        return ControllerResultBuilder<PagamentoResponseDTO, Pagamento>
            .ForUseCase(useCase)
            .WithInstance(pedidoId)
            .WithResult(useCaseResult)
-           .AdaptUsing(PagamentoPresenter.PagamentoIniciado)
+           .AdaptUsing(PagamentoPresenter.ToPagamentoDTO)
            .Build();
     }
 }

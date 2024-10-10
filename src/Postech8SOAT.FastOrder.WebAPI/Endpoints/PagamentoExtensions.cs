@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Pagamentos.Dtos;
 using Postech8SOAT.FastOrder.Types.Results;
@@ -21,16 +20,14 @@ public static class PagamentoExtensions
         {
             var useCaseResult = await pagamentoController.IniciarPagamento(pedidoId, request.MetodoDePagamento);
             return useCaseResult.GetResult();
-
         }).WithTags(PagamentoTag)
         .WithSummary("Inicialize um pagamento de um pedido.")
-        .Produces<PagamentoIniciadoDto>((int)HttpStatusCode.Created)
+        .Produces<PagamentoResponseDTO>((int)HttpStatusCode.Created)
         .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
         .Produces((int)HttpStatusCode.NotFound)
         .WithOpenApi();
 
-        app.MapPatch("/pagamento/{pagamentoId:guid}", async ([FromServices] IMapper mapper,
-           [FromServices] IPagamentoController pagamentoController,
+        app.MapPatch("/pagamento/{pagamentoId:guid}", async ([FromServices] IPagamentoController pagamentoController,
            [FromRoute] Guid pagamentoId,
            [FromBody] ConfirmarPagamentoDTO request,
            HttpContext httpContext) =>
@@ -40,15 +37,17 @@ public static class PagamentoExtensions
         }).WithTags(PagamentoTag).WithSummary("Confirma o pagamento de um pedido.").WithOpenApi();
 
 
-        app.MapGet("/pagamento/pedido/{pedidoId:guid}", async ([FromServices] IMapper mapper,
-            [FromServices] IPagamentoController pagamentoController,
-            [FromRoute] Guid pedidoId,
-            HttpContext httpContext) =>
+        app.MapGet("/pagamento/pedido/{pedidoId:guid}", async ([FromServices] IPagamentoController pagamentoController,
+            [FromRoute] Guid pedidoId) =>
         {
-            var pagamento = await pagamentoController.GetPagamentoByPedidoAsync(pedidoId);
-            var pagamentoResponse = mapper.Map<PagamentoDTO>(pagamento);
-            return Results.Ok(pagamentoResponse);
-        }).WithTags(PagamentoTag).WithSummary("Obtenha os dados de um pagamento pelo id do pedido.").WithOpenApi();
+            var useCaseResult = await pagamentoController.GetPagamentoByPedidoAsync(pedidoId);
+            return useCaseResult.GetResult();
+        }).WithTags(PagamentoTag)
+        .WithSummary("Obtenha os dados de um pagamento pelo id do pedido.")
+        .Produces<PagamentoResponseDTO>((int)HttpStatusCode.OK)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+        .Produces((int)HttpStatusCode.NotFound)
+        .WithOpenApi();
 
         app.MapPost("/pagamento/webhook", async ([FromBody] object payload) =>
         {

@@ -6,9 +6,8 @@ using Postech8SOAT.FastOrder.Types.Results;
 namespace Postech8SOAT.FastOrder.Controllers.Interfaces;
 public interface IPagamentoController
 {
-    Task<Result<PagamentoIniciadoDto>> GetPagamentoByPedidoAsync(Guid pedidoId);
-    Task<Result<PagamentoIniciadoDto>> ConfirmarPagamento(Guid pagamentoId, StatusPagamento status);
+    Task<Result<List<PagamentoResponseDTO>>> GetPagamentoByPedidoAsync(Guid pedidoId);
+    Task<Result<PagamentoResponseDTO>> ConfirmarPagamento(Guid pagamentoId, StatusPagamento status);
 
-    //novos
-    Task<Result<PagamentoIniciadoDto>> IniciarPagamento(Guid pedidoId, MetodosDePagamento metodoDePagamento);
+    Task<Result<PagamentoResponseDTO>> IniciarPagamento(Guid pedidoId, MetodosDePagamento metodoDePagamento);
 }
