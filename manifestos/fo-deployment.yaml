@@ -5,7 +5,7 @@ metadata:
   labels:
     app: fo-app
 spec:
-  replicas: 1
+  #replicas: 1
   selector:
     matchLabels:
       app: fo-crud
@@ -23,3 +23,13 @@ spec:
               containerPort: 57398
             - name: https
               containerPort: 57399
+          envFrom:
+              - configMapRef:
+                  name: fo-configmap
+          volumeMounts:
+            - name: certs
+              mountPath: /app/certs
+      volumes:
+        - name: certs
+          hostPath:
+            path: /app/certs
