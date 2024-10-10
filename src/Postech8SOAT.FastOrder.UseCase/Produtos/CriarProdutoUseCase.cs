@@ -28,6 +28,19 @@ public class CriarProdutoUseCase : UseCase<NovoProdutoDTO, Produto>
             return null;
         }
 
+        var produtos = await _produtoGateway.GetProdutosByCategoriaAsync(categoria.Id);
+        if ( produtos != null )
+        {
+            foreach (var eachProduct in produtos)
+            {
+                if (eachProduct.Nome == command.Nome)
+                {
+                    AddError(new UseCaseError(UseCaseErrorType.BadRequest, "Já existe esse produto cadastrado para essa categoria."));
+                    return null;
+                }
+            }
+        }
+
         var produto = new Produto(command.Nome, command.Descricao, command.Preco, command.Imagem, command.CategoriaId);
         var produtoCriado = await _produtoGateway.CreateProdutoAsync(produto);
 
