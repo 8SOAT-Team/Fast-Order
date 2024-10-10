@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fast-order-bd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fast-order-bd
+  template:
+    metadata:
+      labels:
+        app: fast-order-bd
+    spec:
+      containers:
+        - name: fast-order-bd
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              value: "tech#2024"
+          ports:
+            - containerPort: 1433
+          volumeMounts:
+            - name: fast-order-data
+              mountPath: /var/opt/mssql
+      volumes:
+        - name: fast-order-data
+          persistentVolumeClaim:
+            claimName: fast-order-data-pvc
