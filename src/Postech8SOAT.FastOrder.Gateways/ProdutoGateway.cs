@@ -2,27 +2,35 @@
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
 namespace Postech8SOAT.FastOrder.Gateways;
 public class ProdutoGateway : IProdutoGateway
 {
     private readonly ICategoriaGateway _categoriaGateway;
     private readonly FastOrderContext _dbContext;
+    private readonly DbSet<Produto> _produtos;
 
     public ProdutoGateway(ICategoriaGateway categoriaGateway, FastOrderContext dbContext)
     {
         _categoriaGateway = categoriaGateway;
         _dbContext = dbContext;
+        _produtos = dbContext.Set<Produto>();
     }
 
     public async Task<Produto> CreateProdutoAsync(Produto produto)
     {
-        throw new NotImplementedException();
+        var insertedProduto = await _produtos.AddAsync(produto);
+        await _dbContext.SaveChangesAsync();
+        return insertedProduto.Entity;
     }
 
     public Task<Produto?> GetProdutoByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        const string query = "SELECT * FROM Produtos WHERE id = @id";
+        return _produtos.FromSqlRaw(query, new SqlParameter("id", id))
+            .FirstOrDefaultAsync();
     }
 
 

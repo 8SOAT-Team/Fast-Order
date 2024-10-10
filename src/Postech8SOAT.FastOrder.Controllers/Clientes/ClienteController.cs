@@ -8,6 +8,7 @@ using Postech8SOAT.FastOrder.UseCases.Clientes;
 using Postech8SOAT.FastOrder.UseCases.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Problems;
 using Postech8SOAT.FastOrder.Presenters.Clientes;
+using Postech8SOAT.FastOrder.Domain.Entities;
 
 namespace Postech8SOAT.FastOrder.Controllers.Clientes;
 public class ClienteController : IClienteController
@@ -67,11 +68,12 @@ public class ClienteController : IClienteController
         }
 
         var useCase = new CriarNovoClienteUseCase(_logger, _clienteGateway);
-
         var useCaseResult = await useCase.ResolveAsync(new CriarNovoClienteDto(cpf, newCliente.Nome, email));
 
-        return useCaseResult.HasValue ? Result<ClienteIdentificadoDto>.Succeed(ClientePresenter.AdaptClienteIdentificado(useCaseResult.Value!))
-            : Result<ClienteIdentificadoDto>.Empty();
+        return ControllerResultBuilder<ClienteIdentificadoDto, Cliente>
+           .ForUseCase(useCase)
+           .WithResult(useCaseResult)
+           .AdaptUsing(ClientePresenter.AdaptClienteIdentificado)
+           .Build();
     }
-
 }
