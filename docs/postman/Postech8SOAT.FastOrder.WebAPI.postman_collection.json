@@ -11,7 +11,7 @@
 			"name": "cliente",
 			"item": [
 				{
-					"name": "/cliente",
+					"name": "Criar cliente",
 					"event": [
 						{
 							"listen": "test",
@@ -34,7 +34,10 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.collectionVariables.set(\"baseUrl\",\"https://localhost:57399\")"
+									"var baseUrl = pm.collectionVariables.get(\"baseUrl\");\r",
+									"if( !baseUrl ){\r",
+									"    pm.collectionVariables.set(\"baseUrl\",\"https://localhost:57399\")\r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -55,7 +58,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"cpf\": \"28297027007\",\n  \"nome\": \"usuario test\",\n  \"email\": \"testuser@test.com\"\n}",
+							"raw": "{\n  \"cpf\": \"28297027008\",\n  \"nome\": \"usuario test\",\n  \"email\": \"testuser@test.com\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -169,7 +172,7 @@
 					]
 				},
 				{
-					"name": "/cliente?cpf=:cpf",
+					"name": "Listar cliente por cpf",
 					"event": [
 						{
 							"listen": "test",
@@ -332,7 +335,7 @@
 					"name": "categoria",
 					"item": [
 						{
-							"name": "/produto/categoria",
+							"name": "Listar todas as categorias",
 							"event": [
 								{
 									"listen": "test",
@@ -463,7 +466,7 @@
 							]
 						},
 						{
-							"name": "/produto/categoria/:categoriaId",
+							"name": "Listar pedido por categoria",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -496,18 +499,17 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/produto/categoria/:categoriaId",
+											"raw": "{{baseUrl}}/produto/:id",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
 												"produto",
-												"categoria",
-												":categoriaId"
+												":id"
 											],
 											"variable": [
 												{
-													"key": "categoriaId"
+													"key": "id"
 												}
 											]
 										}
@@ -522,7 +524,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"preco\": \"<double>\",\n    \"imagem\": \"<string>\",\n    \"categoria\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"descricao\": \"<string>\"\n    }\n  },\n  {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"preco\": \"<double>\",\n    \"imagem\": \"<string>\",\n    \"categoria\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"descricao\": \"<string>\"\n    }\n  }\n]"
+									"body": "{\n  \"id\": \"<uuid>\",\n  \"nome\": \"<string>\",\n  \"descricao\": \"<string>\",\n  \"preco\": \"<double>\",\n  \"imagem\": \"<string>\",\n  \"categoria\": {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\"\n  }\n}"
 								},
 								{
 									"name": "Bad Request",
@@ -535,18 +537,17 @@
 											}
 										],
 										"url": {
-											"raw": "{{baseUrl}}/produto/categoria/:categoriaId",
+											"raw": "{{baseUrl}}/produto/:id",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
 												"produto",
-												"categoria",
-												":categoriaId"
+												":id"
 											],
 											"variable": [
 												{
-													"key": "categoriaId"
+													"key": "id"
 												}
 											]
 										}
@@ -569,18 +570,17 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseUrl}}/produto/categoria/:categoriaId",
+											"raw": "{{baseUrl}}/produto/:id",
 											"host": [
 												"{{baseUrl}}"
 											],
 											"path": [
 												"produto",
-												"categoria",
-												":categoriaId"
+												":id"
 											],
 											"variable": [
 												{
-													"key": "categoriaId"
+													"key": "id"
 												}
 											]
 										}
@@ -597,135 +597,23 @@
 					]
 				},
 				{
-					"name": "/produto",
+					"name": "Criar produto",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if( pm.response.code != 200){\r",
+									"if( pm.response.code != 200 ){\r",
 									"    return;\r",
 									"}\r",
-									"\r",
 									"var responseBody = JSON.parse(pm.response.text());\r",
-									"pm.collectionVariables.set(\"idProduto\", responseBody[0].id);\r",
-									"pm.collectionVariables.set(\"idCategoria\", responseBody[0].categoria.id);\r",
-									""
+									"pm.collectionVariables.set(\"idProduto\", responseBody.id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
 							}
 						}
 					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/produto",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"produto"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/produto",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"produto"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n  {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"preco\": \"<double>\",\n    \"imagem\": \"<string>\",\n    \"categoria\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"descricao\": \"<string>\"\n    }\n  },\n  {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"preco\": \"<double>\",\n    \"imagem\": \"<string>\",\n    \"categoria\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"descricao\": \"<string>\"\n    }\n  }\n]"
-						},
-						{
-							"name": "Bad Request",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/produto",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"produto"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"status\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\"\n}"
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/produto",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"produto"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				},
-				{
-					"name": "/produto",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -740,7 +628,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Produto Teste\",\n  \"descricao\": \"Descrição Teste\",\n  \"preco\": 15.00,\n  \"imagem\": \"https://google.com.br/\",\n  \"categoriaId\": \"{{idCategoria}}\"\n}",
+							"raw": "{\n  \"nome\": \"Produto Teste3\",\n  \"descricao\": \"Descrição Teste\",\n  \"preco\": 15.00,\n  \"imagem\": \"https://google.com.br/\",\n  \"categoriaId\": \"{{idCategoria}}\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -891,7 +779,135 @@
 					]
 				},
 				{
-					"name": "/produto/:id",
+					"name": "Listar todos produtos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if( pm.response.code != 200){\r",
+									"    return;\r",
+									"}\r",
+									"\r",
+									"var responseBody = JSON.parse(pm.response.text());\r",
+									"pm.collectionVariables.set(\"idProduto\", responseBody[0].id);\r",
+									"pm.collectionVariables.set(\"idCategoria\", responseBody[0].categoria.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/produto",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produto"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/produto",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produto"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"preco\": \"<double>\",\n    \"imagem\": \"<string>\",\n    \"categoria\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"descricao\": \"<string>\"\n    }\n  },\n  {\n    \"id\": \"<uuid>\",\n    \"nome\": \"<string>\",\n    \"descricao\": \"<string>\",\n    \"preco\": \"<double>\",\n    \"imagem\": \"<string>\",\n    \"categoria\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"descricao\": \"<string>\"\n    }\n  }\n]"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/produto",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produto"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"status\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/produto",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produto"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Listar produto por id",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1024,7 +1040,7 @@
 			"name": "pedido",
 			"item": [
 				{
-					"name": "/pedido",
+					"name": "Criar pedido",
 					"event": [
 						{
 							"listen": "test",
@@ -1207,7 +1223,7 @@
 					]
 				},
 				{
-					"name": "/pedido",
+					"name": "Listar todos pedidos",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1316,7 +1332,7 @@
 					]
 				},
 				{
-					"name": "/pedido/:id",
+					"name": "Listar pedido por id",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1444,7 +1460,120 @@
 					]
 				},
 				{
-					"name": "/pedido/:id/status",
+					"name": "Listar pedidos pendentes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pedido/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pedido",
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/pedido/status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pedido",
+										"status"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"<uuid>\",\n    \"dataPedido\": \"<dateTime>\",\n    \"statusPedido\": \"Finalizado\",\n    \"cliente\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\",\n      \"cpf\": \"<string>\"\n    },\n    \"itensDoPedido\": [\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      },\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      }\n    ],\n    \"valorTotal\": \"<double>\",\n    \"pagamento\": {\n      \"id\": \"<uuid>\",\n      \"pedidoId\": \"<uuid>\",\n      \"pagamentoExternoId\": \"<string>\",\n      \"pedido\": {\n        \"id\": \"<uuid>\",\n        \"dataPedido\": \"<dateTime>\",\n        \"statusPedido\": \"Pronto\",\n        \"clienteId\": \"<uuid>\",\n        \"cliente\": {\n          \"id\": \"<uuid>\",\n          \"cpf\": {\n            \"value\": \"<string>\"\n          },\n          \"nome\": \"<string>\",\n          \"email\": {\n            \"address\": \"<string>\"\n          }\n        },\n        \"itensDoPedido\": [\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          },\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          }\n        ],\n        \"valorTotal\": \"<double>\",\n        \"pagamento\": {\n          \"value\": \"<Circular reference to #/components/schemas/Pagamento detected>\"\n        }\n      },\n      \"status\": \"Pendente\",\n      \"metodoDePagamento\": \"Nenhum\",\n      \"valorTotal\": \"<double>\"\n    }\n  },\n  {\n    \"id\": \"<uuid>\",\n    \"dataPedido\": \"<dateTime>\",\n    \"statusPedido\": \"Pronto\",\n    \"cliente\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\",\n      \"cpf\": \"<string>\"\n    },\n    \"itensDoPedido\": [\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      },\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      }\n    ],\n    \"valorTotal\": \"<double>\",\n    \"pagamento\": {\n      \"id\": \"<uuid>\",\n      \"pedidoId\": \"<uuid>\",\n      \"pagamentoExternoId\": \"<string>\",\n      \"pedido\": {\n        \"id\": \"<uuid>\",\n        \"dataPedido\": \"<dateTime>\",\n        \"statusPedido\": \"Cancelado\",\n        \"clienteId\": \"<uuid>\",\n        \"cliente\": {\n          \"id\": \"<uuid>\",\n          \"cpf\": {\n            \"value\": \"<string>\"\n          },\n          \"nome\": \"<string>\",\n          \"email\": {\n            \"address\": \"<string>\"\n          }\n        },\n        \"itensDoPedido\": [\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          },\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          }\n        ],\n        \"valorTotal\": \"<double>\",\n        \"pagamento\": {\n          \"value\": \"<Circular reference to #/components/schemas/Pagamento detected>\"\n        }\n      },\n      \"status\": \"Autorizado\",\n      \"metodoDePagamento\": \"Pix\",\n      \"valorTotal\": \"<double>\"\n    }\n  }\n]"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/pedido/status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pedido",
+										"status"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"status\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/pedido/status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pedido",
+										"status"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Atuaizar status de um pedido",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -1459,7 +1588,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"novoStatus\": \"Cancelado\"\n}",
+							"raw": "{\n  \"novoStatus\": \"EmPreparacao\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1468,13 +1597,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/pedido/{{idPedido}}/status",
+							"raw": "{{baseUrl}}/pedido/aaaaa/status",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"pedido",
-								"{{idPedido}}",
+								"aaaaa",
 								"status"
 							]
 						}
@@ -1631,119 +1760,6 @@
 							"body": ""
 						}
 					]
-				},
-				{
-					"name": "/pedido/status",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/pedido/status",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"pedido",
-								"status"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Created",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/pedido/status",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"pedido",
-										"status"
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n  {\n    \"id\": \"<uuid>\",\n    \"dataPedido\": \"<dateTime>\",\n    \"statusPedido\": \"Finalizado\",\n    \"cliente\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\",\n      \"cpf\": \"<string>\"\n    },\n    \"itensDoPedido\": [\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      },\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      }\n    ],\n    \"valorTotal\": \"<double>\",\n    \"pagamento\": {\n      \"id\": \"<uuid>\",\n      \"pedidoId\": \"<uuid>\",\n      \"pagamentoExternoId\": \"<string>\",\n      \"pedido\": {\n        \"id\": \"<uuid>\",\n        \"dataPedido\": \"<dateTime>\",\n        \"statusPedido\": \"Pronto\",\n        \"clienteId\": \"<uuid>\",\n        \"cliente\": {\n          \"id\": \"<uuid>\",\n          \"cpf\": {\n            \"value\": \"<string>\"\n          },\n          \"nome\": \"<string>\",\n          \"email\": {\n            \"address\": \"<string>\"\n          }\n        },\n        \"itensDoPedido\": [\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          },\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          }\n        ],\n        \"valorTotal\": \"<double>\",\n        \"pagamento\": {\n          \"value\": \"<Circular reference to #/components/schemas/Pagamento detected>\"\n        }\n      },\n      \"status\": \"Pendente\",\n      \"metodoDePagamento\": \"Nenhum\",\n      \"valorTotal\": \"<double>\"\n    }\n  },\n  {\n    \"id\": \"<uuid>\",\n    \"dataPedido\": \"<dateTime>\",\n    \"statusPedido\": \"Pronto\",\n    \"cliente\": {\n      \"id\": \"<uuid>\",\n      \"nome\": \"<string>\",\n      \"email\": \"<string>\",\n      \"cpf\": \"<string>\"\n    },\n    \"itensDoPedido\": [\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      },\n      {\n        \"id\": \"<uuid>\",\n        \"produtoId\": \"<uuid>\",\n        \"quantidade\": \"<integer>\",\n        \"imagem\": \"<string>\"\n      }\n    ],\n    \"valorTotal\": \"<double>\",\n    \"pagamento\": {\n      \"id\": \"<uuid>\",\n      \"pedidoId\": \"<uuid>\",\n      \"pagamentoExternoId\": \"<string>\",\n      \"pedido\": {\n        \"id\": \"<uuid>\",\n        \"dataPedido\": \"<dateTime>\",\n        \"statusPedido\": \"Cancelado\",\n        \"clienteId\": \"<uuid>\",\n        \"cliente\": {\n          \"id\": \"<uuid>\",\n          \"cpf\": {\n            \"value\": \"<string>\"\n          },\n          \"nome\": \"<string>\",\n          \"email\": {\n            \"address\": \"<string>\"\n          }\n        },\n        \"itensDoPedido\": [\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          },\n          {\n            \"id\": \"<uuid>\",\n            \"pedidoId\": \"<uuid>\",\n            \"pedido\": {\n              \"value\": \"<Circular reference to #/components/schemas/Pedido detected>\"\n            },\n            \"produtoId\": \"<uuid>\",\n            \"produto\": {\n              \"id\": \"<uuid>\",\n              \"nome\": \"<string>\",\n              \"descricao\": \"<string>\",\n              \"preco\": \"<double>\",\n              \"categoriaId\": \"<uuid>\",\n              \"categoria\": {\n                \"id\": \"<uuid>\",\n                \"nome\": \"<string>\",\n                \"descricao\": \"<string>\",\n                \"produtos\": [\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  },\n                  {\n                    \"value\": \"<Circular reference to #/components/schemas/Produto detected>\"\n                  }\n                ]\n              },\n              \"imagem\": \"<string>\"\n            },\n            \"quantidade\": \"<integer>\",\n            \"valorTotal\": \"<double>\"\n          }\n        ],\n        \"valorTotal\": \"<double>\",\n        \"pagamento\": {\n          \"value\": \"<Circular reference to #/components/schemas/Pagamento detected>\"\n        }\n      },\n      \"status\": \"Autorizado\",\n      \"metodoDePagamento\": \"Pix\",\n      \"valorTotal\": \"<double>\"\n    }\n  }\n]"
-						},
-						{
-							"name": "Bad Request",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/pedido/status",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"pedido",
-										"status"
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"status\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\"\n}"
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/pedido/status",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"pedido",
-										"status"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [],
-							"cookie": [],
-							"body": ""
-						}
-					]
 				}
 			]
 		},
@@ -1751,7 +1767,7 @@
 			"name": "pagamento",
 			"item": [
 				{
-					"name": "/pagamento/pedido/:pedidoId",
+					"name": "Criar pagamento para um pedido",
 					"event": [
 						{
 							"listen": "test",
@@ -1953,7 +1969,199 @@
 					]
 				},
 				{
-					"name": "/pagamento/:pagamentoId",
+					"name": "Listar pagamentos por pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseBody = JSON.parse(pm.response.text());\r",
+									"pm.collectionVariables.set(\"idPagamento\", responseBody.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/pagamento/pedido/{{idPedido}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pagamento",
+								"pedido",
+								"{{idPedido}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"metodoDePagamento\": \"Pix\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pagamento/pedido/:pedidoId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pagamento",
+										"pedido",
+										":pedidoId"
+									],
+									"variable": [
+										{
+											"key": "pedidoId"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<uuid>\",\n  \"metodoDePagamento\": \"Pix\",\n  \"status\": \"Autorizado\",\n  \"valorTotal\": \"<double>\",\n  \"pagamentoExternoId\": \"<string>\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"metodoDePagamento\": \"Pix\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pagamento/pedido/:pedidoId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pagamento",
+										"pedido",
+										":pedidoId"
+									],
+									"variable": [
+										{
+											"key": "pedidoId"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"status\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"metodoDePagamento\": \"Pix\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/pagamento/pedido/:pedidoId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"pagamento",
+										"pedido",
+										":pedidoId"
+									],
+									"variable": [
+										{
+											"key": "pedidoId"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Confirma pagamento de um pedido",
 					"request": {
 						"method": "PATCH",
 						"header": [
