@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-fast-order-bd
+spec:
+  type: ClusterIP
+  selector:
+    app: fast-order-bd
+  ports:
+    - port: 1433
