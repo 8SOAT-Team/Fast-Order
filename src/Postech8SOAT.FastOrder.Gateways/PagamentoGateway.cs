@@ -14,6 +14,10 @@ public class PagamentoGateway(FastOrderContext dbContext) : IPagamentoGateway
         return _dbContext.Pagamentos.Where(p => p.PedidoId == pedidoId).ToListAsync();
     }
 
+    public Task<Pagamento?> GetById(Guid id)
+    {
+        return _dbContext.Pagamentos.FirstOrDefaultAsync(p => p.Id == id);
+    }
 
     public async Task<Pagamento> UpdatePagamentoAsync(Pagamento pagamento)
     {

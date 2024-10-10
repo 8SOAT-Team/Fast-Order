@@ -1,5 +1,5 @@
-﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
+﻿using Postech8SOAT.FastOrder.Controllers.Pagamentos.Enums;
 
 namespace Postech8SOAT.FastOrder.WebAPI.DTOs;
 
-public record ConfirmarPagamentoDTO(StatusPagamento Status);
+public record ConfirmarPagamentoDTO(StatusDoPagamento Status);

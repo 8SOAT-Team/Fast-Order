@@ -4,5 +4,6 @@ namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
 public interface IPagamentoGateway
 {
     Task<List<Pagamento>> FindPagamentoByPedidoId(Guid pedidoId);
+    Task<Pagamento?> GetById(Guid id);
     Task<Pagamento> UpdatePagamentoAsync(Pagamento pagamento);
 }

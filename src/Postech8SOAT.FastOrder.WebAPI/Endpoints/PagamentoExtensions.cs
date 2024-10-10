@@ -32,10 +32,14 @@ public static class PagamentoExtensions
            [FromBody] ConfirmarPagamentoDTO request,
            HttpContext httpContext) =>
         {
-            await pagamentoController.ConfirmarPagamento(pagamentoId, request.Status);
-            return Results.Ok();
-        }).WithTags(PagamentoTag).WithSummary("Confirma o pagamento de um pedido.").WithOpenApi();
-
+            var useCaseResult = await pagamentoController.ConfirmarPagamento(pagamentoId, request.Status);
+            return useCaseResult.GetResult();
+        }).WithTags(PagamentoTag)
+        .WithSummary("Confirma o pagamento de um pedido pelo id do pagamento.")
+        .Produces<PagamentoResponseDTO>((int)HttpStatusCode.OK)
+        .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
+        .Produces((int)HttpStatusCode.NotFound)
+        .WithOpenApi();
 
         app.MapGet("/pagamento/pedido/{pedidoId:guid}", async ([FromServices] IPagamentoController pagamentoController,
             [FromRoute] Guid pedidoId) =>

@@ -63,8 +63,11 @@ public class Pedido : Entity, IAggregateRoot
         DomainExceptionValidation.When(itens.Count <= 0, "O pedido deve conter pelo menos um item");
     }
 
-    public Pedido IniciarPreparo()
+    public Pedido IniciarPreparo(Pagamento? pagamento = null)
     {
+        pagamento ??= Pagamento;
+        Pagamento = pagamento;
+
         DomainExceptionValidation.When(StatusPedido != StatusPedido.Recebido,
             $"Status do pedido não permite iniciar preparo. O status deve ser {StatusPedido.Recebido} para iniciar o preparo.");
 

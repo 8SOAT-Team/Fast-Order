@@ -18,9 +18,17 @@ public class PagamentoController(ILogger logger, IPedidoGateway pedidoGateway, I
     private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
     private readonly IPagamentoGateway _pagamentoGateway = pagamentoGateway;
 
-    public Task<Result<PagamentoResponseDTO>> ConfirmarPagamento(Guid pagamentoId, StatusPagamento status)
+    public async Task<Result<PagamentoResponseDTO>> ConfirmarPagamento(Guid pagamentoId, StatusDoPagamento status)
     {
-        throw new NotImplementedException();
+        var useCase = new ConfirmarPagamentoUseCase(_logger, _pagamentoGateway, _pedidoGateway);
+        var useCaseResult = await useCase.ResolveAsync(new ConfirmarPagamentoDto(pagamentoId, (StatusPagamento)status));
+
+        return ControllerResultBuilder<PagamentoResponseDTO, Pagamento>
+           .ForUseCase(useCase)
+           .WithInstance(pagamentoId)
+           .WithResult(useCaseResult)
+           .AdaptUsing(PagamentoPresenter.ToPagamentoDTO)
+           .Build();
     }
 
     public async Task<Result<List<PagamentoResponseDTO>>> GetPagamentoByPedidoAsync(Guid pedidoId)
