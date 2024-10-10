@@ -3,7 +3,7 @@
 namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
 public interface IPedidoGateway
 {
-    Task<Pedido> GetByIdAsync(Guid id);
+    Task<Pedido?> GetByIdAsync(Guid id);
     Task<Pedido> CreateAsync(Pedido pedido);
     Task<Pedido> UpdateAsync(Pedido pedido);
     Task<List<Pedido>> GetAllAsync();
