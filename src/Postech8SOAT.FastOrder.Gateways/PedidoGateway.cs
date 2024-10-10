@@ -42,9 +42,9 @@ public class PedidoGateway(FastOrderContext dbContext) : IPedidoGateway
         return _dbContext.Pedidos.ToListAsync();
     }
 
-    public Task<Pedido> GetByIdAsync(Guid id)
+    public Task<Pedido?> GetByIdAsync(Guid id)
     {
-        return _dbContext.Set<Pedido>().FirstAsync(p => p.Id == id);
+        return _dbContext.Set<Pedido>().FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<Pedido> UpdateAsync(Pedido pedido)
