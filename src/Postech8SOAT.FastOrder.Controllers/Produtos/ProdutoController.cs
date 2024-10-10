@@ -2,8 +2,8 @@
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Produtos;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Common;
 using Postech8SOAT.FastOrder.UseCases.Produtos;
 using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;

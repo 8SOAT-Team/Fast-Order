@@ -5,8 +5,8 @@ using Postech8SOAT.FastOrder.Controllers.Pagamentos.Enums;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Pagamentos;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Pagamentos;
 using Postech8SOAT.FastOrder.UseCases.Pagamentos.Dtos;
 

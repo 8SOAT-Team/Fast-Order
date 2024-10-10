@@ -2,13 +2,13 @@
 using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.UseCases.Clientes;
 using Postech8SOAT.FastOrder.UseCases.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Problems;
 using Postech8SOAT.FastOrder.Presenters.Clientes;
 using Postech8SOAT.FastOrder.Domain.Entities;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Controllers.Clientes;
 public class ClienteController : IClienteController

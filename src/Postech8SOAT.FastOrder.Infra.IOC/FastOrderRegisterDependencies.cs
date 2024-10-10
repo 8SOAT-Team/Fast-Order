@@ -8,9 +8,9 @@ using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Pagamentos;
 using Postech8SOAT.FastOrder.Controllers.Pedidos;
 using Postech8SOAT.FastOrder.Gateways;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Infra.IOC;
 public static class FastOrderRegisterDependencies

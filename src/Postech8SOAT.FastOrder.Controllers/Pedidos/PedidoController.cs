@@ -5,13 +5,13 @@ using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
 using Postech8SOAT.FastOrder.Controllers.Presenters.Pedidos;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Types.Results;
 using Postech8SOAT.FastOrder.UseCases.Pedidos;
 using Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos;
 using NovoPedidoDTO = Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos.NovoPedidoDTO;
 using UseCaseNovoPedidoDTO = Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos.NovoPedidoDTO;
 using ItemDoPedidoDTO = Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos.ItemDoPedidoDTO;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Controllers.Pedidos;
 public class PedidoController(

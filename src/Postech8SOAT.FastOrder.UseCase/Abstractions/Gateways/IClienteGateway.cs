@@ -1,7 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
-namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
+namespace Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 public interface IClienteGateway
 {
     Task<Cliente> CreateClienteAsync(Cliente cliente);

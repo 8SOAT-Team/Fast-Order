@@ -1,7 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
-using Postech8SOAT.FastOrder.Gateways.Pagamentos.Dtos;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Pagamentos.Dtos;
 
-namespace Postech8SOAT.FastOrder.Gateways.Interfaces;
+namespace Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 public interface IFornecedorPagamentoGateway
 {

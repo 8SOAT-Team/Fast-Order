@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Gateways;
 public class ClienteGateway : IClienteGateway

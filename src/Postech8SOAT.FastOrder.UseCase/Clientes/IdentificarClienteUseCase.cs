@@ -1,7 +1,7 @@
 ﻿using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
-using Postech8SOAT.FastOrder.Gateways.Interfaces;
+using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Common;
 
 namespace Postech8SOAT.FastOrder.UseCases.Clientes;

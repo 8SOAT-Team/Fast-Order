@@ -9,9 +9,11 @@
   <ItemGroup>
     <ProjectReference Include="..\CleanArch.UseCase\CleanArch.UseCase.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
-    <ProjectReference Include="..\Postech8SOAT.FastOrder.Gateways\Postech8SOAT.FastOrder.Gateways.csproj" />
-    <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Types\Postech8SOAT.FastOrder.Types.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
