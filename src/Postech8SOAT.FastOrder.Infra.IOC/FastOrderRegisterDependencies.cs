@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MercadoPago.Client.Payment;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Postech8SOAT.FastOrder.Controllers;
@@ -9,6 +10,7 @@ using Postech8SOAT.FastOrder.Controllers.Pedidos;
 using Postech8SOAT.FastOrder.Gateways;
 using Postech8SOAT.FastOrder.Gateways.Interfaces;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
+using Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways;
 
 namespace Postech8SOAT.FastOrder.Infra.IOC;
 public static class FastOrderRegisterDependencies
@@ -19,6 +21,9 @@ public static class FastOrderRegisterDependencies
         //Registrar no container nativo de injeção de dependências.
         services.AddDbContext<FastOrderContext>(options =>
                 options.UseLazyLoadingProxies().UseSqlServer(configuration.GetConnectionString("DefaultConnectionContainer")));
+
+        //client
+        services.AddHttpClient();
 
         //Gateways
         services.AddScoped<IClienteGateway, ClienteGateway>();
@@ -33,5 +38,19 @@ public static class FastOrderRegisterDependencies
         services.AddScoped<IProdutoController, ProdutoController>();
         services.AddScoped<IPedidoController, PedidoController>();
         services.AddScoped<IPagamentoController, PagamentoController>();
+
+        //Upstream
+        services.UpstreamDI(configuration);
+    }
+
+    private static void UpstreamDI(this IServiceCollection services, IConfiguration configuration)
+    {
+        //Gateways
+        services.AddScoped<IFornecedorPagamentoGateway, FornecedorPagamentoGateway>();
+
+        //client
+        services.AddSingleton<PaymentClient>();
+
+        //config
     }
 }
