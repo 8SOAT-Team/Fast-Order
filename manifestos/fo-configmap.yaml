@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fo-configmap
+data:
+  ASPNETCORE_ENVIRONMENT: Production
+  ASPNETCORE_URLS: "https://+:57399;http://+57398"
+  ASPNETCORE_Kestrel__Certificates__Default__Password: "fiap@123"
+  ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/certs/fastorder.pfx"
+  DefaultConnectionContainer: 'Server=fo-db-service,1433;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;'
