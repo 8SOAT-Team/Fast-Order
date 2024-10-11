@@ -1,35 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fo-deployment
+  name: fastorder-webapi
   labels:
-    app: fo-app
+    app: fastorder-webapi
 spec:
-  #replicas: 1
+  replicas: 1
   selector:
     matchLabels:
-      app: fo-crud
+      app: fastorder-webapi
   template:
     metadata:
       labels:
-        app: fo-crud
+        app: fastorder-webapi
     spec:
       containers:
-        - name: fo-container
-          image: feehvecch/fast-order:latest
-          imagePullPolicy: IfNotPresent
+        - env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+            value: fiap@123
+          - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+            value: /app/certs/fastorder.pfx
+          - name: ASPNETCORE_URLS
+            value: https://+:57399;http://+57398
+          name: fastorder-webapi
+          image: bergzado/fast-order-app:0.0.1
           ports:
-            - name: http
-              containerPort: 57398
-            - name: https
-              containerPort: 57399
-          envFrom:
-              - configMapRef:
-                  name: fo-configmap
+            - containerPort: 57398
+              protocol: TCP
+            - containerPort: 57399
+              protocol: TCP
           volumeMounts:
-            - name: certs
-              mountPath: /app/certs
+            - mountPath: /app/certs
+              name: fo-configmap
+      restartPolicy: Always
       volumes:
-        - name: certs
-          hostPath:
-            path: /app/certs
+        - configMap:
+            name: fo-configmap
+          name: fo-configmap

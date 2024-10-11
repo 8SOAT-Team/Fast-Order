@@ -1,33 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fo-db-deployment
+  name: sqlserver
+  labels:
+    app: sqlserver
 spec:
-  #replicas: 1
+  replicas: 1
   selector:
     matchLabels:
-      app: mssql
+      app: sqlserver
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: mssql
+        app: sqlserver
     spec:
       containers:
-      - name: mssql
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        ports:
-          - containerPort: 1433
-        env:
-          - name: MSSQL_PID
-            value: "Developer"
-          - name: ACCEPT_EULA
-            value: "Y"
-          - name: MSSQL_SA_PASSWORD
-            value: "tech#2024"
-        volumeMounts:
-          - name: mssqldb
-            mountPath: /var/opt/mssql
+        - env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              value: tech#2024
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          name: sqlserver
+          ports:
+            - containerPort: 1433
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/opt/mssql3
+              name: sql-data
+      hostname: sqlserver-fc
+      restartPolicy: Always
       volumes:
-      - name: mssqldb
-        persistentVolumeClaim:
-          claimName: fo-pvc
+        - name: sql-data
+          persistentVolumeClaim:
+            claimName: sql-data

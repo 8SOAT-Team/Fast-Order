@@ -1,19 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: fo-svc
+  labels:
+    app: fastorder-webapi
+  name: fastorder-webapi
 spec:
-  selector:
-    app: fo-crud
-  type: NodePort
   ports:
-    - protocol: TCP
-      name: http
+    - name: "57398"
       port: 57398
       targetPort: 57398
-      nodePort: 30010
-    - protocol: TCP
-      name: https
+    - name: "57399"
       port: 57399
       targetPort: 57399
-      nodePort: 30012
+  selector:
+    app: fastorder-webapi
