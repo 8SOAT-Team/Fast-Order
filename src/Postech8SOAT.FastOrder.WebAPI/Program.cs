@@ -5,6 +5,7 @@ using Postech8SOAT.FastOrder.WebAPI.Endpoints;
 using Postech8SOAT.FastOrder.WebAPI.Logs;
 using Postech8SOAT.FastOrder.WebAPI.Middlewares;
 using Postech8SOAT.FastOrder.WebAPI.Services;
+using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,12 +16,16 @@ builder.Services.AddSwaggerGen(c =>
     c.AddEnumsAsStringsFilter();
 });
 
-//Registrando as dependências
-builder.Services.AddAutoMapper(typeof(Program));
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
+Log.Information("Hello, world!");
+
+//Registrando as dependências
 IConfiguration configuration = builder.Configuration.AddEnvironmentVariables().Build();
 
-Console.WriteLine(configuration["DefaultConnectionContainer"]);
+Log.Information(configuration["DefaultConnectionContainer"]!);
 
 builder.Services.ConfigureDI(configuration);
 

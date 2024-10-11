@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Postech8SOAT.FastOrder.Controllers.Interfaces;
 using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
 using Postech8SOAT.FastOrder.Types.Results;
@@ -68,8 +67,7 @@ public static class PedidoExtensions
         .WithSummary("Lista de pedidos Pendentes (Pronto > Em Preparação > Recebido)")
         .WithOpenApi();
 
-        app.MapPut("/pedido/{id:guid}/status", async ([FromServices] IMapper mapper,
-        [FromServices] IPedidoController pedidoController,
+        app.MapPut("/pedido/{id:guid}/status", async ([FromServices] IPedidoController pedidoController,
         [FromRoute] Guid id,
         [FromBody] AtualizarStatusDoPedidoDTO request,
         HttpContext httpContext) =>
