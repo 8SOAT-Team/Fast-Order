@@ -12,11 +12,16 @@ using Postech8SOAT.FastOrder.UseCases.Pagamentos.Dtos;
 
 namespace Postech8SOAT.FastOrder.Controllers.Pagamentos;
 
-public class PagamentoController(ILogger logger, IPedidoGateway pedidoGateway, IPagamentoGateway pagamentoGateway) : IPagamentoController
+public class PagamentoController(
+    ILogger logger,
+    IPedidoGateway pedidoGateway,
+    IPagamentoGateway pagamentoGateway,
+    IFornecedorPagamentoGateway fornecedorPagamentoGateway) : IPagamentoController
 {
     private readonly ILogger _logger = logger;
     private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
     private readonly IPagamentoGateway _pagamentoGateway = pagamentoGateway;
+    private readonly IFornecedorPagamentoGateway _fornecedorPagamentoGateway = fornecedorPagamentoGateway;
 
     public async Task<Result<PagamentoResponseDTO>> ConfirmarPagamento(Guid pagamentoId, StatusDoPagamento status)
     {
@@ -46,7 +51,7 @@ public class PagamentoController(ILogger logger, IPedidoGateway pedidoGateway, I
 
     public async Task<Result<PagamentoResponseDTO>> IniciarPagamento(Guid pedidoId, MetodosDePagamento metodoDePagamento)
     {
-        var useCase = new IniciarPagamentoUseCase(_logger, _pedidoGateway, _pagamentoGateway);
+        var useCase = new IniciarPagamentoUseCase(_logger, _pedidoGateway, _pagamentoGateway, _fornecedorPagamentoGateway);
         var useCaseResult = await useCase.ResolveAsync(new IniciarPagamentoDto(pedidoId, (MetodoDePagamento)metodoDePagamento));
 
         return ControllerResultBuilder<PagamentoResponseDTO, Pagamento>

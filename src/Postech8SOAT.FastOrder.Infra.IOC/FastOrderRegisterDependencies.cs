@@ -1,4 +1,6 @@
-﻿using MercadoPago.Client.Payment;
+﻿using MercadoPago.Client.OAuth;
+using MercadoPago.Client.Payment;
+using MercadoPago.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +48,9 @@ public static class FastOrderRegisterDependencies
     private static void UpstreamDI(this IServiceCollection services, IConfiguration configuration)
     {
         //Gateways
+        services.AddSingleton<ISerializer, DefaultSerializer>();
+        services.AddScoped<PaymentClient>();
+        services.AddScoped<OAuthClient>();
         services.AddScoped<IFornecedorPagamentoGateway, FornecedorPagamentoGateway>();
 
         //client

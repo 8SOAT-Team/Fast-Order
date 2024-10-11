@@ -10,14 +10,15 @@ namespace Postech8SOAT.FastOrder.UseCases.Pagamentos;
 public class IniciarPagamentoUseCase(
     ILogger logger,
     IPedidoGateway pedidoGateway,
-    IPagamentoGateway pagamentoGateway) : UseCase<IniciarPagamentoDto, Pagamento>(logger)
+    IPagamentoGateway pagamentoGateway,
+    IFornecedorPagamentoGateway fornecedorPagamentoGateway) : UseCase<IniciarPagamentoDto, Pagamento>(logger)
 {
     private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
     private readonly IPagamentoGateway _pagamentoGateway = pagamentoGateway;
-
+    private readonly IFornecedorPagamentoGateway _fornecedorPagamentoGateway = fornecedorPagamentoGateway;
     protected override async Task<Pagamento?> Execute(IniciarPagamentoDto command)
     {
-        var pedido = await _pedidoGateway.GetByIdAsync(command.PedidoId);
+        var pedido = await _pedidoGateway.GetPedidoCompletoAsync(command.PedidoId);
 
         if (pedido is null)
         {
@@ -25,13 +26,17 @@ public class IniciarPagamentoUseCase(
             return null;
         }
 
-        if(pedido.Pagamento is not null)
+        if (pedido.Pagamento is not null)
         {
             AddError(new UseCaseError(UseCaseErrorType.BadRequest, "Pagamento já iniciado"));
             return null;
         }
 
         pedido.IniciarPagamento(command.MetodoDePagamento);
+
+        var fornecedorResponse = await _fornecedorPagamentoGateway.IniciarPagamento(command.MetodoDePagamento, pedido.Cliente?.Email ?? "", pedido.ValorTotal, pedido.Id);
+
+        pedido.Pagamento!.AssociarPagamentoExterno(fornecedorResponse.IdExterno);
 
         await _pedidoGateway.AtualizarPedidoPagamentoIniciadoAsync(pedido);
 

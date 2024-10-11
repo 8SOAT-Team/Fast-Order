@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Types\Postech8SOAT.FastOrder.Types.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>
