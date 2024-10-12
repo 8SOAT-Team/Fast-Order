@@ -1,38 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sqlserver
+  name: sqlserver-dep
   labels:
-    app: sqlserver
+    app: sqlserver-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sqlserver
-  strategy:
-    type: Recreate
+      app: sqlserver-dep
   template:
     metadata:
       labels:
-        app: sqlserver
+        app: sqlserver-dep
     spec:
       containers:
-        - env:
-            - name: ACCEPT_EULA
-              value: "Y"
-            - name: MSSQL_SA_PASSWORD
-              value: tech#2024
-          image: mcr.microsoft.com/mssql/server:2022-latest
-          name: sqlserver
-          ports:
-            - containerPort: 1433
-              protocol: TCP
-          volumeMounts:
-            - mountPath: /var/opt/mssql3
-              name: sql-data
-      hostname: sqlserver-fc
-      restartPolicy: Always
+      - name: sqlserver-dep
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+        - containerPort: 1433
+        envFrom:
+        - configMapRef:
+            name: fo-configmap
+        volumeMounts:
+        - name: mssqldb
+          mountPath: /var/opt/mssql/data
       volumes:
-        - name: sql-data
-          persistentVolumeClaim:
-            claimName: sql-data
+      - name: mssqldb
+        persistentVolumeClaim:
+          claimName: kuku-pvc

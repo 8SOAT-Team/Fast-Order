@@ -85,8 +85,8 @@ spec:
           value: "Server=mssql-service,1433;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;"
         - name: ASPNETCORE_ENVIRONMENT
           value: Production
-        - name: ASPNETCORE_URLS
-          value: "https://+:57399;http://+57398"
+        #- name: ASPNETCORE_URLS
+        #  value: "https://+:57399;http://+57398"
         # - name: ASPNETCORE_Kestrel__Certificates__Default__Password
         #   value: "fiap@123"
         # - name: ASPNETCORE_Kestrel__Certificates__Default__Path
@@ -105,11 +105,11 @@ spec:
     app: fast-crud
   type: NodePort
   ports:
-  - protocol: TCP
-    name: http
-    port: 8080
-    targetPort: 8080
-  - protocol: TCP
-    name: https
-    port: 8081
-    targetPort: 8081
+    - port: 80
+      name: http
+      targetPort: 8080
+      nodePort: 31300
+    - port: 81
+      name: https
+      targetPort: 8081
+      nodePort: 31200
