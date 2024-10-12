@@ -20,12 +20,8 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateLogger();
 
-Log.Information("Hello, world!");
-
 //Registrando as dependências
 IConfiguration configuration = builder.Configuration.AddEnvironmentVariables().Build();
-
-Log.Information(configuration["DefaultConnectionContainer"]!);
 
 builder.Services.ConfigureDI(configuration);
 
@@ -44,7 +40,12 @@ var app = builder.Build();
 app.ConfigureExceptionHandler();
 
 //Executar as migrações pendentes
-MigracoesPendentes.ExecuteMigration(app);
+var shouldRunMigrations = bool.Parse(configuration["RunMigrationsOnStart"] ?? "false");
+
+if (shouldRunMigrations)
+{
+    MigracoesPendentes.ExecuteMigration(app);
+}
 
 // Configure the HTTP request pipeline.
 
@@ -63,6 +64,7 @@ app.AddEndPointProdutos();
 app.AddEndpointClientes();
 app.AddEndpointPedidos();
 app.AddEndpointPagamentos();
+app.AddEndpointMigrate();
 
 app.UseHttpsRedirection();
 
