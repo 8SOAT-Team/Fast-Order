@@ -1,16 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app: sqlserver
-  name: sqlserver
+  name: mssql-service
 spec:
-  ports:
-    - name: "11433"
-      port: 11433
-      targetPort: 1433
-    - name: "1433"
-      port: 1433
-      targetPort: 1433
   selector:
-    app: sqlserver
+    app: sqlserver-dep
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 1433
+    targetPort: 1433
