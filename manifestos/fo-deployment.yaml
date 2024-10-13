@@ -22,6 +22,12 @@ spec:
           value: "Server=mssql-service,1433;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;"
         - name: ASPNETCORE_ENVIRONMENT
           value: Production
+        - name: PAGAMENTO_FORNECEDOR_ACESS_TOKEN
+          value: TEST-2093603672395558-073020-e232e863f917babd8bd846f2715d1284-223156837
+        - name: RunMigrationsOnStart
+          value: "true"
+        - name: PAGAMENTO_WEBHOOK_URL
+          value: "https://fastorder.free.beeceptor.com"
         ports:
         - containerPort: 57399
         - containerPort: 57398
