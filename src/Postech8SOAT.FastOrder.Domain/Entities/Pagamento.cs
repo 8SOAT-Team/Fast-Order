@@ -39,6 +39,7 @@ public class Pagamento : Entity, IAggregateRoot
     public StatusPagamento Status { get; private set; }
     public MetodoDePagamento MetodoDePagamento { get; init; }
     public decimal ValorTotal { get; init; }
+    public string? UrlPagamento { get; private set; }
 
     public bool EstaAutorizado() => Status == StatusPagamento.Autorizado;
 
@@ -56,9 +57,10 @@ public class Pagamento : Entity, IAggregateRoot
         Status = StatusPagamento.Cancelado;
     }
 
-    public void AssociarPagamentoExterno(string pagamentoExternoId)
+    public void AssociarPagamentoExterno(string pagamentoExternoId, string urlPagamento)
     {
         PagamentoExternoId = pagamentoExternoId;
+        UrlPagamento = urlPagamento;
     }
 
     private static void ValidationDomain(Guid id, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal)

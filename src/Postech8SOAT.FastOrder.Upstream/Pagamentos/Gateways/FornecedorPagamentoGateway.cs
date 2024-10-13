@@ -1,48 +1,70 @@
 ﻿using MercadoPago.Client;
-using MercadoPago.Client.OAuth;
+using MercadoPago.Client.Common;
 using MercadoPago.Client.Payment;
+using MercadoPago.Client.Preference;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Pagamentos.Dtos;
 
 namespace Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways
 {
-    public class FornecedorPagamentoGateway(
-        PaymentClient paymentClient,
-        OAuthClient oAuthClient) : IFornecedorPagamentoGateway
+    public class FornecedorPagamentoGateway(PaymentClient paymentClient,
+        PreferenceClient preferenceClient,
+        IPedidoGateway pedidoGateway) : IFornecedorPagamentoGateway
     {
+        private readonly PreferenceClient _preferenceClient = preferenceClient;
         private readonly PaymentClient _paymentClient = paymentClient;
-        private readonly OAuthClient _oAuthClient = oAuthClient;
-        public async Task<FornecedorCriarPagamentoResponseDto> IniciarPagamento(MetodoDePagamento metodoDePagamento, string emailPagador, decimal valorTotal, Guid pedidoId)
+        private readonly IPedidoGateway _pedidoGateway = pedidoGateway;
+
+        public async Task<FornecedorCriarPagamentoResponseDto> IniciarPagamento(MetodoDePagamento metodoDePagamento,
+            string emailPagador, decimal valorTotal, string referenciaExternaId, Guid pedidoId, CancellationToken cancellationToken = default)
         {
+            var pedido = await _pedidoGateway.GetPedidoCompletoAsync(pedidoId);
+
             var options = GetRequestOptions();
-            var paymentMethod = GetPaymentMethodType(metodoDePagamento);
-            var pagamentoRequest = new PaymentCreateRequest()
+            var preferenceRequest = new PreferenceRequest()
             {
-                Installments = 1,
-                PaymentMethod = new PaymentMethodRequest()
+                Items = pedido!.ItensDoPedido.Select(item => new PreferenceItemRequest()
                 {
-                    Type = paymentMethod,
-                },
-                Payer = new PaymentPayerRequest()
+                    Id = item.Id.ToString(),
+                    Title = item.Produto.Nome,
+                    Description = item.Produto.Descricao,
+                    Quantity = item.Quantidade,
+                    UnitPrice = item.Produto.Preco,
+                    CurrencyId = "BRL",
+                }).ToList(),
+                Payer = pedido.Cliente is null ? null : new PreferencePayerRequest()
                 {
                     Email = emailPagador,
+                    Name = pedido.Cliente.Nome,
+                    Identification = new IdentificationRequest()
+                    {
+                        Type = "CPF",
+                        Number = pedido.Cliente.Cpf,
+                    },
                 },
-                TransactionAmount = valorTotal,
-                ExternalReference = pedidoId.ToString(),
-                PaymentMethodId = paymentMethod,
+                BackUrls = new PreferenceBackUrlsRequest()
+                {
+                    Success = "https://fastorder.com.br/success",
+                    Failure = "https://fastorder.com.br/failure",
+                    Pending = "https://fastorder.com.br/pending",
+                },
+                NotificationUrl = Environment.GetEnvironmentVariable("PAGAMENTO_WEBHOOK_URL") ?? "",
+                AutoReturn = "approved",
+                ExternalReference = referenciaExternaId,
             };
 
-            var response = await _paymentClient.CreateAsync(pagamentoRequest, options);
-
-            return new FornecedorCriarPagamentoResponseDto(response.Id?.ToString()!);
+            var response = await _preferenceClient.CreateAsync(preferenceRequest, options, cancellationToken);
+            return new FornecedorCriarPagamentoResponseDto(response.Id?.ToString()!, response.InitPoint);
         }
 
-        public async Task<FornecedorGetPagamentoResponseDto> ObterPagamento(string IdExterno)
+        public async Task<FornecedorGetPagamentoResponseDto> ObterPagamento(string IdExterno, CancellationToken cancellationToken = default)
         {
             var options = GetRequestOptions();
-            var response = await _paymentClient.GetAsync(long.Parse(IdExterno));
-            return new FornecedorGetPagamentoResponseDto(response.Id.ToString()!, GetStatusPagamento(response.Status));
+            var response = await _paymentClient.GetAsync(long.Parse(IdExterno), options, cancellationToken);
+            var pagamentoId = response.ExternalReference;
+
+            return new FornecedorGetPagamentoResponseDto(response.Id.ToString()!, Guid.Parse(pagamentoId), GetStatusPagamento(response.Status));
         }
 
         private static string GetPaymentMethodType(MetodoDePagamento metodoDePagamento)
@@ -63,24 +85,11 @@ namespace Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways
             _ => StatusPagamento.Pendente,
         };
 
-        //private async Task<string> GetAccessKey()
-        //{
-        //    var request = new CreateOAuthCredentialRequest()
-        //    {
-        //        ClientId = "2093603672395558",
-        //        ClientSecret = "42vL9SaOm4dkrg7ecghlCjq4U1oWymjP",
-        //    };
-        //    var response = await _oAuthClient.CreateOAuthCredentialAsync(null, request.ClientId, request.ClientSecret, null);
-
-        //    return response.AccessToken;
-        //}
-
         private RequestOptions GetRequestOptions()
         {
-            //var accessToken = await GetAccessKey();
             var opt = new RequestOptions()
             {
-                AccessToken = "TEST-2093603672395558-073020-e232e863f917babd8bd846f2715d1284-223156837"
+                AccessToken = Environment.GetEnvironmentVariable("PAGAMENTO_FORNECEDOR_ACESS_TOKEN") ?? ""
             };
             opt.CustomHeaders.Add("x-idempotencyid", Guid.NewGuid().ToString());
             return opt;

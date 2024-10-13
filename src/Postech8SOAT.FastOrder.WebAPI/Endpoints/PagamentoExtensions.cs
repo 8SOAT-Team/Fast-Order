@@ -52,11 +52,5 @@ public static class PagamentoExtensions
         .Produces<AppBadRequestProblemDetails>((int)HttpStatusCode.BadRequest)
         .Produces((int)HttpStatusCode.NotFound)
         .WithOpenApi();
-
-        app.MapPost("/pagamento/webhook", async ([FromBody] object payload) =>
-        {
-            await Console.Out.WriteLineAsync("Funcionou!!!");
-            return Results.Ok(payload);
-        });
     }
 }

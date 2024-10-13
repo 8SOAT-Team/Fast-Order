@@ -34,9 +34,10 @@ public class IniciarPagamentoUseCase(
 
         pedido.IniciarPagamento(command.MetodoDePagamento);
 
-        var fornecedorResponse = await _fornecedorPagamentoGateway.IniciarPagamento(command.MetodoDePagamento, pedido.Cliente?.Email ?? "", pedido.ValorTotal, pedido.Id);
+        var fornecedorResponse = await _fornecedorPagamentoGateway.IniciarPagamento(command.MetodoDePagamento, pedido.Cliente?.Email ?? "",
+            pedido.ValorTotal, pedido.Pagamento!.Id.ToString(), pedido.Id);
 
-        pedido.Pagamento!.AssociarPagamentoExterno(fornecedorResponse.IdExterno);
+        pedido.Pagamento!.AssociarPagamentoExterno(fornecedorResponse.IdExterno, fornecedorResponse.UrlPagamento);
 
         await _pedidoGateway.AtualizarPedidoPagamentoIniciadoAsync(pedido);
 

@@ -14,5 +14,6 @@ public static class PagamentoPresenter
         (MetodosDePagamento)pagamento.MetodoDePagamento,
         (StatusDoPagamento)pagamento.Status,
         pagamento.ValorTotal,
-        pagamento.PagamentoExternoId!);
+        pagamento.PagamentoExternoId!,
+        pagamento.UrlPagamento);
 }

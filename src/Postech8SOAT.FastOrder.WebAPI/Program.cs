@@ -65,6 +65,7 @@ app.AddEndpointClientes();
 app.AddEndpointPedidos();
 app.AddEndpointPagamentos();
 app.AddEndpointMigrate();
+app.AddEndpointWebhook();
 
 app.UseHttpsRedirection();
 

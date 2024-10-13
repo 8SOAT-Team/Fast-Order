@@ -61,4 +61,17 @@ public class PagamentoController(
            .AdaptUsing(PagamentoPresenter.ToPagamentoDTO)
            .Build();
     }
+
+    public async Task<Result<PagamentoResponseDTO>> ReceberWebhookPagamento(string pagamentoExternoId)
+    {
+        var useCase = new ConfirmarStatusPagamentoUseCase(_logger, _fornecedorPagamentoGateway, _pagamentoGateway);
+        var useCaseResult = await useCase.ResolveAsync(pagamentoExternoId);
+
+        return ControllerResultBuilder<PagamentoResponseDTO, Pagamento>
+           .ForUseCase(useCase)
+           .WithInstance(pagamentoExternoId)
+           .WithResult(useCaseResult)
+           .AdaptUsing(PagamentoPresenter.ToPagamentoDTO)
+           .Build();
+    }
 }

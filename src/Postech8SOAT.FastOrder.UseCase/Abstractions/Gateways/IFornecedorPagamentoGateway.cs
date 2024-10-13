@@ -5,6 +5,7 @@ namespace Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 public interface IFornecedorPagamentoGateway
 {
-    Task<FornecedorCriarPagamentoResponseDto> IniciarPagamento(MetodoDePagamento metodoDePagamento, string emailPagador, decimal valorTotal, Guid pedidoId);
-    Task<FornecedorGetPagamentoResponseDto> ObterPagamento(string IdExterno);
+    Task<FornecedorCriarPagamentoResponseDto> IniciarPagamento(MetodoDePagamento metodoDePagamento,
+            string emailPagador, decimal valorTotal, string referenciaExternaId, Guid pedidoId, CancellationToken cancellationToken = default);
+    Task<FornecedorGetPagamentoResponseDto> ObterPagamento(string IdExterno, CancellationToken cancellationToken = default);
 }

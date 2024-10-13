@@ -17,7 +17,7 @@ public class ConfirmarPagamentoUseCase(
 
     protected override async Task<Pagamento?> Execute(ConfirmarPagamentoDto dto)
     {
-        var pagamento = await _pagamentoGateway.GetById(dto.PagamentoId);
+        var pagamento = await _pagamentoGateway.GetByIdAsync(dto.PagamentoId);
 
         if (pagamento == null)
         {

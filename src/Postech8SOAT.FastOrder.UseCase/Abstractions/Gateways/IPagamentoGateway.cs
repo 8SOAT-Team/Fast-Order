@@ -3,7 +3,7 @@
 namespace Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 public interface IPagamentoGateway
 {
-    Task<List<Pagamento>> FindPagamentoByPedidoId(Guid pedidoId);
-    Task<Pagamento?> GetById(Guid id);
+    Task<List<Pagamento>> FindPagamentoByPedidoIdAsync(Guid pedidoId);
+    Task<Pagamento?> GetByIdAsync(Guid id);
     Task<Pagamento> UpdatePagamentoAsync(Pagamento pagamento);
 }

@@ -1,4 +1,5 @@
 ﻿using Postech8SOAT.FastOrder.Controllers.Pedidos.Dtos;
+using Postech8SOAT.FastOrder.Controllers.Presenters.Pagamentos;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Presenters.Clientes;
 
@@ -22,7 +23,7 @@ internal static class PedidoPresenter
                 Imagem = p.Produto?.Imagem!
             }).ToList(),
             ValorTotal = pedido.ValorTotal,
-            Pagamento = pedido.Pagamento
+            Pagamento = pedido.Pagamento is null ? null : PagamentoPresenter.ToPagamentoDTO(pedido.Pagamento)
         };
     }
 

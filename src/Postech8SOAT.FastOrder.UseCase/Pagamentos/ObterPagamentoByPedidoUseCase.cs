@@ -13,7 +13,7 @@ public class ObterPagamentoByPedidoUseCase(
 
     protected override async Task<List<Pagamento>?> Execute(Guid pedidoId)
     {
-        var pagamentos = await _pagamentoGateway.FindPagamentoByPedidoId(pedidoId);
+        var pagamentos = await _pagamentoGateway.FindPagamentoByPedidoIdAsync(pedidoId);
         return pagamentos?.Count > 0 ? pagamentos : null;
     }
 }

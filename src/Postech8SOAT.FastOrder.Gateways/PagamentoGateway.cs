@@ -9,12 +9,12 @@ public class PagamentoGateway(FastOrderContext dbContext) : IPagamentoGateway
 
     private readonly FastOrderContext _dbContext = dbContext;
 
-    public Task<List<Pagamento>> FindPagamentoByPedidoId(Guid pedidoId)
+    public Task<List<Pagamento>> FindPagamentoByPedidoIdAsync(Guid pedidoId)
     {
         return _dbContext.Pagamentos.Where(p => p.PedidoId == pedidoId).ToListAsync();
     }
 
-    public Task<Pagamento?> GetById(Guid id)
+    public Task<Pagamento?> GetByIdAsync(Guid id)
     {
         return _dbContext.Pagamentos.FirstOrDefaultAsync(p => p.Id == id);
     }
