@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     app: sqlserver-dep
-  type: NodePort
+  type: ClusterIp
   ports:
   - protocol: TCP
     port: 1433
