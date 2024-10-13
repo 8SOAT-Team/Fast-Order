@@ -31,6 +31,20 @@ spec:
         ports:
         - containerPort: 57399
         - containerPort: 57398
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          periodSeconds: 10
+          failureThreshold: 3
+          initialDelaySeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          periodSeconds: 10
+          failureThreshold: 5
+          initialDelaySeconds: 3
         resources:
             requests:
               cpu: 1m
