@@ -5,6 +5,7 @@
 O projeto implementa os fluxos descritos no [Event Storming (miro board)](https://miro.com/app/board/uXjVK5PtxF0=/?share_link_id=847017542278) 
 
 
+
 ## Pré-requisitos
 - Docker
     - [Instruções para instalar o Docker - Windows](https://docs.docker.com/desktop/install/windows-install/)   
@@ -16,6 +17,9 @@ O projeto implementa os fluxos descritos no [Event Storming (miro board)](https:
   - [Habilitar Kubernetes com Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
 
 ## Executando
+
+[Video de apresentação e fluxo de execução esperado](https://www.youtube.com/watch?v=2OUjhxdt0Hk)
+
 1. Abra o "Docker Desktop"
 
 2. Clone o repositório:
@@ -40,9 +44,6 @@ Disponibilizamos uma [collection do postman](/docs/postman/Postech8SOAT.FastOrde
 
 ## Uso
 As APIs devem estar rodando em http://localhost:31500/
-
-## Fluxo de utilização esperado
-[Video de apresentação do projeto e Fluxo de execução esperado](https://www.youtube.com/watch?v=2OUjhxdt0Hk)
 
 # Desenho da Arquitetura 
 <p align="center"><img src="https://github.com/8SOAT-Team/Fast-Order/blob/main/manifestos/arquitetura.png"></p>
