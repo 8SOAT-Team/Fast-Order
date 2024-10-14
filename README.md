@@ -4,6 +4,7 @@
 
 O projeto implementa os fluxos descritos no [Event Storming (miro board)](https://miro.com/app/board/uXjVK5PtxF0=/?share_link_id=847017542278) 
 
+Para maiores detalhes gravamos um [video de apresentação com o fluxo de execução esperado](https://www.youtube.com/watch?v=2OUjhxdt0Hk)
 
 
 ## Pré-requisitos
@@ -17,8 +18,6 @@ O projeto implementa os fluxos descritos no [Event Storming (miro board)](https:
   - [Habilitar Kubernetes com Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
 
 ## Executando
-
-[Video de apresentação e fluxo de execução esperado](https://www.youtube.com/watch?v=2OUjhxdt0Hk)
 
 1. Abra o "Docker Desktop"
 
