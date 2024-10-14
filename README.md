@@ -88,6 +88,9 @@ Ao iniciar a aplicação WEB API todas as migrações pendentes são aplicadas, 
 
 [Fluxo de execução esperado](flow.md)
 
+# Desenho da Arquitetura 
+<p align="center"><img src="https://github.com/8SOAT-Team/Fast-Order/blob/main/manifestos/arquitetura.png"></p>
+
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
 
@@ -95,7 +98,7 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para m
 ### Fiap turma 8SOAT - Grupo 7
 
 - André Bessa - RM357159
-- Fernanda - RM357346
+- Fernanda Beato - RM357346
 - Felipe Bergmann - RM357042
 - Gilberto Loubach - RM357416
 - Victor Oliver - RM357451
