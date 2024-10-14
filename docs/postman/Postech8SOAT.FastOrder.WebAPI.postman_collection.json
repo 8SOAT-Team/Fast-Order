@@ -36,7 +36,7 @@
 								"exec": [
 									"var baseUrl = pm.collectionVariables.get(\"baseUrl\");\r",
 									"if( !baseUrl ){\r",
-									"    pm.collectionVariables.set(\"baseUrl\",\"https://localhost:57399\")\r",
+									"    pm.collectionVariables.set(\"baseUrl\",\"http://localhost:31500\")\r",
 									"}"
 								],
 								"type": "text/javascript",
@@ -628,7 +628,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Produto Teste3\",\n  \"descricao\": \"Descrição Teste\",\n  \"preco\": 15.00,\n  \"imagem\": \"https://google.com.br/\",\n  \"categoriaId\": \"{{idCategoria}}\"\n}",
+							"raw": "{\n  \"nome\": \"X-bacon\",\n  \"descricao\": \"Descrição Teste\",\n  \"preco\": 15.00,\n  \"imagem\": \"https://google.com.br/\",\n  \"categoriaId\": \"{{idCategoria}}\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1588,7 +1588,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"novoStatus\": \"EmPreparacao\"\n}",
+							"raw": "{\n  \"novoStatus\": \"Finalizado\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1597,13 +1597,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/pedido/aaaaa/status",
+							"raw": "{{baseUrl}}/pedido/{{idPedido}}/status",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"pedido",
-								"aaaaa",
+								"{{idPedido}}",
 								"status"
 							]
 						}
@@ -1976,7 +1976,7 @@
 							"script": {
 								"exec": [
 									"var responseBody = JSON.parse(pm.response.text());\r",
-									"pm.collectionVariables.set(\"idPagamento\", responseBody.id);"
+									"pm.collectionVariables.set(\"idPagamento\", responseBody[0].id);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -2159,85 +2159,56 @@
 							"body": ""
 						}
 					]
-				},
-				{
-					"name": "Confirma pagamento de um pedido",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"status\": \"Pendente\"\n}",
-							"options": {
-								"raw": {
-									"headerFamily": "json",
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/pagamento/{{idPagamento}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"pagamento",
-								"{{idPagamento}}"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"status\": \"Rejeitado\"\n}",
-									"options": {
-										"raw": {
-											"headerFamily": "json",
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/pagamento/:pagamentoId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"pagamento",
-										":pagamentoId"
-									],
-									"variable": [
-										{
-											"key": "pagamentoId"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [],
-							"cookie": [],
-							"body": ""
-						}
-					]
 				}
 			]
+		},
+		{
+			"name": "Webhook - Retorno pagamentos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "accept",
+						"value": "/"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"action\": \"payment.created\",\r\n  \"api_version\": \"v1\",\r\n  \"data\": {\r\n    \"id\": \"1327584549\"\r\n  },\r\n  \"date_created\": \"2024-10-13T22:48:25Z\",\r\n  \"id\": 116375249349,\r\n  \"live_mode\": false,\r\n  \"type\": \"payment\",\r\n  \"user_id\": \"223156837\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pagamento/mp/webhook?data.id=1327584549&type=payment",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pagamento",
+						"mp",
+						"webhook"
+					],
+					"query": [
+						{
+							"key": "data.id",
+							"value": "1327584549"
+						},
+						{
+							"key": "type",
+							"value": "payment"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl --request POST \\\r\n  --url 'https://localhost:7291/pagamento/mp/webhook?data.id=1319894112&type=payment' \\\r\n  --header 'Content-Type: application/json' \\\r\n  --header 'accept: /' \\\r\n  --data '{\r\n  \"action\": \"payment.created\",\r\n  \"api_version\": \"v1\",\r\n  \"data\": {\r\n    \"id\": \"1319894112\"\r\n  },\r\n  \"date_created\": \"2024-10-13T19:06:28Z\",\r\n  \"id\": 116419013058,\r\n  \"live_mode\": false,\r\n  \"type\": \"payment\",\r\n  \"user_id\": \"223156837\"\r\n}'"
+			},
+			"response": []
 		}
 	],
 	"event": [

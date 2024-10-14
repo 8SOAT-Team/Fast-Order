@@ -1,38 +1,8 @@
 # fast-order
 
-É uma implementação dos domínios de negócio de uma lanchonete utilizando arquitetura hexagonal, disponibilizando um Driven webapi.
+É uma implementação dos domínios de negócio de uma lanchonete utilizando clean-architecture, disponibilizando um Driven webapi.
 
 O projeto implementa os fluxos descritos no [Event Storming (miro board)](https://miro.com/app/board/uXjVK5PtxF0=/?share_link_id=847017542278) 
-
-## Categorias do negócio
-
-O requisito de negócio determina quais categorias um produto pode ser alocado. 
-Este projeto trata a categoria como uma entidade, portanto as mesmas são referenciadas por Ids, mas não há atualmente gestão de categorias, apenas listagem.
-O mapeamento das categorias segue:
-```json
-[
-  {
-    "id": "07c470aa-606f-4792-849a-02433c121117",
-    "nome": "Bebida",
-    "descricao": "Bebidas"
-  },
-  {
-    "id": "b553a212-9930-4e5a-a780-138a0a4a0b78",
-    "nome": "Sobremesa",
-    "descricao": "Sobremesas"
-  },
-  {
-    "id": "0194d8c4-2d04-4172-a63a-4d381eadf729",
-    "nome": "Acompanhamento",
-    "descricao": "Acompanhamentos"
-  },
-  {
-    "id": "6224b6c0-26e9-42fa-8b04-dc0e9fd6b971",
-    "nome": "Lanche",
-    "descricao": "Lanches"
-  }
-]
-```
 
 
 ## Pré-requisitos
@@ -42,51 +12,37 @@ O mapeamento das categorias segue:
     - [Instruções para instalar o Docker - MacOs](https://docs.docker.com/desktop/install/mac-install/)
 - Docker Compose
     - [Instruções para instalar o Docker Compose](https://docs.docker.com/compose/install/)
-
+- Kubernetes
+  - [Habilitar Kubernetes com Docker Desktop](https://docs.docker.com/desktop/kubernetes/)
 
 ## Executando
-1. Tenha certeza de que o Docker está rodando, você pode fazer isso abrindo o Docker Desktop
+1. Abra o "Docker Desktop"
 
 2. Clone o repositório:
    ```bash
    git clone https://github.com/8SOAT-Team/Fast-Order.git
 
-3. Acesse a raíz do projeto
+3. Acesse a pasta de manifestos
    ```bash
    cd Fast-Order
+   cd manifestos
 
-4. Construa e inicie os containers Docker  
-   ```bash
-   docker-compose up --build
-  
+4. Aplique os arquivos ".yaml" utilizando o kubectl
+    ```bash
+    kubectl apply -f fo-configmap.yaml,fo-pvc.yaml,fo-svc.yaml,fo-deployment.yaml,fo-hpa.yaml,fo-db-svc.yaml,fo-db-deployment.yaml
+
+5. Aguarde os deployments estarem disponíveis     
+    ```bash
+    kubectl get deployments --watch
+
 ## Documentação da API
-A documentação completa da API pode ser encontrada em https://localhost:57399 (permita em seu navegador conexão não confiável)
+Disponibilizamos uma [collection do postman](/docs/postman/Postech8SOAT.FastOrder.WebAPI.postman_collection.json) com todos os endpoints utilizados na apresentação.
 
 ## Uso
+As APIs devem estar rodando em http://localhost:31500/
 
-A API deve estar rodando em https://localhost:57399/
-
-Será iniciado um container com o MS SqlServer, rodando na porta 11433 e expondo na porta 11433.
-
-# Contribuindo
-
-## Rodando as migrações
-
-- Após realizar alterações nos modelos de dados, gere a migração
-   ```bash
-   dotnet ef migrations add <NomeDaMigracao> --startup-project Postech8SOAT.FastOrder.WebAPI --project Postech8SOAT.FastOrder.Infra.Data
-   ```
-
-- Caso precise desfazer a migração (antes de atualizar o banco de dados)
-   ```bash
-   dotnet ef migrations remove --startup-project Postech8SOAT.FastOrder.WebAPI --project Postech8SOAT.FastOrder.Infra.Data
-   ```
-
-Ao iniciar a aplicação WEB API todas as migrações pendentes são aplicadas, fazendo com que não seja necessário rodar o comando ```ef database update```
-
-# Fluxo de utilização esperado
-
-[Fluxo de execução esperado](flow.md)
+## Fluxo de utilização esperado
+[Video de apresentação do projeto e Fluxo de execução esperado](https://www.youtube.com/watch?v=2OUjhxdt0Hk)
 
 # Desenho da Arquitetura 
 <p align="center"><img src="https://github.com/8SOAT-Team/Fast-Order/blob/main/manifestos/arquitetura.png"></p>
