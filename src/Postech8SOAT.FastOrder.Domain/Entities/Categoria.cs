@@ -1,4 +1,5 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Categoria : Entity
@@ -16,6 +17,8 @@ public class Categoria : Entity
         ValidationDomain(nome, descricao);
 
     }
+
+    [JsonConstructor]
     public Categoria(Guid id, string? nome, string? descricao)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");

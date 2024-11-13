@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.Json;
 using Polferov.SwaggerEnumsAsStrings;
 using Postech8SOAT.FastOrder.Infra.IOC;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints;
@@ -6,6 +5,7 @@ using Postech8SOAT.FastOrder.WebAPI.Logs;
 using Postech8SOAT.FastOrder.WebAPI.Middlewares;
 using Postech8SOAT.FastOrder.WebAPI.Services;
 using Serilog;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,11 +25,21 @@ IConfiguration configuration = builder.Configuration.AddEnvironmentVariables().B
 
 builder.Services.ConfigureDI(configuration);
 
-builder.Services.Configure<JsonOptions>(options =>
+var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
 {
-    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    MaxDepth = 16,
+    ReferenceHandler = ReferenceHandler.IgnoreCycles,
+};
+jsonOptions.Converters.Add(new JsonStringEnumConverter());
+
+builder.Services.AddSingleton(jsonOptions);
+
+builder.Services.ConfigureHttpJsonOptions(options => {
+    options.SerializerOptions.ReferenceHandler = jsonOptions.ReferenceHandler;
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.SerializerOptions.MaxDepth = jsonOptions.MaxDepth;
 });
+
 
 builder.Services.AddCors();
 

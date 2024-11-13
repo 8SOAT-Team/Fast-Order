@@ -1,6 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 
@@ -17,6 +18,7 @@ public class Pagamento : Entity, IAggregateRoot
 
     protected Pagamento() { }
 
+    [JsonConstructor]
     public Pagamento(Guid id, Guid pedidoId, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string? pagamentoExternoId)
     {
         ValidationDomain(id, pedido, metodoDePagamento, valorTotal);

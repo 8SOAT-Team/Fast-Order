@@ -1,5 +1,6 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Cliente : Entity, IAggregateRoot
@@ -14,6 +15,7 @@ public class Cliente : Entity, IAggregateRoot
 
     public Cliente(Guid id, string cpf, string nome, string email) : this(id, new Cpf(cpf), nome, new EmailAddress(email)) { }
 
+    [JsonConstructor]
     public Cliente(Guid id, Cpf cpf, string nome, EmailAddress email)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");

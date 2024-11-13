@@ -1,6 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
 using System.Collections.Immutable;
+using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class Pedido : Entity, IAggregateRoot
@@ -22,6 +23,7 @@ public class Pedido : Entity, IAggregateRoot
 
     public Pedido(Guid? clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
 
+    [JsonConstructor]
     public Pedido(Guid id, Guid? clienteId, List<ItemDoPedido> itens)
     {
         ValidationDomain(id, clienteId, itens);
