@@ -3,24 +3,40 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Gateways.Cache;
 
-public class ProdutoGatewayCache(IProdutoGateway nextExecution, ICacheContext cache) : IProdutoGateway
+public class ProdutoGatewayCache(IProdutoGateway nextExecution, ICacheContext cache) : CacheGateway(cache), IProdutoGateway
 {
-    private static readonly Dictionary<string, string> _cacheKeys = new()
+    private readonly ICacheContext cache = cache;
+
+    private static readonly Dictionary<string, (string CacheKey, bool InvalidateCacheOnChanges)> _cacheKeys = new()
     {
-        [nameof(GetProdutoByIdAsync)] = $"{nameof(ProdutoGatewayCache)}_{nameof(GetProdutoByIdAsync)}",
-        [nameof(GetProdutoCompletoByIdAsync)] = $"{nameof(ProdutoGatewayCache)}_{nameof(GetProdutoCompletoByIdAsync)}",
-        [nameof(GetProdutosByCategoriaAsync)] = $"{nameof(ProdutoGatewayCache)}_{nameof(GetProdutosByCategoriaAsync)}",
-        [nameof(ListarProdutosByIdAsync)] = $"{nameof(ProdutoGatewayCache)}_{nameof(ListarProdutosByIdAsync)}",
-        [nameof(ListarTodosProdutosAsync)] = $"{nameof(ProdutoGatewayCache)}_{nameof(ListarTodosProdutosAsync)}",
+        [nameof(GetProdutoByIdAsync)] = ($"{nameof(ProdutoGatewayCache)}:{nameof(GetProdutoByIdAsync)}", false),
+        [nameof(GetProdutoCompletoByIdAsync)] = ($"{nameof(ProdutoGatewayCache)}:{nameof(GetProdutoCompletoByIdAsync)}", false),
+        [nameof(GetProdutosByCategoriaAsync)] = ($"{nameof(ProdutoGatewayCache)}:{nameof(GetProdutosByCategoriaAsync)}", true),
+        [nameof(ListarProdutosByIdAsync)] = ($"{nameof(ProdutoGatewayCache)}:{nameof(ListarProdutosByIdAsync)}", false),
+        [nameof(ListarTodosProdutosAsync)] = ($"{nameof(ProdutoGatewayCache)}:{nameof(ListarTodosProdutosAsync)}", true),
+        [nameof(CreateProdutoAsync)] = (nameof(Produto), false),
     };
 
-    public Task<Produto> CreateProdutoAsync(Produto produto) => nextExecution.CreateProdutoAsync(produto);
+    protected override Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> CacheKeys => _cacheKeys;
+
+    public async Task<Produto> CreateProdutoAsync(Produto produto)
+    {
+        var createdProduct = await nextExecution.CreateProdutoAsync(produto);
+
+        await InvalidateCacheOnChange();
+
+        var (cacheKey, _) = _cacheKeys[nameof(CreateProdutoAsync)];
+        var key = $"{cacheKey}:{produto.Id}";
+        await cache.SetNotNullStringByKeyAsync(cacheKey, createdProduct);
+
+        return createdProduct;
+    }
 
     public async Task<Produto?> GetProdutoByIdAsync(Guid id)
     {
-        var cacheKey = _cacheKeys[nameof(GetProdutoByIdAsync)];
+        var (cacheKey, _) = _cacheKeys[nameof(GetProdutoByIdAsync)];
 
-        var result = await cache.GetItemByKeyAsync<Produto>($"{cacheKey}_{id}");
+        var result = await cache.GetItemByKeyAsync<Produto>($"{cacheKey}:{id}");
 
         if (result.HasValue)
         {
@@ -35,9 +51,9 @@ public class ProdutoGatewayCache(IProdutoGateway nextExecution, ICacheContext ca
 
     public async Task<Produto?> GetProdutoCompletoByIdAsync(Guid id)
     {
-        var cacheKey = _cacheKeys[nameof(GetProdutoCompletoByIdAsync)];
+        var (cacheKey, _) = _cacheKeys[nameof(GetProdutoCompletoByIdAsync)];
 
-        var result = await cache.GetItemByKeyAsync<Produto>($"{cacheKey}_{id}");
+        var result = await cache.GetItemByKeyAsync<Produto>($"{cacheKey}:{id}");
 
         if (result.HasValue)
         {
@@ -52,9 +68,9 @@ public class ProdutoGatewayCache(IProdutoGateway nextExecution, ICacheContext ca
 
     public async Task<ICollection<Produto>> GetProdutosByCategoriaAsync(Guid categoriaId)
     {
-        var cacheKey = _cacheKeys[nameof(GetProdutosByCategoriaAsync)];
+        var (cacheKey, _) = _cacheKeys[nameof(GetProdutosByCategoriaAsync)];
 
-        var result = await cache.GetItemByKeyAsync<ICollection<Produto>>($"{cacheKey}_{categoriaId}");
+        var result = await cache.GetItemByKeyAsync<ICollection<Produto>>($"{cacheKey}:{categoriaId}");
 
         if (result.HasValue)
         {
@@ -71,7 +87,7 @@ public class ProdutoGatewayCache(IProdutoGateway nextExecution, ICacheContext ca
 
     public async Task<ICollection<Produto>> ListarTodosProdutosAsync()
     {
-        var cacheKey = _cacheKeys[nameof(ListarTodosProdutosAsync)];
+        var (cacheKey, _) = _cacheKeys[nameof(ListarTodosProdutosAsync)];
 
         var result = await cache.GetItemByKeyAsync<ICollection<Produto>>(cacheKey);
 

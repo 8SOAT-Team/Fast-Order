@@ -1,4 +1,5 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 public class ItemDoPedido : Entity
@@ -7,22 +8,27 @@ public class ItemDoPedido : Entity
 
     public Guid PedidoId { get; init; }
 
-    public ItemDoPedido(Guid pedidoId, Guid produtoId, int quantidade)
-    {
-        ValidateDomain(pedidoId, produtoId, quantidade);
-        Id = Guid.NewGuid();
-        PedidoId = pedidoId;
-        ProdutoId = produtoId;
-        Quantidade = quantidade;
-    }
+    public ItemDoPedido(Guid pedidoId, Guid produtoId, int quantidade) : this(Guid.NewGuid(), pedidoId, produtoId, quantidade) { }
 
-    public ItemDoPedido(Guid pedidoId, Produto produto, int quantidade)
+    public ItemDoPedido(Guid pedidoId, Produto produto, int quantidade) : this(Guid.NewGuid(), pedidoId, produto, quantidade) { }
+
+    [JsonConstructor]
+    public ItemDoPedido(Guid id, Guid pedidoId, Produto produto, int quantidade)
     {
         ValidateDomain(pedidoId, produto.Id, quantidade);
-        Id = Guid.NewGuid();
+        Id = id;
         PedidoId = pedidoId;
         ProdutoId = produto.Id;
         Produto = produto;
+        Quantidade = quantidade;
+    }
+
+    public ItemDoPedido(Guid id, Guid pedidoId, Guid produtoId, int quantidade)
+    {
+        ValidateDomain(pedidoId, produtoId, quantidade);
+        Id = id;
+        PedidoId = pedidoId;
+        ProdutoId = produtoId;
         Quantidade = quantidade;
     }
 

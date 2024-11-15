@@ -24,7 +24,7 @@ public class CacheContext(IConnectionMultiplexer connectionMultiplexer, JsonSeri
 
     public async Task<Result<T>> SetNotNullStringByKeyAsync<T>(string key, T value, int expireInSec = 3600)
     {
-        if(value is null)
+        if (value is null)
         {
             return Result<T>.Empty();
         }
@@ -50,5 +50,11 @@ public class CacheContext(IConnectionMultiplexer connectionMultiplexer, JsonSeri
         }
 
         return Result<string>.Succeed(value);
+    }
+
+    public async Task<Result<string>> InvalidateCacheAsync(string key)
+    {
+        _ = await _database.StringGetDeleteAsync(key);
+        return Result<string>.Empty();
     }
 }

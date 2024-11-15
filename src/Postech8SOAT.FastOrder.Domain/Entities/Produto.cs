@@ -13,10 +13,10 @@ public class Produto : Entity, IAggregateRoot
 
     protected Produto() { }
 
-    [JsonConstructor]
     public Produto(string nome, string descricao, decimal preco, string imagem, Guid categoriaId)
         : this(Guid.NewGuid(), nome, descricao, preco, imagem, categoriaId) { }
 
+    [JsonConstructor]
     public Produto(Guid id, string nome, string descricao, decimal preco, string imagem, Guid categoriaId)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");

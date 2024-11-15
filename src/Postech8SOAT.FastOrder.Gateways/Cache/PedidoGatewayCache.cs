@@ -3,26 +3,59 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Gateways.Cache;
 
-public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cache) : IPedidoGateway
+public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cache) : CacheGateway(cache: cache), IPedidoGateway
 {
-    private static readonly Dictionary<string, string> _cacheKeys = new()
+
+    private readonly ICacheContext cache = cache;
+
+    private static readonly Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> _cacheKeys = new()
     {
-        [nameof(GetAllAsync)] = $"{nameof(PedidoGatewayCache)}_{nameof(GetAllAsync)}",
-        [nameof(GetAllPedidosPending)] = $"{nameof(PedidoGatewayCache)}_{nameof(GetAllPedidosPending)}",
-        [nameof(GetByIdAsync)] = $"{nameof(PedidoGatewayCache)}_{nameof(GetByIdAsync)}_{{0}}",
-        [nameof(GetPedidoCompletoAsync)] = $"{nameof(PedidoGatewayCache)}_{nameof(GetPedidoCompletoAsync)}_{{0}}",
+        [nameof(GetAllAsync)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetAllAsync)}", true),
+        [nameof(GetAllPedidosPending)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetAllPedidosPending)}", true),
+        [nameof(GetByIdAsync)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetByIdAsync)}", false),
+        [nameof(GetPedidoCompletoAsync)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetPedidoCompletoAsync)}", false),
+        [nameof(CreateAsync)] = (nameof(Pedido), false),
+        [nameof(UpdateAsync)] = (nameof(Pedido), true)
     };
 
-    public Task<Pedido> AtualizarPedidoPagamentoIniciadoAsync(Pedido pedido) => nextExecution.AtualizarPedidoPagamentoIniciadoAsync(pedido);
+    protected override Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> CacheKeys => throw new NotImplementedException();
 
-    public Task<Pedido> CreateAsync(Pedido pedido) => nextExecution.CreateAsync(pedido);
 
-    public Task<Pedido> UpdateAsync(Pedido pedido) => nextExecution.UpdateAsync(pedido);
+    public async Task<Pedido> AtualizarPedidoPagamentoIniciadoAsync(Pedido pedido)
+    {
+        var pedidoAtualizado = await nextExecution.AtualizarPedidoPagamentoIniciadoAsync(pedido);
+
+        await InvalidateCacheOnChange(pedido.Id.ToString());
+
+        return pedidoAtualizado;
+    }
+
+    public async Task<Pedido> CreateAsync(Pedido pedido)
+    {
+        var pedidoCriado = await nextExecution.CreateAsync(pedido);
+
+        var cacheKey = $"{_cacheKeys[nameof(CreateAsync)].cacheKey}:{pedido.Id}";
+        await cache.SetNotNullStringByKeyAsync(cacheKey, pedidoCriado);
+
+        return pedidoCriado;
+    }
+
+    public async Task<Pedido> UpdateAsync(Pedido pedido)
+    {
+        var pedidoAtualizado = await nextExecution.UpdateAsync(pedido);
+
+        await InvalidateCacheOnChange(pedido.Id.ToString());
+
+        var cacheKey = $"{_cacheKeys[nameof(UpdateAsync)].cacheKey}:{pedidoAtualizado.Id}";
+        await cache.SetNotNullStringByKeyAsync(cacheKey, pedidoAtualizado);
+
+        return pedidoAtualizado;
+    }
 
 
     public async Task<List<Pedido>> GetAllAsync()
     {
-        var cacheKey = _cacheKeys[nameof(GetAllAsync)];
+        var (cacheKey, _) = _cacheKeys[nameof(GetAllAsync)];
 
         var result = await cache.GetItemByKeyAsync<List<Pedido>>(cacheKey);
 
@@ -39,7 +72,7 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
 
     public async Task<List<Pedido>> GetAllPedidosPending()
     {
-        var cacheKey = _cacheKeys[nameof(GetAllPedidosPending)];
+        var (cacheKey, _) = _cacheKeys[nameof(GetAllPedidosPending)];
 
         var result = await cache.GetItemByKeyAsync<List<Pedido>>(cacheKey);
 
@@ -56,9 +89,9 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
 
     public async Task<Pedido?> GetByIdAsync(Guid id)
     {
-        var cacheKey = _cacheKeys[nameof(GetAllPedidosPending)];
+        var (cacheKey, _) = _cacheKeys[nameof(GetAllPedidosPending)];
 
-        var result = await cache.GetItemByKeyAsync<Pedido>($"{cacheKey}_{id}");
+        var result = await cache.GetItemByKeyAsync<Pedido>($"{cacheKey}:{id}");
 
         if (result.HasValue)
         {
@@ -73,9 +106,9 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
 
     public async Task<Pedido?> GetPedidoCompletoAsync(Guid id)
     {
-        var cacheKey = _cacheKeys[nameof(GetAllPedidosPending)];
+        var (cacheKey, _) = _cacheKeys[nameof(GetAllPedidosPending)];
 
-        var result = await cache.GetItemByKeyAsync<Pedido>($"{cacheKey}_{id}");
+        var result = await cache.GetItemByKeyAsync<Pedido>($"{cacheKey}:{id}");
 
         if (result.HasValue)
         {
