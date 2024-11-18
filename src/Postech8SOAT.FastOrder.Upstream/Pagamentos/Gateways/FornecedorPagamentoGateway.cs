@@ -3,9 +3,9 @@ using MercadoPago.Client.Common;
 using MercadoPago.Client.Payment;
 using MercadoPago.Client.Preference;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
+using Postech8SOAT.FastOrder.Infra.Env;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Pagamentos.Dtos;
-using Posttech8SOAT.FastOrder.Infra.Env;
 
 namespace Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways
 {

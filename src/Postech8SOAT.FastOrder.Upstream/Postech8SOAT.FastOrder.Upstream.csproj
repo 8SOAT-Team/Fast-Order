@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Gateways\Postech8SOAT.FastOrder.Gateways.csproj" />
-    <ProjectReference Include="..\Posttech8SOAT.FastOrder.Infra.Environment\Posttech8SOAT.FastOrder.Infra.Env.csproj" />
+    <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.Environment\Postech8SOAT.FastOrder.Infra.Env.csproj" />
   </ItemGroup>
 
 </Project>

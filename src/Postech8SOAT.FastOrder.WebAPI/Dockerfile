@@ -17,6 +17,7 @@ COPY ["src/Postech8SOAT.FastOrder.Infra.Data/Postech8SOAT.FastOrder.Infra.Data.c
 COPY ["src/Postech8SOAT.FastOrder.Presenters/Postech8SOAT.FastOrder.Presenters.csproj", "src/Postech8SOAT.FastOrder.Presenters/"]
 COPY ["src/Postech8SOAT.FastOrder.UseCase/Postech8SOAT.FastOrder.UseCases.csproj", "src/Postech8SOAT.FastOrder.UseCase/"]
 COPY ["src/Postech8SOAT.FastOrder.Infra.IOC/Postech8SOAT.FastOrder.Infra.IOC.csproj", "src/Postech8SOAT.FastOrder.Infra.IOC/"]
+COPY ["src/Postech8SOAT.FastOrder.Infra.IOC/Postech8SOAT.FastOrder.Infra.IOC.csproj", "src/Postech8SOAT.FastOrder.Infra.IOC/"]
 RUN dotnet restore "./src/Postech8SOAT.FastOrder.WebAPI/Postech8SOAT.FastOrder.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/src/Postech8SOAT.FastOrder.WebAPI"

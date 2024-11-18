@@ -1,4 +1,4 @@
-﻿namespace Posttech8SOAT.FastOrder.Infra.Env;
+﻿namespace Postech8SOAT.FastOrder.Infra.Env;
 
 public static class EnvConfig
 {

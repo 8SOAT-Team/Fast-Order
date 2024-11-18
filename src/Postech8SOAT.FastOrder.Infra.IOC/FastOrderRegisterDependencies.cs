@@ -11,15 +11,14 @@ using Postech8SOAT.FastOrder.Controllers.Pedidos;
 using Postech8SOAT.FastOrder.Gateways;
 using Postech8SOAT.FastOrder.Gateways.Cache;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
+using Postech8SOAT.FastOrder.Infra.Env;
 using Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
-using Posttech8SOAT.FastOrder.Infra.Env;
 using StackExchange.Redis;
 
 namespace Postech8SOAT.FastOrder.Infra.IOC;
 public static class FastOrderRegisterDependencies
 {
-
     public static void ConfigureDI(this IServiceCollection services)
     {
         services.AddDbContext<FastOrderContext>(options =>

@@ -1,10 +1,10 @@
 using Polferov.SwaggerEnumsAsStrings;
+using Postech8SOAT.FastOrder.Infra.Env;
 using Postech8SOAT.FastOrder.Infra.IOC;
 using Postech8SOAT.FastOrder.WebAPI.Endpoints;
 using Postech8SOAT.FastOrder.WebAPI.Logs;
 using Postech8SOAT.FastOrder.WebAPI.Middlewares;
 using Postech8SOAT.FastOrder.WebAPI.Services;
-using Posttech8SOAT.FastOrder.Infra.Env;
 using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
