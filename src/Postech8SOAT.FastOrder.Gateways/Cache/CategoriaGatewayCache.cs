@@ -28,14 +28,19 @@ public class CategoriaGatewayCache(ICategoriaGateway nextExecution, ICacheContex
     public async Task<Categoria?> GetCategoriaByIdAsync(Guid id)
     {
         var cacheKey = _cacheKeys[nameof(GetCategoriaByIdAsync)];
+        var key = $"{cacheKey}:{id}";
 
-        var result = await cache.GetItemByKeyAsync<Categoria>($"{cacheKey}:{id}");
+        var result = await cache.GetItemByKeyAsync<Categoria>(key);
 
         if (result.HasValue)
         {
             return result.Value;
         }
 
-        return await nextExecution.GetCategoriaByIdAsync(id);
+        var categoria = await nextExecution.GetCategoriaByIdAsync(id);
+
+        await cache.SetNotNullStringByKeyAsync(key, categoria);
+
+        return categoria;
     }
 }

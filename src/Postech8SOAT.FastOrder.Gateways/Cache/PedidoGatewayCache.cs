@@ -52,7 +52,6 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
         return pedidoAtualizado;
     }
 
-
     public async Task<List<Pedido>> GetAllAsync()
     {
         var (cacheKey, _) = _cacheKeys[nameof(GetAllAsync)];
@@ -90,8 +89,8 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
     public async Task<Pedido?> GetByIdAsync(Guid id)
     {
         var (cacheKey, _) = _cacheKeys[nameof(GetAllPedidosPending)];
-
-        var result = await cache.GetItemByKeyAsync<Pedido>($"{cacheKey}:{id}");
+        var key = $"{cacheKey}:{id}";
+        var result = await cache.GetItemByKeyAsync<Pedido>(key);
 
         if (result.HasValue)
         {
@@ -99,7 +98,7 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
         }
 
         var item = await nextExecution.GetByIdAsync(id);
-        _ = await cache.SetNotNullStringByKeyAsync(cacheKey, item);
+        _ = await cache.SetNotNullStringByKeyAsync(key, item);
 
         return item;
     }
@@ -107,16 +106,16 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
     public async Task<Pedido?> GetPedidoCompletoAsync(Guid id)
     {
         var (cacheKey, _) = _cacheKeys[nameof(GetAllPedidosPending)];
-
-        var result = await cache.GetItemByKeyAsync<Pedido>($"{cacheKey}:{id}");
+        var key = $"{cacheKey}:{id}";
+        var result = await cache.GetItemByKeyAsync<Pedido>(key);
 
         if (result.HasValue)
         {
             return result.Value;
         }
 
-        var item = await nextExecution.GetByIdAsync(id);
-        _ = await cache.SetNotNullStringByKeyAsync(cacheKey, item);
+        var item = await nextExecution.GetPedidoCompletoAsync(id);
+        _ = await cache.SetNotNullStringByKeyAsync(key, item);
 
         return item;
     }

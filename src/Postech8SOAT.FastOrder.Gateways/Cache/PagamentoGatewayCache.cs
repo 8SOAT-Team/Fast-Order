@@ -19,8 +19,9 @@ public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContex
     public async Task<List<Pagamento>> FindPagamentoByPedidoIdAsync(Guid pedidoId)
     {
         var (cacheKey, _) = CacheKeys[nameof(FindPagamentoByPedidoIdAsync)];
+        var key = $"{cacheKey}:{pedidoId}";
 
-        var result = await cache.GetItemByKeyAsync<List<Pagamento>>($"{cacheKey}:{pedidoId}");
+        var result = await cache.GetItemByKeyAsync<List<Pagamento>>(key);
 
         if (result.HasValue)
         {
@@ -28,7 +29,7 @@ public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContex
         }
 
         var item = await nextExecution.FindPagamentoByPedidoIdAsync(pedidoId);
-        _ = await cache.SetNotNullStringByKeyAsync(cacheKey, item);
+        _ = await cache.SetNotNullStringByKeyAsync(key, item);
 
         return item;
     }
@@ -36,8 +37,9 @@ public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContex
     public async Task<Pagamento?> GetByIdAsync(Guid id)
     {
         var (cacheKey, _) = CacheKeys[nameof(GetByIdAsync)];
+        var key = $"{cacheKey}:{id}";
 
-        var result = await cache.GetItemByKeyAsync<Pagamento>($"{cacheKey}:{id}");
+        var result = await cache.GetItemByKeyAsync<Pagamento>(key);
 
         if (result.HasValue)
         {
@@ -45,7 +47,7 @@ public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContex
         }
 
         var item = await nextExecution.GetByIdAsync(id);
-        _ = await cache.SetNotNullStringByKeyAsync(cacheKey, item);
+        _ = await cache.SetNotNullStringByKeyAsync(key, item);
 
         return item;
     }
