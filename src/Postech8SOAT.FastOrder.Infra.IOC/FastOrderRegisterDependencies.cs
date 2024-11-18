@@ -2,7 +2,6 @@
 using MercadoPago.Client.Preference;
 using MercadoPago.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Postech8SOAT.FastOrder.Controllers;
 using Postech8SOAT.FastOrder.Controllers.Clientes;
@@ -14,25 +13,30 @@ using Postech8SOAT.FastOrder.Gateways.Cache;
 using Postech8SOAT.FastOrder.Infra.Data.Context;
 using Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
+using Posttech8SOAT.FastOrder.Infra.Env;
 using StackExchange.Redis;
 
 namespace Postech8SOAT.FastOrder.Infra.IOC;
 public static class FastOrderRegisterDependencies
 {
 
-    public static void ConfigureDI(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureDI(this IServiceCollection services)
     {
-        var dbConnection = configuration.GetConnectionString("DefaultConnectionContainer");
-        //Registrar no container nativo de injeção de dependências.
         services.AddDbContext<FastOrderContext>(options =>
-                options.UseLazyLoadingProxies().UseSqlServer(dbConnection));
+                options.UseLazyLoadingProxies().UseSqlServer(EnvConfig.DatabaseConnection));
 
-        //client
         services.AddHttpClient();
 
-        //Gateways
+        services.AddGateways()
+         .AddControllers()
+         .UpstreamDI()
+         .CacheDI();
+    }
+
+    private static IServiceCollection AddGateways(this IServiceCollection services)
+    {
         services.AddScoped<IClienteGateway, ClienteGateway>()
-                .Decorate<IClienteGateway, ClienteGatewayCache>();
+               .Decorate<IClienteGateway, ClienteGatewayCache>();
 
         services.AddScoped<ICategoriaGateway, CategoriaGateway>()
                 .Decorate<ICategoriaGateway, CategoriaGatewayCache>();
@@ -46,19 +50,21 @@ public static class FastOrderRegisterDependencies
         services.AddScoped<IPedidoGateway, PedidoGateway>()
                 .Decorate<IPedidoGateway, PedidoGatewayCache>();
 
-        //Controllers
+        return services;
+    }
+
+    private static IServiceCollection AddControllers(this IServiceCollection services)
+    {
         services.AddScoped<IClienteController, ClienteController>();
         services.AddScoped<ICategoriaController, CategoriaController>();
         services.AddScoped<IProdutoController, ProdutoController>();
         services.AddScoped<IPedidoController, PedidoController>();
         services.AddScoped<IPagamentoController, PagamentoController>();
 
-        //Upstream
-        services.UpstreamDI(configuration);
-        services.CacheDI(configuration);
+        return services;
     }
 
-    private static void UpstreamDI(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection UpstreamDI(this IServiceCollection services)
     {
         //Gateways
         services.AddSingleton<ISerializer, DefaultSerializer>();
@@ -67,18 +73,15 @@ public static class FastOrderRegisterDependencies
         //client
         services.AddSingleton<PaymentClient>();
         services.AddSingleton<PreferenceClient>();
+
+        return services;
     }
 
-    private static void CacheDI(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection CacheDI(this IServiceCollection services)
     {
-        var cacheConnection = configuration.GetValue<string>("DISTRIBUTED_CACHE_URl");
-
-        if(cacheConnection is null || cacheConnection == string.Empty)
-        {
-            throw new Exception("DISTRIBUTED_CACHE_URL não configurado");
-        }
-
-        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(cacheConnection));
+        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(EnvConfig.DistributedCacheUrl));
         services.AddSingleton<ICacheContext, CacheContext>();
+
+        return services;
     }
 }

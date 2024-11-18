@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Upstream\Postech8SOAT.FastOrder.Upstream.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.UseCase\Postech8SOAT.FastOrder.UseCases.csproj" />
+    <ProjectReference Include="..\Posttech8SOAT.FastOrder.Infra.Environment\Posttech8SOAT.FastOrder.Infra.Env.csproj" />
   </ItemGroup>
 
 </Project>

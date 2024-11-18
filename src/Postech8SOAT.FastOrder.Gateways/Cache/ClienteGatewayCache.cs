@@ -4,11 +4,21 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Gateways.Cache;
 
-public class ClienteGatewayCache(IClienteGateway nextExecution, ICacheContext cache) : IClienteGateway
+public class ClienteGatewayCache(IClienteGateway nextExecution, ICacheContext cache) : CacheGateway(cache), IClienteGateway
 {
+    private readonly ICacheContext cache = cache;
+
+    private static readonly Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> _cacheKeys = new()
+    {
+        [nameof(GetClienteByCpfAsync)] = ($"{nameof(ClienteGatewayCache)}:{nameof(GetClienteByCpfAsync)}", false),
+    };
+
+    protected override Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> CacheKeys => _cacheKeys;
+    
+
     public async Task<Cliente?> GetClienteByCpfAsync(Cpf cpf)
     {
-        var itemKey = $"{nameof(ClienteGatewayCache)}_{nameof(GetClienteByCpfAsync)}_{cpf.GetSanitized()}";
+        var itemKey = $"{_cacheKeys[nameof(GetClienteByCpfAsync)]}:{cpf.GetSanitized()}";
 
         var result = await cache.GetItemByKeyAsync<Cliente>(itemKey);
 
@@ -23,8 +33,13 @@ public class ClienteGatewayCache(IClienteGateway nextExecution, ICacheContext ca
         return client;
     }
 
-    public Task<Cliente> InsertCliente(Cliente cliente)
+    public async Task<Cliente> InsertCliente(Cliente cliente)
     {
-        return nextExecution.InsertCliente(cliente);
+        var clienteInserido = await nextExecution.InsertCliente(cliente);
+
+        var itemKey = $"{_cacheKeys[nameof(GetClienteByCpfAsync)]}:{clienteInserido.Cpf.GetSanitized()}";
+        await cache.SetNotNullStringByKeyAsync(itemKey, clienteInserido);
+
+        return clienteInserido;
     }
 }

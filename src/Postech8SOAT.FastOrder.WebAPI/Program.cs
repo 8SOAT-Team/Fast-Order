@@ -4,9 +4,12 @@ using Postech8SOAT.FastOrder.WebAPI.Endpoints;
 using Postech8SOAT.FastOrder.WebAPI.Logs;
 using Postech8SOAT.FastOrder.WebAPI.Middlewares;
 using Postech8SOAT.FastOrder.WebAPI.Services;
+using Posttech8SOAT.FastOrder.Infra.Env;
 using Serilog;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+DotNetEnv.Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,15 +24,14 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 //Registrando as dependências
-IConfiguration configuration = builder.Configuration.AddEnvironmentVariables().Build();
-
-builder.Services.ConfigureDI(configuration);
+builder.Services.ConfigureDI();
 
 var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
 {
     MaxDepth = 16,
     ReferenceHandler = ReferenceHandler.IgnoreCycles,
 };
+
 jsonOptions.Converters.Add(new JsonStringEnumConverter());
 
 builder.Services.AddSingleton(jsonOptions);
@@ -50,14 +52,10 @@ var app = builder.Build();
 app.ConfigureExceptionHandler();
 
 //Executar as migrações pendentes
-var shouldRunMigrations = bool.Parse(configuration["RunMigrationsOnStart"] ?? "false");
-
-if (shouldRunMigrations)
+if (EnvConfig.RunMigrationsOnStart)
 {
-    MigracoesPendentes.ExecuteMigration(app);
+    await MigracoesPendentes.ExecuteMigrationAsync(app);
 }
-
-// Configure the HTTP request pipeline.
 
 app.UseSwagger();
 

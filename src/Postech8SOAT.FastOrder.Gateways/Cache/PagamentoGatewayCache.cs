@@ -3,19 +3,24 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
 namespace Postech8SOAT.FastOrder.Gateways.Cache;
 
-public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContext cache) : IPagamentoGateway
+public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContext cache) : CacheGateway(cache), IPagamentoGateway
 {
-    private static readonly Dictionary<string, string> _cacheKeys = new()
+    private readonly ICacheContext cache = cache;
+
+    private static readonly Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> _cacheKeys = new()
     {
-        [nameof(FindPagamentoByPedidoIdAsync)] = $"{nameof(PagamentoGatewayCache)}_{nameof(FindPagamentoByPedidoIdAsync)}",
-        [nameof(GetByIdAsync)] = $"{nameof(PagamentoGatewayCache)}_{nameof(GetByIdAsync)}",
+        [nameof(FindPagamentoByPedidoIdAsync)] = ($"{nameof(PagamentoGatewayCache)}:{nameof(FindPagamentoByPedidoIdAsync)}", false),
+        [nameof(GetByIdAsync)] = ($"{nameof(PagamentoGatewayCache)}:{nameof(GetByIdAsync)}", false),
+        [nameof(UpdatePagamentoAsync)] = ($"{nameof(PagamentoGatewayCache)}:{nameof(UpdatePagamentoAsync)}", false),
     };
+
+    protected override Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> CacheKeys => _cacheKeys;
 
     public async Task<List<Pagamento>> FindPagamentoByPedidoIdAsync(Guid pedidoId)
     {
-        var cacheKey = _cacheKeys[nameof(FindPagamentoByPedidoIdAsync)];
+        var (cacheKey, _) = CacheKeys[nameof(FindPagamentoByPedidoIdAsync)];
 
-        var result = await cache.GetItemByKeyAsync<List<Pagamento>>($"{cacheKey}_{pedidoId}");
+        var result = await cache.GetItemByKeyAsync<List<Pagamento>>($"{cacheKey}:{pedidoId}");
 
         if (result.HasValue)
         {
@@ -30,9 +35,9 @@ public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContex
 
     public async Task<Pagamento?> GetByIdAsync(Guid id)
     {
-        var cacheKey = _cacheKeys[nameof(GetByIdAsync)];
+        var (cacheKey, _) = CacheKeys[nameof(GetByIdAsync)];
 
-        var result = await cache.GetItemByKeyAsync<Pagamento>($"{cacheKey}_{id}");
+        var result = await cache.GetItemByKeyAsync<Pagamento>($"{cacheKey}:{id}");
 
         if (result.HasValue)
         {
@@ -46,5 +51,15 @@ public class PagamentoGatewayCache(IPagamentoGateway nextExecution, ICacheContex
     }
 
 
-    public Task<Pagamento> UpdatePagamentoAsync(Pagamento pagamento) => nextExecution.UpdatePagamentoAsync(pagamento);
+    public async Task<Pagamento> UpdatePagamentoAsync(Pagamento pagamento)
+    {
+        var pagamentoAtualizado = await nextExecution.UpdatePagamentoAsync(pagamento);
+
+        var (cacheKey, _) = CacheKeys[nameof(UpdatePagamentoAsync)];
+        var key = $"{cacheKey}:{pagamento.Id}";
+        await cache.InvalidateCacheAsync(key);
+        await cache.SetNotNullStringByKeyAsync(key, pagamentoAtualizado);
+
+        return pagamentoAtualizado;
+    }
 }

@@ -7,8 +7,8 @@ public class CategoriaGatewayCache(ICategoriaGateway nextExecution, ICacheContex
 {
     private static readonly Dictionary<string, string> _cacheKeys = new()
     {
-        [nameof(GetAllCategoriasAsync)] = $"{nameof(CategoriaGatewayCache)}_{nameof(GetAllCategoriasAsync)}",
-        [nameof(GetCategoriaByIdAsync)] = $"{nameof(CategoriaGatewayCache)}_{nameof(GetCategoriaByIdAsync)}",
+        [nameof(GetAllCategoriasAsync)] = $"{nameof(CategoriaGatewayCache)}:{nameof(GetAllCategoriasAsync)}",
+        [nameof(GetCategoriaByIdAsync)] = $"{nameof(CategoriaGatewayCache)}:{nameof(GetCategoriaByIdAsync)}",
     };
 
     public async Task<ICollection<Categoria>> GetAllCategoriasAsync()
@@ -29,7 +29,7 @@ public class CategoriaGatewayCache(ICategoriaGateway nextExecution, ICacheContex
     {
         var cacheKey = _cacheKeys[nameof(GetCategoriaByIdAsync)];
 
-        var result = await cache.GetItemByKeyAsync<Categoria>($"{cacheKey}_{id}");
+        var result = await cache.GetItemByKeyAsync<Categoria>($"{cacheKey}:{id}");
 
         if (result.HasValue)
         {

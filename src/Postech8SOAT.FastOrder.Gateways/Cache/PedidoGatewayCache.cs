@@ -12,13 +12,13 @@ public class PedidoGatewayCache(IPedidoGateway nextExecution, ICacheContext cach
     {
         [nameof(GetAllAsync)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetAllAsync)}", true),
         [nameof(GetAllPedidosPending)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetAllPedidosPending)}", true),
-        [nameof(GetByIdAsync)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetByIdAsync)}", false),
+        [nameof(GetByIdAsync)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetByIdAsync)}", true),
         [nameof(GetPedidoCompletoAsync)] = ($"{nameof(PedidoGatewayCache)}:{nameof(GetPedidoCompletoAsync)}", false),
         [nameof(CreateAsync)] = (nameof(Pedido), false),
-        [nameof(UpdateAsync)] = (nameof(Pedido), true)
+        [nameof(UpdateAsync)] = (nameof(Pedido), false)
     };
 
-    protected override Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> CacheKeys => throw new NotImplementedException();
+    protected override Dictionary<string, (string cacheKey, bool InvalidateCacheOnChanges)> CacheKeys => _cacheKeys;
 
 
     public async Task<Pedido> AtualizarPedidoPagamentoIniciadoAsync(Pedido pedido)

@@ -5,6 +5,7 @@ using MercadoPago.Client.Preference;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Pagamentos.Dtos;
+using Posttech8SOAT.FastOrder.Infra.Env;
 
 namespace Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways
 {
@@ -49,7 +50,7 @@ namespace Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways
                     Failure = "https://fastorder.com.br/failure",
                     Pending = "https://fastorder.com.br/pending",
                 },
-                NotificationUrl = Environment.GetEnvironmentVariable("PAGAMENTO_WEBHOOK_URL") ?? "",
+                NotificationUrl = EnvConfig.PagamentoWebhookUrl.AbsoluteUri,
                 AutoReturn = "approved",
                 ExternalReference = referenciaExternaId,
             };
@@ -89,7 +90,7 @@ namespace Postech8SOAT.FastOrder.Upstream.Pagamentos.Gateways
         {
             var opt = new RequestOptions()
             {
-                AccessToken = Environment.GetEnvironmentVariable("PAGAMENTO_FORNECEDOR_ACESS_TOKEN") ?? ""
+                AccessToken = EnvConfig.PagamentoFornecedorAccessToken
             };
             opt.CustomHeaders.Add("x-idempotencyid", Guid.NewGuid().ToString());
             return opt;
