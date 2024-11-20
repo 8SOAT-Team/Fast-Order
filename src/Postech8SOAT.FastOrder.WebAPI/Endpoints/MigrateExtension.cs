@@ -8,7 +8,7 @@ public static class MigrateExtension
     {
         app.MapPost("/migrate", async () =>
         {
-            MigracoesPendentes.ExecuteMigration(app);
+            await MigracoesPendentes.ExecuteMigrationAsync(app);
             return Results.Ok();
         }).WithTags("Migrate")
         .WithSummary("Apply pending migrations.")

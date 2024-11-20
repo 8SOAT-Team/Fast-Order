@@ -62,6 +62,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech8SOAT.FastOrder.Type
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech8SOAT.FastOrder.Upstream", "src\Postech8SOAT.FastOrder.Upstream\Postech8SOAT.FastOrder.Upstream.csproj", "{85348F60-50A9-4961-93F1-B9E34B4605C5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{748CE42E-96B9-48DB-A451-9D710F87F50A}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech8SOAT.FastOrder.Infra.Env", "src\Postech8SOAT.FastOrder.Infra.Environment\Postech8SOAT.FastOrder.Infra.Env.csproj", "{DBF601BA-6527-4074-A761-ACA7FFA5CBA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +127,10 @@ Global
 		{85348F60-50A9-4961-93F1-B9E34B4605C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85348F60-50A9-4961-93F1-B9E34B4605C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85348F60-50A9-4961-93F1-B9E34B4605C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBF601BA-6527-4074-A761-ACA7FFA5CBA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBF601BA-6527-4074-A761-ACA7FFA5CBA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBF601BA-6527-4074-A761-ACA7FFA5CBA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBF601BA-6527-4074-A761-ACA7FFA5CBA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +156,7 @@ Global
 		{A6B082AC-3219-4A62-A2A4-8E1A572B78EE} = {20221D5B-5149-49B7-90B6-203964546002}
 		{9F6DEE7A-CBE6-4C45-903B-E65E1589B185} = {20221D5B-5149-49B7-90B6-203964546002}
 		{85348F60-50A9-4961-93F1-B9E34B4605C5} = {8CD53F91-3587-4608-8006-AFDF492C956D}
+		{DBF601BA-6527-4074-A761-ACA7FFA5CBA0} = {8CD53F91-3587-4608-8006-AFDF492C956D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {290B78A1-7B91-4DC6-AB6E-64D81B6C5F7D}

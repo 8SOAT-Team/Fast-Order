@@ -30,5 +30,12 @@ services:
       - '11433:1433'
     expose:
       - 1433
+  cache:
+    image: redis:8.0-M02-alpine3.20
+    container_name: redis
+    volumes:
+      - /redis/redis-data
+    ports:
+      - "6379:6379"
 volumes:
   sql_data:

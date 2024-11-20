@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="Scrutor" Version="5.0.2" />
     <PackageReference Include="Serilog" Version="4.0.2" />
   </ItemGroup>
 
@@ -18,6 +19,7 @@
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Controllers\Postech8SOAT.FastOrder.Controllers.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Gateways\Postech8SOAT.FastOrder.Gateways.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
+    <ProjectReference Include="..\Postech8SOAT.FastOrder.Infra.Environment\Postech8SOAT.FastOrder.Infra.Env.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.Upstream\Postech8SOAT.FastOrder.Upstream.csproj" />
     <ProjectReference Include="..\Postech8SOAT.FastOrder.UseCase\Postech8SOAT.FastOrder.UseCases.csproj" />
   </ItemGroup>

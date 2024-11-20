@@ -6,14 +6,14 @@ namespace Postech8SOAT.FastOrder.WebAPI.Services;
 
 public static class MigracoesPendentes
 {
-    public static void ExecuteMigration(this IApplicationBuilder app)
+    public static async Task ExecuteMigrationAsync(this IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
         var serviceDb = serviceScope.ServiceProvider
                          .GetService<FastOrderContext>();
         try
         {
-            serviceDb!.Database.Migrate();
+           await serviceDb!.Database.MigrateAsync();
         }
         catch (Exception ex)
         {

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
