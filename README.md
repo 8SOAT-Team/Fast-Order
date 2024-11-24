@@ -45,7 +45,7 @@ Disponibilizamos uma [collection do postman](/docs/postman/Postech8SOAT.FastOrde
 As APIs devem estar rodando em http://localhost:31500/
 
 ## Diagrama da Arquitetura de Infraestrutura
-![Diagrama da Arquitetura de Infraestrutura](/docs/fast-order-infra-diagram.svg)
+![Diagrama da Arquitetura de Infraestrutura](/docs/fast-order-infra-diagram.png)
 
 ## Modelo de Entidade-Relacionamento (MER)
 ![Diagrama da Arquitetura de Infraestrutura](./docs/fo-MER.png)
