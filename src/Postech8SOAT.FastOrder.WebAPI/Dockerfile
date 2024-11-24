@@ -17,7 +17,8 @@ COPY ["src/Postech8SOAT.FastOrder.Infra.Data/Postech8SOAT.FastOrder.Infra.Data.c
 COPY ["src/Postech8SOAT.FastOrder.Presenters/Postech8SOAT.FastOrder.Presenters.csproj", "src/Postech8SOAT.FastOrder.Presenters/"]
 COPY ["src/Postech8SOAT.FastOrder.UseCase/Postech8SOAT.FastOrder.UseCases.csproj", "src/Postech8SOAT.FastOrder.UseCase/"]
 COPY ["src/Postech8SOAT.FastOrder.Infra.IOC/Postech8SOAT.FastOrder.Infra.IOC.csproj", "src/Postech8SOAT.FastOrder.Infra.IOC/"]
-COPY ["src/Postech8SOAT.FastOrder.Infra.IOC/Postech8SOAT.FastOrder.Infra.IOC.csproj", "src/Postech8SOAT.FastOrder.Infra.IOC/"]
+COPY ["src/Postech8SOAT.FastOrder.Infra.Environment/Postech8SOAT.FastOrder.Infra.Env.csproj", "src/Postech8SOAT.FastOrder.Infra.Environment/"]
+COPY ["src/CleanArch.UseCase/CleanArch.UseCase.csproj", "src/CleanArch.UseCase/"]
 RUN dotnet restore "./src/Postech8SOAT.FastOrder.WebAPI/Postech8SOAT.FastOrder.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/src/Postech8SOAT.FastOrder.WebAPI"
@@ -29,10 +30,6 @@ RUN dotnet publish "./Postech8SOAT.FastOrder.WebAPI.csproj" -c $BUILD_CONFIGURAT
 
 # Copiar certificados para pasta app o container
 COPY ./certs/ /app/certs/
-
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Postech8SOAT.FastOrder.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
