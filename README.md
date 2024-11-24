@@ -53,6 +53,13 @@ As APIs devem estar rodando em http://localhost:31500/
 ## Diagrama de Fluxo Utilizando Cache
 ![Diagrama da Arquitetura de Infraestrutura](./docs/cache-flow.png)
 
+## Utilização de um Banco de dados intermediário como cache (Redis)
+
+Devido a existência de dados que não são alteráveis, ou não são alterados com frequência, notamos que o desempenho da aplicação pode ser otimizado ao implementar a consulta em um banco de dados intermediário de cache, onde escolhemos o Redis, que é um banco de dados do tipo chave valor fortemente estabelecido no mercado. Contando com suporte de bibliotecas e da comunidade em diversas tecnologias para integração e resolução de problemas.
+Notamos a queda no tempo de resposta de aproximadamente 50% dos tempos de resposta sem o cache.
+
+Dados como informações do cliente, cadastro de produtos, pagamentos efetuados e algumas informações do pedido que não sofrem alterações ou poucas ao serem adicionadas no cache (ou tendo o cache invalidado), otimizamos não apenas a leitura, mas a disponibilidade do recurso do banco de dados principal para outras leituras que não podem estar em cache e novas gravações.
+
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
 
