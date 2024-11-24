@@ -47,6 +47,8 @@ builder.Services.AddCors();
 
 builder.Services.AddSingleton<CleanArch.UseCase.Logging.ILogger, ConsoleLogger>();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
@@ -66,6 +68,8 @@ app.UseSwaggerUI(options =>
 });
 
 app.UseCors(options => { options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+
+app.MapHealthChecks("/health");
 
 //Adicionar os endpoints
 app.AddEndPointProdutos();
