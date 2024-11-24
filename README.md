@@ -51,7 +51,7 @@ As APIs devem estar rodando em http://localhost:31500/
 ![Diagrama da Arquitetura de Infraestrutura](./docs/fo-MER.png)
 
 ## Diagrama de Fluxo Utilizando Cache
-![Diagrama da Arquitetura de Infraestrutura](./docs/cache-flow.svg)
+![Diagrama da Arquitetura de Infraestrutura](./docs/cache-flow.png)
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
