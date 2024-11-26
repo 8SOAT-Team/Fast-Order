@@ -64,10 +64,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech8SOAT.FastOrder.Upst
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{748CE42E-96B9-48DB-A451-9D710F87F50A}"
 	ProjectSection(SolutionItems) = preProject
-		.env = .env
+		.env.example = .env.example
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech8SOAT.FastOrder.Infra.Env", "src\Postech8SOAT.FastOrder.Infra.Environment\Postech8SOAT.FastOrder.Infra.Env.csproj", "{DBF601BA-6527-4074-A761-ACA7FFA5CBA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postech8SOAT.FastOrder.Infra.Env", "src\Postech8SOAT.FastOrder.Infra.Environment\Postech8SOAT.FastOrder.Infra.Env.csproj", "{DBF601BA-6527-4074-A761-ACA7FFA5CBA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

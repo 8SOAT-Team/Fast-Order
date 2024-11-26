@@ -16,29 +16,24 @@ spec:
     spec:
       containers:
       - name: fast-order-cont
-        image: bergzado/fast-order-app:0.0.5
+        image: bergzado/fast-order-app:0.0.7
         env:
-        - name: ConnectionStrings__DefaultConnectionContainer
+        - name: CONNECTIONSTRINGS_DEFAULTCONNECTIONCONTAINER
           value: "Server=mssql-service,1433;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;"
         - name: ASPNETCORE_ENVIRONMENT
           value: Production
+        - name: DISTRIBUTED_CACHE_URL
+          value: "fo-cache-svc:6380"
         ports:
         - containerPort: 57399
         - containerPort: 57398
         livenessProbe:
           httpGet:
             path: /health
-            port: 80
+            port: 57398
           periodSeconds: 10
           failureThreshold: 3
           initialDelaySeconds: 20
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 80
-          periodSeconds: 10
-          failureThreshold: 5
-          initialDelaySeconds: 3
         resources:
             requests:
               cpu: 1m

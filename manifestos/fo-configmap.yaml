@@ -5,4 +5,4 @@ metadata:
 data:
   MSSQL_PID: Developer
   ACCEPT_EULA: "Y"
-  SA_PASSWORD: "tech#2024"
+  SA_PASSWORD: tech#2024
