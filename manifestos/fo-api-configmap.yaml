@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fo-api-configmap
+data:
+  CONNECTIONSTRINGS_DEFAULTCONNECTIONCONTAINER: "Server=mssql-service,1433;Database=FastOrderDB;User Id=sa;Password=tech#2024;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;"
+  ASPNETCORE_ENVIRONMENT: Production
+  DISTRIBUTED_CACHE_URL: "fo-cache-svc:6380"

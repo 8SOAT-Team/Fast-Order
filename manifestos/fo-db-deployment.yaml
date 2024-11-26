@@ -21,7 +21,7 @@ spec:
         - containerPort: 1433
         envFrom:
         - configMapRef:
-            name: fo-configmap
+            name: fo-db-configmap
         volumeMounts:
         - name: mssqldb
           mountPath: /var/opt/mssql/data
