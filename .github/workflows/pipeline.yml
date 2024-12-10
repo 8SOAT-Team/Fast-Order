@@ -31,8 +31,16 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
   
+      - name: Find Coverage Report
+        id: coverage-path
+        run: echo "COVERAGE_PATH=$(find TestResults -name 'coverage.cobertura.xml' | head -n 1)" >> $GITHUB_ENV
+      
       - name: Generate Coverage Report
-        run: reportgenerator -reports:TestResults/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+        run: |
+          reportgenerator \
+            -reports:"$COVERAGE_PATH" \
+            -targetdir:coverage-report \
+            -reporttypes:Html
   
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v3
