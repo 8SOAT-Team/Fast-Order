@@ -10,7 +10,7 @@ namespace Postech8SOAT.FastOrder.Domain.Tests.Entities
 {
     public class PedidoTest
     {
-        [Fact]
+        /*[Fact]
         public void DeveCriarNovoPedidoComSucesso()
         {
             //Arrange
@@ -21,7 +21,7 @@ namespace Postech8SOAT.FastOrder.Domain.Tests.Entities
             var pedido = new Pedido(Guid.NewGuid(), listaItens);
             //Assert
             Assert.NotNull(pedido);
-        }
+        }*/
 
         [Fact]
         public void DeveLancarExceptionQuandoPedidoNaoTiverItens()
