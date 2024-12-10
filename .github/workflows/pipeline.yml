@@ -48,26 +48,6 @@ jobs:
           name: coverage-report
           path: coverage-report
 
-  code-analysis:
-    runs-on: ubuntu-latest
-    needs: unit-test
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
-
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
   build:
     runs-on: ubuntu-latest
     needs: unit-test
@@ -98,28 +78,6 @@ jobs:
         with:
           name: build-artifact
           path: ./output
-
-  deploy-STG:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/develop'
-    environment:
-      name: stg
-
-    steps:
-      - name: Deploy to STG
-        run: echo "Deploying to STG environment"
-
-  deploy-Pre:
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/release'
-    environment:
-      name: pre
-
-    steps:
-      - name: Deploy to PRE
-        run: echo "Deploying to PRE environment"
 
   deploy-Prod:
     runs-on: ubuntu-latest
