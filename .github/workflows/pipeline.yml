@@ -27,11 +27,17 @@ jobs:
       - name: Run unit tests
         run: dotnet test Fast-Order.sln --collect:"XPlat Code Coverage" --logger trx
 
-      - name: Upload test results
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generate Coverage Report
+        run: reportgenerator -reports:TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+
+      - name: Upload Coverage Report
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: TestResults
+          name: coverage-report
+          path: coverage-report
 
       - name: Generate coverage badge
         id: generate-badge
