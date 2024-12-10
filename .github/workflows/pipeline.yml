@@ -1,0 +1,36 @@
+name: pipelines
+
+on: 
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+    
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      
+      - name: Display dotnet version
+        run: dotnet --version
+
+      # Etapa para restaurar os pacotes
+      - name: Restore dependencies
+        run: dotnet restore Fast-Order.sln
+
+      # Construir o projeto
+      - name: Build
+        run: dotnet build Fast-Order.sln
+
+      # Executar os testes
+      - name: Test with the dotnet 
+        run: dotnet test Fast-Order.sln --no-build --verbosity normal
