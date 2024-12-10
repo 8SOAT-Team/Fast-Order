@@ -23,14 +23,17 @@ jobs:
         run: dotnet restore Fast-Order.sln
 
       - name: Run unit tests
-        run: dotnet test Fast-Order.sln --collect:"XPlat Code Coverage" --logger trx
+        run: dotnet test Fast-Order.sln --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
 
+      - name: List TestResults directory
+        run: ls -R TestResults
+  
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
-
+  
       - name: Generate Coverage Report
-        run: reportgenerator -reports:TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
-
+        run: reportgenerator -reports:TestResults/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+  
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v3
         with:
