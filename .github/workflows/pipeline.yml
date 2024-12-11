@@ -96,22 +96,11 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment:
       name: AWS-PRO
-      url: http://devopsfiap-0n-env-1.eba-a9357rgy.us-east-1.elasticbeanstalk.com/
+      url: https://8c5f31e2a9a84bb115f4dd4821407c85.gr7.us-east-1.eks.amazonaws.com/
 
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: ./output
-
-      - name: Deploy to AWS Elastic Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v21
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: DevopsFiap-0n
-          environment_name: DevopsFiap-0n-env-1
-          version_label: ${{ github.sha }}
-          region: us-east-1
-          deployment_package: ./output/
+          path: ./output    
