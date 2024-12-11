@@ -96,7 +96,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment:
       name: AWS-PRO
-      url: https://8c5f31e2a9a84bb115f4dd4821407c85.gr7.us-east-1.eks.amazonaws.com/
+      url: http://fiap-teste-env.eba-tgbim7kw.us-east-1.elasticbeanstalk.com/
 
     steps:
       - name: Download artifact
@@ -104,3 +104,14 @@ jobs:
         with:
           name: build-artifact
           path: ./output    
+
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: fiap-teste
+          environment_name: Fiap-teste-env
+          version_label: ${{ github.sha }}
+          region: us-east-1
+          deployment_package: ./output/
