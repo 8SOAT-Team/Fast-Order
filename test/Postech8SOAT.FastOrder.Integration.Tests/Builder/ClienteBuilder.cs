@@ -1,12 +1,6 @@
 ﻿using Bogus;
 using Bogus.Extensions.Brazil;
-using Postech8SOAT.FastOrder.Controllers.Clientes.Dtos;
 using Postech8SOAT.FastOrder.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Postech8SOAT.FastOrder.Integration.Tests.Builder;
 public class ClienteBuilder : Faker<Cliente>
