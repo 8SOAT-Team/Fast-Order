@@ -34,7 +34,7 @@ public class FastOrder_ClienteTest:IClassFixture<FastOrderWebApplicationFactory>
         var httpClient = _factory.CreateClient();
 
         //Act
-        var response = await httpClient.GetFromJsonAsync<ClienteIdentificadoDto>($"/cliente/"+ clienteExistente.Cpf);
+        var response = await httpClient.GetFromJsonAsync<ClienteIdentificadoDto>($"/cliente?cpf=" + clienteExistente.Cpf);
 
         //Assert
         Assert.NotNull(response);
