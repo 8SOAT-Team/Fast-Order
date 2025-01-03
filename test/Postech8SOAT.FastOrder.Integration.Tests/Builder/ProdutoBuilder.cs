@@ -6,7 +6,7 @@ public class ProdutoBuilder : Faker<Produto>
 {
     public ProdutoBuilder()
     {
-        CustomInstantiator(f => new Produto(f.Commerce.ProductName(),f.Commerce.ProductDescription(), f.Random.Decimal(1, 1000),f.Random.String(),f.Random.Guid()));
+        CustomInstantiator(f => new Produto(f.Commerce.ProductName(),f.Commerce.ProductDescription(), decimal.Parse(f.Commerce.Price(1,1000)),f.Commerce.Random.ToString()!, RetornaIdCategoriaUtil.RetornaIdCategoria()));
     }
     public Produto Build() => Generate();
 
