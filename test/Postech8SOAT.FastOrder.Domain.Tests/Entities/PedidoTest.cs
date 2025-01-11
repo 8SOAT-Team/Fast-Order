@@ -1,27 +1,23 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Postech8SOAT.FastOrder.Domain.Tests.Entities
 {
     public class PedidoTest
     {
-        /*[Fact]
+        [Fact]
         public void DeveCriarNovoPedidoComSucesso()
         {
             //Arrange
-            var itemPedido = new ItemDoPedido(Guid.NewGuid(), Guid.NewGuid(), 2);
+            var produto = new Produto("Lanche", "Lanche de bacon", 50m, "http://endereco/imagens/img.jpg", Guid.NewGuid());
+            var itemPedido = new ItemDoPedido(Guid.NewGuid(), produto, 2);
             List<ItemDoPedido> listaItens = new List<ItemDoPedido>();
             listaItens.Add(itemPedido);
             //Act
             var pedido = new Pedido(Guid.NewGuid(), listaItens);
             //Assert
             Assert.NotNull(pedido);
-        }*/
+        }
 
         [Fact]
         public void DeveLancarExceptionQuandoPedidoNaoTiverItens()

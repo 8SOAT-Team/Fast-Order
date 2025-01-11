@@ -1,7 +1,4 @@
 ﻿using Moq;
-using Xunit;
-using System;
-using System.Threading.Tasks;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
