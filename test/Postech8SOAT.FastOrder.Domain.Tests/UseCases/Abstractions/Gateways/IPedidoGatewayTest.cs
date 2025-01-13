@@ -14,9 +14,8 @@ public class IPedidoGatewayTest
         var id = Guid.NewGuid();
         var produto = new Produto("Lanche", "Lanche de bacon", 50m, "http://endereco/imagens/img.jpg", Guid.NewGuid());
         var itemPedido = new ItemDoPedido(Guid.NewGuid(), produto, 2);
-        List<ItemDoPedido> listaItens = new List<ItemDoPedido>();
-        listaItens.Add(itemPedido);
-        var pedido = new Pedido(id, listaItens);
+        List<ItemDoPedido> listaItens = new List<ItemDoPedido> { itemPedido };
+        var pedido = new Pedido(id, Guid.NewGuid(), listaItens);
         mockPedidoGateway.Setup(gateway => gateway.GetByIdAsync(id))
             .ReturnsAsync(pedido);
 
@@ -62,8 +61,7 @@ public class IPedidoGatewayTest
         var produto = new Produto("Lanche", "Lanche de bacon", 50m, "http://endereco/imagens/img.jpg", Guid.NewGuid());
         var itemPedido = new ItemDoPedido(Guid.NewGuid(), produto, 2);
         List<ItemDoPedido> listaItens = new List<ItemDoPedido> { itemPedido };
-
-        var pedido = new Pedido(id, listaItens);
+        var pedido = new Pedido(id, Guid.NewGuid(), listaItens);
         mockPedidoGateway.Setup(gateway => gateway.UpdateAsync(pedido))
             .ReturnsAsync(pedido);
 
