@@ -2,7 +2,7 @@
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 
-namespace ClienteFeatureSteps
+namespace Postech8SOAT.FastOrder.Domain.BDD.Tests.Step
 {
     [Binding]
     public class ClienteSteps
