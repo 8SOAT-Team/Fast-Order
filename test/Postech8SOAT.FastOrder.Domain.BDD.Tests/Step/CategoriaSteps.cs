@@ -1,7 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities;
 using TechTalk.SpecFlow;
 
-namespace Postech8SOAT.FastOrder.Domain.Tests.Steps;
+namespace Postech8SOAT.FastOrder.Domain.BDD.Tests.Step;
 
 [Binding]
 public class CategoriaSteps
