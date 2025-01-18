@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 
-public sealed class ItemDoPedido : Entity
+public class ItemDoPedido : Entity
 {
     private ItemDoPedido()
     {
@@ -41,9 +41,9 @@ public sealed class ItemDoPedido : Entity
     }
 
     public Guid PedidoId { get; init; }
-    public Pedido Pedido { get; init; } = null!;
+    public virtual Pedido Pedido { get; init; } = null!;
     public Guid ProdutoId { get; init; }
-    public Produto Produto { get; set; } = null!;
+    public virtual Produto Produto { get; set; } = null!;
     public int Quantidade { get; set; }
     public decimal ValorTotal => Produto.Preco * Quantidade;
 
