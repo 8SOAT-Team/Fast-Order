@@ -5,18 +5,18 @@ using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 
-public class Pagamento : Entity, IAggregateRoot
+public sealed class Pagamento : Entity, IAggregateRoot
 {
-    private static readonly ImmutableDictionary<MetodoDePagamento, MetodoDePagamento[]> _metodosDePagamentosObrigatorios = new Dictionary<MetodoDePagamento, MetodoDePagamento[]>()
-    {
-        { MetodoDePagamento.Cartao, new MetodoDePagamento[] { MetodoDePagamento.Master, MetodoDePagamento.Visa } },
-        { MetodoDePagamento.Pix, Array.Empty<MetodoDePagamento>() }
+    private static readonly ImmutableDictionary<MetodoDePagamento, MetodoDePagamento[]> MetodosDePagamentosObrigatorios = new Dictionary<MetodoDePagamento, MetodoDePagamento[]>
+        {
+        { MetodoDePagamento.Cartao, [MetodoDePagamento.Master, MetodoDePagamento.Visa] },
+        { MetodoDePagamento.Pix, [] }
     }
     .ToImmutableDictionary();
 
     public const int Parcelas = 1;
 
-    protected Pagamento() { }
+    private Pagamento() { }
 
     [JsonConstructor]
     public Pagamento(Guid id, Guid pedidoId, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string? pagamentoExternoId)
@@ -37,7 +37,7 @@ public class Pagamento : Entity, IAggregateRoot
 
     public Guid PedidoId { get; init; }
     public string? PagamentoExternoId { get; private set; }
-    public virtual Pedido Pedido { get; init; } = null!;
+    public Pedido Pedido { get; init; } = null!;
     public StatusPagamento Status { get; private set; }
     public MetodoDePagamento MetodoDePagamento { get; init; }
     public decimal ValorTotal { get; init; }
@@ -76,7 +76,7 @@ public class Pagamento : Entity, IAggregateRoot
 
     private static bool ValidationMetodoDePagamentoCartao(MetodoDePagamento metodoDePagamento)
     {
-        foreach (var metodo in _metodosDePagamentosObrigatorios)
+        foreach (var metodo in MetodosDePagamentosObrigatorios)
         {
             if (metodoDePagamento.HasFlag(metodo.Key))
             {
