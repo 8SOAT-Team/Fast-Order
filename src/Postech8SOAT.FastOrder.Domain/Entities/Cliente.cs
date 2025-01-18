@@ -7,9 +7,9 @@ public class Cliente : Entity, IAggregateRoot
 {
     protected Cliente() { }
 
-    public Cpf Cpf { get; private init; }
-    public string Nome { get; private set; }
-    public EmailAddress Email { get; private set; }
+    public Cpf Cpf { get; private init; } = null!;
+    public string Nome { get; private set; } = null!;
+    public EmailAddress Email { get; private set; } = null!;
 
     public Cliente(string cpf, string nome, string email) : this(Guid.NewGuid(), cpf, nome, email) { }
 

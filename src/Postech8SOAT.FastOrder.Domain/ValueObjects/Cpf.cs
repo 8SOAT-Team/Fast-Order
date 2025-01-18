@@ -6,7 +6,7 @@ namespace Postech8SOAT.FastOrder.Domain.ValueObjects;
 public record Cpf
 {
     public string Value { get; private init; } = null!;
-    private string? _sanitazedValue = null;
+    private string? _sanitizedValue;
 
     public Cpf(string value)
     {
@@ -26,8 +26,8 @@ public record Cpf
 
     public string GetSanitized()
     {
-        _sanitazedValue ??= Expression.DigitsOnly().Replace(Value, "");
-        return _sanitazedValue!;
+        _sanitizedValue ??= Expression.DigitsOnly().Replace(Value, "");
+        return _sanitizedValue!;
     }
 
     public static bool TryCreate(string document, out Cpf cpf)

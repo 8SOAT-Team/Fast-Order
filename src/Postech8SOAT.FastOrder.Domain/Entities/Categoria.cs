@@ -12,10 +12,9 @@ public class Categoria : Entity
     public string? Descricao { get; private set; }
     public virtual ICollection<Produto>? Produtos { get; private set; }
 
-    public Categoria(string? nome, string? descricao)
+    public Categoria(string? nome, string? descricao) : this()
     {
         ValidationDomain(nome, descricao);
-
     }
 
     [JsonConstructor]

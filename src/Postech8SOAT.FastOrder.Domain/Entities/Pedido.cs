@@ -4,22 +4,22 @@ using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Pedido : Entity, IAggregateRoot
+public sealed class Pedido : Entity, IAggregateRoot
 {
     private const StatusPedido StatusInicial = StatusPedido.Recebido;
     private const StatusPedido StatusFinal = StatusPedido.Finalizado;
     private static readonly ImmutableHashSet<StatusPedido> StatusPedidoPermiteAlteracao =
         [StatusPedido.Recebido, StatusPedido.EmPreparacao];
 
-    protected Pedido() { }
+    private Pedido() { }
 
     public DateTime DataPedido { get; private set; }
     public StatusPedido StatusPedido { get; private set; }
-    public virtual Guid? ClienteId { get; set; }
-    public virtual Cliente? Cliente { get; set; }
-    public virtual ICollection<ItemDoPedido> ItensDoPedido { get; set; }
+    public Guid? ClienteId { get; set; }
+    public Cliente? Cliente { get; set; }
+    public ICollection<ItemDoPedido> ItensDoPedido { get; set; }
     public decimal ValorTotal { get; private set; }
-    public virtual Pagamento? Pagamento { get; private set; }
+    public Pagamento? Pagamento { get; private set; }
 
     public Pedido(Guid? clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
 
