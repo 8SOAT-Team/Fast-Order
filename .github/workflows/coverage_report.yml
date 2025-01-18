@@ -6,7 +6,7 @@ on:
     - main
 
 jobs:
-  test-and-coverage:
+  test-and-coverage-with-report:
     runs-on: ubuntu-latest
 
     steps:
