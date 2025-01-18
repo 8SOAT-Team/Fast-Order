@@ -78,9 +78,17 @@ public static class FastOrderRegisterDependencies
 
     private static IServiceCollection CacheDI(this IServiceCollection services)
     {
-        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(EnvConfig.DistributedCacheUrl));
+        services.AddSingleton<IConnectionMultiplexer>(
+            ConnectionMultiplexer.Connect(EnvConfig.DistributedCacheUrl, o =>
+                    {
+                        o.AbortOnConnectFail = false;
+                        o.ConnectRetry = 2;
+                        o.Ssl = false;
+                        o.ConnectTimeout = 5;
+                    }));
         services.AddSingleton<ICacheContext, CacheContext>();
 
         return services;
     }
 }
+ 

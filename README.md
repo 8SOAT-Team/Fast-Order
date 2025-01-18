@@ -1,4 +1,6 @@
 # fast-order
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/victoromc/316dc4c4e04246660bd7f355d0bea297/raw/code-coverage.json)
+
 
 É uma implementação dos domínios de negócio de uma lanchonete utilizando clean-architecture, disponibilizando um Driven webapi.
 

@@ -1,0 +1,12 @@
+{
+  "language": {
+    "feature": "pt-BR"
+  },
+  "bindingCulture": {
+    "name": "pt-BR"
+  },
+  "unitTestProvider": {
+    "name": "xUnit"
+  },
+  "stepAssemblies": []
+}

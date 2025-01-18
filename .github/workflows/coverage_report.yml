@@ -1,0 +1,63 @@
+name: coverage_report
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  test-and-coverage-with-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore Fast-Order.sln
+
+      - name: Build project
+        run: dotnet build Fast-Order.sln --configuration Release
+
+      - name: Test
+        run: dotnet test Fast-Order.sln -c Release --no-build --no-restore --verbosity normal -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover 
+
+      - name: Create Test Coverage Badge
+        uses: simon-k/dotnet-code-coverage-badge@v1.0.0
+        id: create_coverage_badge
+        with:
+          label: Unit Test Coverage
+          color: brightgreen
+          path: ./test/TestResults/coverage.opencover.xml
+          gist-filename: code-coverage.json
+          gist-id: 316dc4c4e04246660bd7f355d0bea297
+          gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
+
+      - name: Print code coverage
+        run: echo "Code coverage percentage ${{steps.create_coverage_badge.outputs.percentage}}%"
+
+      - name: Print badge data
+        run: echo "Badge data ${{steps.create_coverage_badge.outputs.badge}}"
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      
+      - name: ReportGenerator
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
+        with:
+          reports: ./test/TestResults/coverage.opencover.xml
+          targetdir: coveragereport
+          reporttypes: Html_Dark;Badges
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: ./coveragereport
