@@ -106,4 +106,35 @@ public sealed class CpfTest
         // Assert
         Assert.Equal(cpfValue, cpfToString);
     }
+    
+    
+    [Theory]
+    [InlineData("11122233396")]
+    [InlineData("111.222.333-96")]
+    public void TryCreate_QuandoDocumentoForValido_DeveRetornarTrueECpf(string cpfInput)
+    {
+        // Act
+        var result = Cpf.TryCreate(cpfInput, out var cpf);
+
+        // Assert
+        Assert.True(result);
+        Assert.NotNull(cpf);
+        Assert.Equal(cpfInput, cpf.Value);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    [InlineData("1112223339")]
+    [InlineData("111222333967")]
+    public void TryCreate_QuandoDocumentoForInvalido_DeveRetornarFalseECpfNulo(string cpfInput)
+    {
+        // Act
+        var result = Cpf.TryCreate(cpfInput, out var cpf);
+
+        // Assert
+        Assert.False(result);
+        Assert.Null(cpf);
+    }
 }

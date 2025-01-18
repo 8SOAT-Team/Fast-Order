@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
 
-public sealed class Pagamento : Entity, IAggregateRoot
+public class Pagamento : Entity, IAggregateRoot
 {
     private static readonly ImmutableDictionary<MetodoDePagamento, MetodoDePagamento[]> MetodosDePagamentosObrigatorios = new Dictionary<MetodoDePagamento, MetodoDePagamento[]>
         {
@@ -37,7 +37,7 @@ public sealed class Pagamento : Entity, IAggregateRoot
 
     public Guid PedidoId { get; init; }
     public string? PagamentoExternoId { get; private set; }
-    public Pedido Pedido { get; init; } = null!;
+    public virtual Pedido Pedido { get; init; } = null!;
     public StatusPagamento Status { get; private set; }
     public MetodoDePagamento MetodoDePagamento { get; init; }
     public decimal ValorTotal { get; init; }
@@ -45,18 +45,10 @@ public sealed class Pagamento : Entity, IAggregateRoot
 
     public bool EstaAutorizado() => Status == StatusPagamento.Autorizado;
 
-    public bool AguardandoConfirmacao() => Status == StatusPagamento.Pendente;
-
     public void FinalizarPagamento(bool autorizado)
     {
         DomainExceptionValidation.When(Status != StatusPagamento.Pendente, $"Pagamento só pode ser confirmado quando o status atual é {StatusPagamento.Pendente}");
         Status = autorizado ? StatusPagamento.Autorizado : StatusPagamento.Rejeitado;
-    }
-
-    public void CancelarPagamento()
-    {
-        DomainExceptionValidation.When(Status != StatusPagamento.Pendente, $"Pagamento só pode ser cancelado quando o status atual é {StatusPagamento.Pendente}");
-        Status = StatusPagamento.Cancelado;
     }
 
     public void AssociarPagamentoExterno(string pagamentoExternoId, string urlPagamento)

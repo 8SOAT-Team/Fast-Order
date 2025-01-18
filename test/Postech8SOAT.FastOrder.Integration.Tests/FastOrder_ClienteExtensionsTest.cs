@@ -5,11 +5,11 @@ using System.Net;
 using System.Net.Http.Json;
 
 namespace Postech8SOAT.FastOrder.Integration.Tests;
-public class FastOrder_ClienteExtensionsTest : IClassFixture<FastOrderWebApplicationFactory>
+public class FastOrderClienteExtensionsTest : IClassFixture<FastOrderWebApplicationFactory>
 {
     private readonly FastOrderWebApplicationFactory _factory;
 
-    public FastOrder_ClienteExtensionsTest(FastOrderWebApplicationFactory factory)
+    public FastOrderClienteExtensionsTest(FastOrderWebApplicationFactory factory)
     {
         _factory = factory;
     }
