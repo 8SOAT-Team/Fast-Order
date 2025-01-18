@@ -94,4 +94,37 @@ public sealed class EmailAddressTest
         // Assert
         Assert.NotEqual(primeiroHashCode, segundoHashCode);
     }
+    
+    [Theory]
+    [InlineData("meu.email@dominio.com.br")]
+    [InlineData("meu.email@dominio.com")]
+    [InlineData("meu_email-com-caracteres_3speciais@dominio.com")]
+    public void TryCreate_QuandoEmailForValido_DeveRetornarTrueEEmailAddress(string email)
+    {
+        // Act
+        var result = EmailAddress.TryCreate(email, out var emailAddress);
+
+        // Assert
+        Assert.True(result);
+        Assert.NotNull(emailAddress);
+        Assert.Equal(email, emailAddress.Address);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("email")]
+    [InlineData("email.invalido@")]
+    [InlineData("email.invalido@dominio")]
+    [InlineData("email.invalido@dominio.")]
+    public void TryCreate_QuandoEmailForInvalido_DeveRetornarFalseEEmailAddressNulo(string emailInvalido)
+    {
+        // Act
+        var result = EmailAddress.TryCreate(emailInvalido, out var emailAddress);
+
+        // Assert
+        Assert.False(result);
+        Assert.Null(emailAddress);
+    }
 }
