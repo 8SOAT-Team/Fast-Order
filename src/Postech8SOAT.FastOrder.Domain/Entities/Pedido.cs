@@ -4,11 +4,12 @@ using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-
 public class Pedido : Entity, IAggregateRoot
 {
     private const StatusPedido StatusInicial = StatusPedido.Recebido;
     private const StatusPedido StatusFinal = StatusPedido.Finalizado;
+    private static readonly ImmutableHashSet<StatusPedido> StatusPedidoPermiteAlteracao =
+        [StatusPedido.Recebido, StatusPedido.EmPreparacao];
 
     public DateTime DataPedido { get; private set; }
     public StatusPedido StatusPedido { get; private set; }
@@ -21,10 +22,6 @@ public class Pedido : Entity, IAggregateRoot
     public Pedido()
     {
         
-    }
-
-    public Pedido(Guid? clienteId, List<ItemDoPedido> itensDoPedido) : this(Guid.NewGuid(), clienteId, itensDoPedido)
-    {
     }
 
     [JsonConstructor]
