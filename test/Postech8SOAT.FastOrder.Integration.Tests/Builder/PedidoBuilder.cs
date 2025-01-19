@@ -6,7 +6,7 @@ internal class PedidoBuilder:Faker<Pedido>
 {
     public PedidoBuilder()
     {
-        CustomInstantiator(f => new Pedido(clienteId: f.Random.Guid(), itens: new List<ItemDoPedido>()
+        CustomInstantiator(f => new Pedido(clienteId: f.Random.Guid(), itensDoPedido: new List<ItemDoPedido>()
             {
                 new ItemDoPedidoBuilder().Build(),
                 new ItemDoPedidoBuilder().Build()
@@ -15,7 +15,7 @@ internal class PedidoBuilder:Faker<Pedido>
 
     public PedidoBuilder(Guid clientId)
     {
-        CustomInstantiator(f => new Pedido(clienteId: clientId, itens: new List<ItemDoPedido>()
+        CustomInstantiator(f => new Pedido(clienteId: clientId, itensDoPedido: new List<ItemDoPedido>()
             {
                 new ItemDoPedidoBuilder().Build(),
                 new ItemDoPedidoBuilder().Build()
