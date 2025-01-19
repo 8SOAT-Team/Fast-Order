@@ -11,7 +11,7 @@ public class Produto : Entity, IAggregateRoot
     public virtual Categoria? Categoria { get; set; }
     public string Imagem { get; private set; } = null!;
 
-    private Produto() { }
+    protected Produto() { }
 
     public Produto(string nome, string descricao, decimal preco, string imagem, Guid categoriaId)
         : this(Guid.NewGuid(), nome, descricao, preco, imagem, categoriaId) { }

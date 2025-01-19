@@ -5,7 +5,7 @@ namespace Postech8SOAT.FastOrder.Domain.Entities;
 
 public class ItemDoPedido : Entity
 {
-    private ItemDoPedido()
+    protected ItemDoPedido()
     {
     }
 

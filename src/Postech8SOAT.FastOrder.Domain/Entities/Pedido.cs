@@ -11,8 +11,6 @@ public class Pedido : Entity, IAggregateRoot
     private static readonly ImmutableHashSet<StatusPedido> StatusPedidoPermiteAlteracao =
         [StatusPedido.Recebido, StatusPedido.EmPreparacao];
 
-    private Pedido() { }
-
     public DateTime DataPedido { get; private set; }
     public StatusPedido StatusPedido { get; private set; }
     public Guid? ClienteId { get; set; }
@@ -21,43 +19,29 @@ public class Pedido : Entity, IAggregateRoot
     public decimal ValorTotal { get; private set; }
     public virtual Pagamento? Pagamento { get; private set; }
 
-    public Pedido(Guid? clienteId, List<ItemDoPedido> itens) : this(Guid.NewGuid(), clienteId, itens) { }
+    public Pedido()
+    {
+        
+    }
 
     [JsonConstructor]
-    public Pedido(Guid id, Guid? clienteId, List<ItemDoPedido> itens)
+    public Pedido(Guid id, Guid? clienteId, List<ItemDoPedido> itensDoPedido)
     {
-        ValidationDomain(id, clienteId, itens);
+        ValidationDomain(id, clienteId, itensDoPedido);
 
         Id = id;
         ClienteId = clienteId;
-        ItensDoPedido = itens;
+        ItensDoPedido = itensDoPedido;
         DataPedido = DateTime.Now;
         StatusPedido = StatusInicial;
         CalcularValorTotal();
     }
 
-    public void AdicionarProduto(ItemDoPedido item)
+    public void CalcularValorTotal()
     {
-        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-
-        this.ItensDoPedido?.Add(item);
-        this.CalcularValorTotal();
+        ValorTotal = ItensDoPedido?.Sum(item => item.Produto.Preco * item.Quantidade) ?? 0;
     }
 
-    public void RemoverProduto(ItemDoPedido item)
-    {
-        DomainExceptionValidation.When(StatusPedidoPermiteAlteracao.Contains(StatusPedido) is false, "Status do pedido não permite alteração");
-
-        this.ItensDoPedido?.Remove(item);
-        this.CalcularValorTotal();
-
-    }
-
-    public decimal CalcularValorTotal()
-    {
-        this.ValorTotal = ItensDoPedido?.Sum(item => item.Produto.Preco * item.Quantidade) ?? 0;
-        return this.ValorTotal;
-    }
     private static void ValidationDomain(Guid id, Guid? clienteId, List<ItemDoPedido> itens)
     {
         DomainExceptionValidation.When(id == Guid.Empty, "Id inválido");
@@ -110,7 +94,7 @@ public class Pedido : Entity, IAggregateRoot
     public void IniciarPagamento(MetodoDePagamento metodoDePagamento)
     {
         DomainExceptionValidation.When(StatusPedido != StatusInicial,
-         $"Status do pedido não permite pagamento. O status deve ser {StatusPedido.Recebido} para realizar o pagamento.");
+            $"Status do pedido não permite pagamento. O status deve ser {StatusPedido.Recebido} para realizar o pagamento.");
 
         Pagamento = new Pagamento(this, metodoDePagamento, this.ValorTotal, null);
     }
