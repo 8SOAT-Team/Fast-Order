@@ -35,7 +35,7 @@ jobs:
         with:
           label: Unit Test Coverage
           color: brightgreen
-          path: ./test/TestResults/coverage.opencover.xml
+          path: ./test/testResults/coverage.opencover.xml
           gist-filename: code-coverage.json
           gist-id: 316dc4c4e04246660bd7f355d0bea297
           gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
         with:
-          reports: ./test/TestResults/coverage.opencover.xml
+          reports: ./test/testResults/coverage.opencover.xml
           targetdir: coveragereport
           reporttypes: Html_Dark;Badges
 
