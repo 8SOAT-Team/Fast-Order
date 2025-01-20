@@ -5,6 +5,8 @@ using Postech8SOAT.FastOrder.UseCases.Pedidos;
 using CleanArch.UseCase.Options;
 using Postech8SOAT.FastOrder.Domain.Entities;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Pedidos;
+
 public class ListarTodosPedidosUseCaseTest
 {
 

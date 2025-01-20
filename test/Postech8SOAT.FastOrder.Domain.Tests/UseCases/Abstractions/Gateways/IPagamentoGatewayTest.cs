@@ -3,6 +3,7 @@ using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Abstractions.Gateways;
 public class IPagamentoGatewayTest
 {
 

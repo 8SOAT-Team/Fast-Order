@@ -10,6 +10,7 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Pagamentos;
 using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Pagamentos;
 public class ObterPagamentoByPedidoUseCaseTest
 {
     private readonly Mock<ILogger> _mockLogger;

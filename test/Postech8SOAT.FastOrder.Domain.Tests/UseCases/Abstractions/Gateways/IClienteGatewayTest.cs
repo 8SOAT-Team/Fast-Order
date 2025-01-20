@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Abstractions.Gateways;
 public class IClienteGatewayTest
 {
     [Fact]

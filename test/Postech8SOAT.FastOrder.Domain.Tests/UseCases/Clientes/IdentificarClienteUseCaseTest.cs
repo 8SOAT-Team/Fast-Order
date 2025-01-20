@@ -5,6 +5,7 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.UseCases.Clientes;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.Abstractions.Clientes;
 public class IdentificarClienteUseCaseTest
 {
 

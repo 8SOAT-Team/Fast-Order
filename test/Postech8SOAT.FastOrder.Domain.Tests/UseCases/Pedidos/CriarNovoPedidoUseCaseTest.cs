@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using CleanArch.UseCase.Faults;
 using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Pedidos;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.UseCases.Pedidos.Dtos;
+
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Pedidos;
 
 public class CriarNovoPedidoUseCaseTest
 {

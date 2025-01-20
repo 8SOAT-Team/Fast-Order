@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using CleanArch.UseCase.Logging;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Produtos;
-using CleanArch.UseCase.Options;
 using Postech8SOAT.FastOrder.Domain.Entities;
 using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
 using CleanArch.UseCase.Faults;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Produtos;
 public class CriarProdutoUseCaseTest
 {
     private readonly Mock<ILogger> _loggerMock;

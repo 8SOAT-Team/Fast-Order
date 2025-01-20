@@ -3,6 +3,7 @@ using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Pagamentos.Dtos;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Abstractions.Gateways; 
 public class IFornecedorPagamentoGatewayTest
 {
 

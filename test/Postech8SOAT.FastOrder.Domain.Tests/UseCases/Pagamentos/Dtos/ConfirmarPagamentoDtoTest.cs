@@ -1,6 +1,7 @@
 ﻿using Postech8SOAT.FastOrder.Domain.Entities.Enums;
 using Postech8SOAT.FastOrder.UseCases.Pagamentos.Dtos;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Pagamentos.Dtos;
 public class ConfirmarPagamentoDtoTest
 {
     [Fact]
