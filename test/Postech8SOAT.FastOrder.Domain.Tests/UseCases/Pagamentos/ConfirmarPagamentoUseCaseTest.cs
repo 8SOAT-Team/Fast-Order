@@ -7,6 +7,7 @@ using Postech8SOAT.FastOrder.UseCases.Pagamentos;
 using Postech8SOAT.FastOrder.UseCases.Pagamentos.Dtos;
 using CleanArch.UseCase.Faults;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Pagamentos;
 public class ConfirmarPagamentoUseCaseTest
 {
 

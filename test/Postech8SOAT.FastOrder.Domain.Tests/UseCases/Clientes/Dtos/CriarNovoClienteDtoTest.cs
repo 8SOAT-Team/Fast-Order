@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Postech8SOAT.FastOrder.Domain.ValueObjects;
 using Postech8SOAT.FastOrder.UseCases.Clientes.Dtos;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.Abstractions.Clientes.Dtos;
 public class CriarNovoClienteDtoTest
 {
     [Fact]

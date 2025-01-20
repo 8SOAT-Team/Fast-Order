@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
+﻿using Postech8SOAT.FastOrder.UseCases.Produtos.Dtos;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Produtos.Dtos;
 public class NovoProdutoDTOTest
 {
 

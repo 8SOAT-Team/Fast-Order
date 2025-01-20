@@ -6,6 +6,7 @@ using Postech8SOAT.FastOrder.UseCases.Clientes.Dtos;
 using Postech8SOAT.FastOrder.UseCases.Clientes;
 using CleanArch.UseCase.Logging;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.Abstractions.Clientes;
 public class CriarNovoClienteUseCaseTest
 {
     private readonly Mock<ILogger> _loggerMock;

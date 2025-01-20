@@ -12,6 +12,7 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using Postech8SOAT.FastOrder.UseCases.Abstractions.Pagamentos.Dtos;
 using Postech8SOAT.FastOrder.UseCases.Pagamentos;
 
+namespace Postech8SOAT.FastOrder.Domain.Tests.UseCases.Pagamentos;
 public class ConfirmarStatusPagamentoUseCaseTest
 {
 
