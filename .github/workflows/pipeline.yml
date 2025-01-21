@@ -22,12 +22,15 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore Fast-Order.sln
 
-      - name: Run unit tests
+      - name: Run BDD tests
         #run: dotnet test Fast-Order.sln --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
-        run: |
-          dotnet test Postech8SOAT.FastOrder.Domain.BDD.Tests/Postech8SOAT.FastOrder.Domain.BDD.Tests.csproj --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
-          dotnet test Postech8SOAT.FastOrder.Domain.Tests/Postech8SOAT.FastOrder.Domain.Tests.csproj --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
-          dotnet test Postech8SOAT.FastOrder.Integration.Tests/Postech8SOAT.FastOrder.Integration.Tests.csproj --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
+        run: dotnet test .test/Postech8SOAT.FastOrder.Domain.BDD.Tests --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
+          
+      - name: Run unit tests
+        run: dotnet test .test/Postech8SOAT.FastOrder.Domain.Tests --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
+      
+      - name: Run integration tests
+        run: dotnet test .test/Postech8SOAT.FastOrder.Integration.Tests --collect:"XPlat Code Coverage" --results-directory TestResults --logger trx
 
       - name: List TestResults directory
         run: ls -R TestResults
