@@ -49,4 +49,17 @@ public class CategoriaSteps
         Assert.NotNull(_exception);
         Assert.Equal(exceptionType, _exception.GetType().Name);
     }
-}
+
+    [When(@"eu tentar criar uma categoria")]
+    public void QuandoEuTentarCriarUmaCategoria()
+    {
+        try
+        {
+            _categoria ??= new Categoria(_nome, _descricao);
+        }
+        catch (Exception ex)
+        {
+            _exception = ex;
+        }
+    }
+ }

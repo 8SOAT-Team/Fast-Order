@@ -81,6 +81,74 @@ namespace Postech8SOAT.FastOrder.Domain.BDD.Tests.Feature
             this.TestTearDown();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="Deve retornar exceção quando o nome for nulo ou vazio")]
+        [Xunit.TraitAttribute("FeatureTitle", "Gerenciamento de Categorias")]
+        [Xunit.TraitAttribute("Description", "Deve retornar exceção quando o nome for nulo ou vazio")]
+        public void DeveRetornarExcecaoQuandoONomeForNuloOuVazio()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deve retornar exceção quando o nome for nulo ou vazio", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 7
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 8
+    testRunner.Given("que o nome da categoria é \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
+#line hidden
+#line 9
+    testRunner.And("a descrição da categoria é \"Teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
+#line hidden
+#line 10
+    testRunner.When("eu tentar criar uma categoria", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
+#line hidden
+#line 11
+    testRunner.Then("uma exceção do tipo \"DomainExceptionValidation\" deve ser lançada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Deve retornar exceção quando o nome tiver menos de 3 caracteres")]
+        [Xunit.TraitAttribute("FeatureTitle", "Gerenciamento de Categorias")]
+        [Xunit.TraitAttribute("Description", "Deve retornar exceção quando o nome tiver menos de 3 caracteres")]
+        public void DeveRetornarExcecaoQuandoONomeTiverMenosDe3Caracteres()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deve retornar exceção quando o nome tiver menos de 3 caracteres", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 13
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+    testRunner.Given("que o nome da categoria é \"Te\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
+#line hidden
+#line 15
+    testRunner.And("a descrição da categoria é \"Teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
+#line hidden
+#line 16
+    testRunner.When("eu tentar criar uma categoria", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
+#line hidden
+#line 17
+    testRunner.Then("uma exceção do tipo \"DomainExceptionValidation\" deve ser lançada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [Xunit.SkippableFactAttribute(DisplayName="Deve criar categoria com sucesso")]
         [Xunit.TraitAttribute("FeatureTitle", "Gerenciamento de Categorias")]
         [Xunit.TraitAttribute("Description", "Deve criar categoria com sucesso")]

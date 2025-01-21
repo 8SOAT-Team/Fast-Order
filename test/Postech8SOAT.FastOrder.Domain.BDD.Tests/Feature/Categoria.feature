@@ -4,17 +4,17 @@ Funcionalidade: Gerenciamento de Categorias
   Como um desenvolvedor
   Quero validar as regras de negócio ao criar uma categoria
 
-#Cenário: Deve retornar exceção quando o nome for nulo ou vazio
-#    Dado que o nome da categoria é ""
-#    E a descrição da categoria é "Teste"
-#    Quando eu tentar criar uma categoria
-#    Então uma exceção do tipo "DomainExceptionValidation" deve ser lançada
-#
-#Cenário: Deve retornar exceção quando o nome tiver menos de 3 caracteres
-#    Dado que o nome da categoria é "Te"
-#    E a descrição da categoria é "Teste"
-#    Quando eu tentar criar uma categoria
-#    Então uma exceção do tipo "DomainExceptionValidation" deve ser lançada
+Cenário: Deve retornar exceção quando o nome for nulo ou vazio
+    Dado que o nome da categoria é ""
+    E a descrição da categoria é "Teste"
+    Quando eu tentar criar uma categoria
+    Então uma exceção do tipo "DomainExceptionValidation" deve ser lançada
+
+Cenário: Deve retornar exceção quando o nome tiver menos de 3 caracteres
+    Dado que o nome da categoria é "Te"
+    E a descrição da categoria é "Teste"
+    Quando eu tentar criar uma categoria
+    Então uma exceção do tipo "DomainExceptionValidation" deve ser lançada
 
 Cenário: Deve criar categoria com sucesso
     Dado que o nome da categoria é "Teste"
