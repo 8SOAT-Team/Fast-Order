@@ -37,7 +37,7 @@ jobs:
           color: brightgreen
           path: ./test/Postech8SOAT.FastOrder.Domain.Tests/TestResults/coverage.opencover.xml
           gist-filename: code-coverage.json
-          gist-id: 790517b6b21bfc7cd874a02927141ede
+          gist-id: 13654160d09af671a6631ae80eb602c9
           gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
 
       - name: Print code coverage
