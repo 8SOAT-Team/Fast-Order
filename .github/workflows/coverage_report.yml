@@ -3,7 +3,7 @@ name: coverage_report
 on:
   push:
     branches:
-    - main
+    - feat/testcovarage-main
 
 jobs:
   test-and-coverage-with-report:
