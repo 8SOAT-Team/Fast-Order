@@ -2,15 +2,23 @@
 using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
+
 public class ItemDoPedido : Entity
 {
-    protected ItemDoPedido() { }
+    protected ItemDoPedido()
+    {
+    }
 
-    public Guid PedidoId { get; init; }
 
-    public ItemDoPedido(Guid pedidoId, Guid produtoId, int quantidade) : this(Guid.NewGuid(), pedidoId, produtoId, quantidade) { }
+    public ItemDoPedido(Guid pedidoId, Guid produtoId, int quantidade) : this(Guid.NewGuid(), pedidoId, produtoId,
+        quantidade)
+    {
+    }
 
-    public ItemDoPedido(Guid pedidoId, Produto produto, int quantidade) : this(Guid.NewGuid(), pedidoId, produto, quantidade) { }
+    public ItemDoPedido(Guid pedidoId, Produto produto, int quantidade) : this(Guid.NewGuid(), pedidoId, produto,
+        quantidade)
+    {
+    }
 
     [JsonConstructor]
     public ItemDoPedido(Guid id, Guid pedidoId, Produto produto, int quantidade)
@@ -32,6 +40,7 @@ public class ItemDoPedido : Entity
         Quantidade = quantidade;
     }
 
+    public Guid PedidoId { get; init; }
     public virtual Pedido Pedido { get; init; } = null!;
     public Guid ProdutoId { get; init; }
     public virtual Produto Produto { get; set; } = null!;
@@ -40,15 +49,19 @@ public class ItemDoPedido : Entity
 
     private static void ValidateDomain(Guid pedidoId, Guid produtoId, int quantidade)
     {
-        DomainExceptionValidation.When(pedidoId.Equals(Guid.Empty), $"Obrigatório informar um {nameof(pedidoId)} válido.");
-        DomainExceptionValidation.When(produtoId.Equals(Guid.Empty), $"Obrigatório informar um {nameof(produtoId)} válido.");
-        DomainExceptionValidation.When(quantidade <= 0, $"Obrigatório informar uma {nameof(quantidade)} maior que zero.");
+        DomainExceptionValidation.When(pedidoId.Equals(Guid.Empty),
+            $"Obrigatório informar um {nameof(pedidoId)} válido.");
+        DomainExceptionValidation.When(produtoId.Equals(Guid.Empty),
+            $"Obrigatório informar um {nameof(produtoId)} válido.");
+        DomainExceptionValidation.When(quantidade <= 0,
+            $"Obrigatório informar uma {nameof(quantidade)} maior que zero.");
     }
 
     public void Adicionar(int quantidade)
     {
         Quantidade += quantidade;
     }
+
     public void Remover(int quantidade)
     {
         Quantidade -= quantidade;

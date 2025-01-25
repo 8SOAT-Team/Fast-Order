@@ -2,6 +2,8 @@
 
 public static class EnvConfig
 {
+    public static string EnvironmentName => EnvConfigValueGetter.MustGetString("ASPNETCORE_ENVIRONMENT");
+    public static bool IsTestEnv => EnvironmentName.Equals("test", StringComparison.InvariantCultureIgnoreCase);
     public static string DatabaseConnection => EnvConfigValueGetter.MustGetString("CONNECTIONSTRINGS_DEFAULTCONNECTIONCONTAINER");
     public static Uri PagamentoWebhookUrl => EnvConfigValueGetter.MustGetUri("PAGAMENTO_WEBHOOK_URL");
     public static string PagamentoFornecedorAccessToken => EnvConfigValueGetter.GetString("PAGAMENTO_FORNECEDOR_ACESS_TOKEN");

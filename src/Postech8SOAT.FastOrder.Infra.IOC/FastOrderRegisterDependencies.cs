@@ -17,37 +17,49 @@ using Postech8SOAT.FastOrder.UseCases.Abstractions.Gateways;
 using StackExchange.Redis;
 
 namespace Postech8SOAT.FastOrder.Infra.IOC;
+
+public static class DecoratorExtension
+{
+    public static IServiceCollection DecorateIf<TService, TDecorator>(this IServiceCollection services,
+        Func<bool> condition)
+        where TService : class
+        where TDecorator : TService
+    {
+        return !condition() ? services : services.Decorate<TService, TDecorator>();
+    }
+}
+
 public static class FastOrderRegisterDependencies
 {
     public static void ConfigureDI(this IServiceCollection services)
     {
         services.AddDbContext<FastOrderContext>(options =>
-                options.UseLazyLoadingProxies().UseSqlServer(EnvConfig.DatabaseConnection));
+            options.UseLazyLoadingProxies().UseSqlServer(EnvConfig.DatabaseConnection));
 
         services.AddHttpClient();
 
         services.AddGateways()
-         .AddControllers()
-         .UpstreamDI()
-         .CacheDI();
+            .AddControllers()
+            .UpstreamDI()
+            .CacheDI();
     }
 
     private static IServiceCollection AddGateways(this IServiceCollection services)
     {
         services.AddScoped<IClienteGateway, ClienteGateway>()
-               .Decorate<IClienteGateway, ClienteGatewayCache>();
+            .DecorateIf<IClienteGateway, ClienteGatewayCache>(() => !EnvConfig.IsTestEnv);
 
         services.AddScoped<ICategoriaGateway, CategoriaGateway>()
-                .Decorate<ICategoriaGateway, CategoriaGatewayCache>();
+            .DecorateIf<ICategoriaGateway, CategoriaGatewayCache>(() => !EnvConfig.IsTestEnv);
 
         services.AddScoped<IPagamentoGateway, PagamentoGateway>()
-                .Decorate<IPagamentoGateway, PagamentoGatewayCache>();
+            .DecorateIf<IPagamentoGateway, PagamentoGatewayCache>(() => !EnvConfig.IsTestEnv);
 
         services.AddScoped<IProdutoGateway, ProdutoGateway>()
-                .Decorate<IProdutoGateway, ProdutoGatewayCache>();
+            .DecorateIf<IProdutoGateway, ProdutoGatewayCache>(() => !EnvConfig.IsTestEnv);
 
         services.AddScoped<IPedidoGateway, PedidoGateway>()
-                .Decorate<IPedidoGateway, PedidoGatewayCache>();
+            .DecorateIf<IPedidoGateway, PedidoGatewayCache>(() => !EnvConfig.IsTestEnv);
 
         return services;
     }
@@ -78,7 +90,14 @@ public static class FastOrderRegisterDependencies
 
     private static IServiceCollection CacheDI(this IServiceCollection services)
     {
-        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(EnvConfig.DistributedCacheUrl));
+        services.AddSingleton<IConnectionMultiplexer>(
+            ConnectionMultiplexer.Connect(EnvConfig.DistributedCacheUrl, o =>
+            {
+                o.AbortOnConnectFail = false;
+                o.ConnectRetry = 2;
+                o.Ssl = false;
+                o.ConnectTimeout = 5;
+            }));
         services.AddSingleton<ICacheContext, CacheContext>();
 
         return services;

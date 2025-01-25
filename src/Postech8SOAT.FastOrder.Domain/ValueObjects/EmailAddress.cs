@@ -3,7 +3,7 @@ using Postech8SOAT.FastOrder.Domain.Expressions;
 
 namespace Postech8SOAT.FastOrder.Domain.ValueObjects;
 
-public partial record EmailAddress
+public record EmailAddress
 {
     public string Address { get; private init; } = null!;
 

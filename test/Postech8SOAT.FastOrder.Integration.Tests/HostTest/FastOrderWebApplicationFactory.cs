@@ -10,7 +10,7 @@ using Testcontainers.MsSql;
 namespace Postech8SOAT.FastOrder.Integration.Tests.HostTest;
 public class FastOrderWebApplicationFactory: WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private IServiceScope? scope;
+    private IServiceScope? _scope;
 
     private readonly MsSqlContainer _mssqlContainer= new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")            
@@ -21,8 +21,8 @@ public class FastOrderWebApplicationFactory: WebApplicationFactory<Program>, IAs
     public async Task InitializeAsync()
     {        
         await _mssqlContainer.StartAsync();       
-        this.scope = Services.CreateScope();
-        this.Context = scope.ServiceProvider.GetRequiredService<FastOrderContext>();
+        this._scope = Services.CreateScope();
+        this.Context = _scope.ServiceProvider.GetRequiredService<FastOrderContext>();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -40,9 +40,9 @@ public class FastOrderWebApplicationFactory: WebApplicationFactory<Program>, IAs
 
     public new async Task DisposeAsync()
     {
-        if (scope != null)
+        if (_scope != null)
         {
-            scope.Dispose();
+            _scope.Dispose();
         }
 
         await _mssqlContainer.DisposeAsync();
