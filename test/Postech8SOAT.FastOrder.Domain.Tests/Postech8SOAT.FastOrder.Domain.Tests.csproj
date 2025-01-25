@@ -10,19 +10,42 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.6.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
+    <PackageReference Include="SpecFlow.xUnit" Version="3.9.74" />
+    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Controllers\Postech8SOAT.FastOrder.Controllers.csproj" />
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Gateways\Postech8SOAT.FastOrder.Gateways.csproj" />
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Upstream\Postech8SOAT.FastOrder.Upstream.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.UseCase\Postech8SOAT.FastOrder.UseCases.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.WebAPI\Postech8SOAT.FastOrder.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Adapters\Gateways\" />
+    <Folder Include="Core\" />
+    <Folder Include="External\Upstream\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ValueObjects\EmailAddressTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
 </Project>

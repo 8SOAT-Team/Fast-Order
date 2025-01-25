@@ -22,6 +22,7 @@ public class ProdutoDTO
     public string? Descricao { get; set; }
 
     [Required(ErrorMessage = "O preço é requerido.")]
+    [Range(0.01, double.MaxValue, ErrorMessage = "O preço deve ser maior que zero.")]
     [Column(TypeName = "decimal(18,2)")]
     [DisplayFormat(DataFormatString = "{0:C2}")]
     [DataType(DataType.Currency)]
