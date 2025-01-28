@@ -6,7 +6,7 @@ internal class ItemDoPedidoBuilder:Faker<ItemDoPedido>
 {
     public ItemDoPedidoBuilder()
     { 
-        var produto = new ProdutoBuilder().Build();
+        var produto = new ProdutoBuilder().Build();     
         CustomInstantiator(f => new ItemDoPedido(pedidoId:f.Random.Guid(), produto, quantidade:f.Random.Int(1, 10)));
     }
 

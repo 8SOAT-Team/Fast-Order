@@ -16,7 +16,7 @@ public class Pagamento : Entity, IAggregateRoot
 
     public const int Parcelas = 1;
 
-    private Pagamento() { }
+    public Pagamento() { }
 
     [JsonConstructor]
     public Pagamento(Guid id, Guid pedidoId, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string? pagamentoExternoId)

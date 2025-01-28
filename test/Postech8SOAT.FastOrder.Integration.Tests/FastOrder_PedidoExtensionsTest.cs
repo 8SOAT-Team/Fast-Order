@@ -14,24 +14,6 @@ public class FastOrder_PedidoExtensionsTest : IClassFixture<FastOrderWebApplicat
         _factory = factory;
     }
 
-    //[Fact]
-    //public async Task GET_Deve_buscar_pedido_por_id()
-    //{
-    //    //Arrange
-    //    var pedidoExistente = _factory.Context!.Pedidos.FirstOrDefault();
-    //    if (pedidoExistente is null)
-    //    {
-    //        pedidoExistente = new PedidoBuilder().Build();
-    //        _factory.Context.Add(pedidoExistente);
-    //        _factory.Context.SaveChanges();
-    //    }
-    //    var httpClient = _factory.CreateClient();
-    //    //Act
-    //    var response = await httpClient.GetFromJsonAsync<NovoPedidoDTO>($"/pedido/" + pedidoExistente.Id);
-    //    //Assert
-    //    Assert.NotNull(response);
-    //}
-
     [Fact]
     public async Task POST_Deve_criar_pedido()
     {
@@ -69,23 +51,32 @@ public class FastOrder_PedidoExtensionsTest : IClassFixture<FastOrderWebApplicat
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
-    //[Fact]
-    //public async Task GET_Deve_Retornar_Pedido_Id_Cliente()
-    //{
-    //    //Arrange
-    //    var pedidoExistente = _factory.Context!.Pedidos.FirstOrDefault();
-    //    if (pedidoExistente is null)
-    //    {
-    //        pedidoExistente = new PedidoBuilder().Build();
-    //        _factory.Context.Add(pedidoExistente);
-    //        _factory.Context.SaveChanges();
-    //    }
-    //    var httpClient = _factory.CreateClient();
-    //    //Act
-    //    var response = await httpClient.GetFromJsonAsync<NovoPedidoDTO>($"/pedido/" + pedidoExistente.ClienteId);
-    //    //Assert
-    //    Assert.NotNull(response);
-    //}
+    [Fact]
+    public async Task GET_Deve_Retornar_Pedido_Pelo_Id()
+    {
+        //Arrange
+        var cliente = _factory.Context!.Clientes.FirstOrDefault();
+
+        if (cliente is null)
+        {
+            cliente = new ClienteBuilder().Build();
+            _factory.Context.Clientes.Add(cliente);
+            _factory.Context.SaveChanges();
+        }
+
+        var pedidoExistente = _factory.Context!.Pedidos.FirstOrDefault();
+        if (pedidoExistente is null)
+        {
+            pedidoExistente = new PedidoBuilder(cliente.Id).Build();
+            _factory.Context.Add(pedidoExistente);
+            _factory.Context.SaveChanges();
+        }
+        var httpClient = _factory.CreateClient();
+        //Act
+        var response = await httpClient.GetFromJsonAsync<NovoPedidoDTO>($"/pedido/{pedidoExistente.Id}");
+        //Assert
+        Assert.NotNull(response);
+    }
 
     [Fact]
     public async Task GET_Deve_Retornar_Todos_Pedidos()
@@ -130,7 +121,7 @@ public class FastOrder_PedidoExtensionsTest : IClassFixture<FastOrderWebApplicat
     //            _factory.Context.Clientes.Add(cliente);
     //            _factory.Context.SaveChanges();
     //        }
-    //        pedidoExistente = new PedidoBuilder(cliente.Id).Build();          
+    //        pedidoExistente = new PedidoBuilder(cliente.Id).Build();
     //        _factory.Context.Add(pedidoExistente);
     //        _factory.Context.SaveChanges();
     //    }
