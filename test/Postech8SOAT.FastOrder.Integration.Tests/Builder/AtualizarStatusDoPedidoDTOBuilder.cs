@@ -9,7 +9,7 @@ internal class AtualizarStatusDoPedidoDTOBuilder:Faker<AtualizarStatusDoPedidoDT
     {
         CustomInstantiator(f => new AtualizarStatusDoPedidoDTO()
         {
-            NovoStatus = f.PickRandom<StatusPedido>()
+            NovoStatus = StatusPedido.EmPreparacao
         });
     }
     public AtualizarStatusDoPedidoDTO Build() => Generate();
