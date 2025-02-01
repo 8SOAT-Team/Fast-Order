@@ -5,13 +5,12 @@ metadata:
 spec:
   selector:
     app: fast-crud
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 80
       name: http
       targetPort: 8080
-      nodePort: 31500
-    - port: 81
+    - port: 443
       name: https
       targetPort: 8081
-      nodePort: 31600
+
