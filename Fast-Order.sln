@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech8SOAT.FastOrder.Inte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech8SOAT.FastOrder.Domain.BDD.Tests", "test\Postech8SOAT.FastOrder.Domain.BDD.Tests\Postech8SOAT.FastOrder.Domain.BDD.Tests.csproj", "{32DE2707-D714-49A9-A265-61C672AAECB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postech8SOAT.FastOrder.Tests", "test\Postech8SOAT.FastOrder.Tests\Postech8SOAT.FastOrder.Tests.csproj", "{1B18CB63-0815-4583-9FFF-BAC98E0F232C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,10 @@ Global
 		{32DE2707-D714-49A9-A265-61C672AAECB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32DE2707-D714-49A9-A265-61C672AAECB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32DE2707-D714-49A9-A265-61C672AAECB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B18CB63-0815-4583-9FFF-BAC98E0F232C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B18CB63-0815-4583-9FFF-BAC98E0F232C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B18CB63-0815-4583-9FFF-BAC98E0F232C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B18CB63-0815-4583-9FFF-BAC98E0F232C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +170,7 @@ Global
 		{DBF601BA-6527-4074-A761-ACA7FFA5CBA0} = {8CD53F91-3587-4608-8006-AFDF492C956D}
 		{281D63FD-CE85-4D8D-84D9-1A2D12EB9F08} = {4A3D97B3-2F7C-41B7-87CD-E376FD88B288}
 		{32DE2707-D714-49A9-A265-61C672AAECB5} = {4A3D97B3-2F7C-41B7-87CD-E376FD88B288}
+		{1B18CB63-0815-4583-9FFF-BAC98E0F232C} = {4A3D97B3-2F7C-41B7-87CD-E376FD88B288}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {290B78A1-7B91-4DC6-AB6E-64D81B6C5F7D}
