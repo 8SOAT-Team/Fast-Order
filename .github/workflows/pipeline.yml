@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - merge-feature/badge-main
       
 jobs:
   unit-test:
