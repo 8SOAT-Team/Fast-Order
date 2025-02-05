@@ -44,6 +44,12 @@ jobs:
             -reports:"$COVERAGE_PATH" \
             -targetdir:coverage-report \
             -reporttypes:Html
+  
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
 
   build:
     runs-on: ubuntu-latest
@@ -71,7 +77,7 @@ jobs:
           DOTNET_CLI_HOME: ${{ github.workspace }}
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: ./output
