@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Postech8SOAT.FastOrder.Tests.BDD.Feature 
+namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
 {
     using TechTalk.SpecFlow;
     using System;
@@ -40,7 +40,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt-BR"), "Feature", "Gerenciamento de Categorias", "  Para garantir a consistência dos dados\r\n  Como um desenvolvedor\r\n  Quero valida" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt-BR"), "BDD/Feature", "Gerenciamento de Categorias", "  Para garantir a consistência dos dados\r\n  Como um desenvolvedor\r\n  Quero valida" +
                     "r as regras de negócio ao criar uma categoria", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }

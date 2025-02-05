@@ -40,7 +40,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt-BR"), "Feature", "Gerenciar itens do pedido", "  Para garantir que os itens de um pedido sejam gerenciados corretamente,\r\n  Como" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt-BR"), "BDD/Feature", "Gerenciar itens do pedido", "  Para garantir que os itens de um pedido sejam gerenciados corretamente,\r\n  Como" +
                     " desenvolvedor\r\n  Eu quero realizar testes de comportamento na classe ItemDoPedi" +
                     "do.", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
@@ -90,7 +90,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Criar um item do pedido válido", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+#line 7
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -100,22 +100,22 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 8
     testRunner.Given("que eu tenha um pedido com ID \"c6e5d33d-7c1e-48a5-8a94-d40b317915bc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 8
+#line 9
       testRunner.And("um produto com ID \"f0fdbefb-08b2-4ad7-bdfc-8c3f0e070d8e\" e preço de 50.00", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 9
+#line 10
       testRunner.And("uma quantidade igual a 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 10
+#line 11
     testRunner.When("eu criar o item do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 11
+#line 12
     testRunner.Then("o item deve ser criado com sucesso", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
-#line 12
+#line 13
       testRunner.And("o valor total do item deve ser 100.00", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
             }
@@ -130,7 +130,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tentar criar um item com quantidade inválida", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 14
+#line 15
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -140,16 +140,16 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 16
     testRunner.Given("que eu tenha um pedido com ID \"c6e5d33d-7c1e-48a5-8a94-d40b317915bc\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 16
+#line 17
       testRunner.And("um produto com ID \"f0fdbefb-08b2-4ad7-bdfc-8c3f0e070d8e\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 17
+#line 18
       testRunner.And("uma quantidade igual a 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 18
+#line 19
     testRunner.Then("uma exceção deve ser lançada com a mensagem \"Obrigatório informar uma quantidade " +
                         "maior que zero.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
@@ -165,7 +165,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adicionar quantidade ao item do pedido", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 20
+#line 21
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -175,14 +175,14 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 21
+#line 22
     testRunner.Given("que eu tenha um item do pedido com ID \"e5e1f4b4-bbca-4c94-9d77-37d517918e24\" e qu" +
                         "antidade inicial igual a 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 22
+#line 23
     testRunner.When("eu adicionar uma quantidade igual a 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 23
+#line 24
     testRunner.Then("o item deve ter uma quantidade total igual a 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }
@@ -197,7 +197,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remover quantidade do item do pedido", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 25
+#line 26
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -207,14 +207,14 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 27
     testRunner.Given("que eu tenha um item do pedido com ID \"e5e1f4b4-bbca-4c94-9d77-37d517918e24\" e qu" +
                         "antidade inicial igual a 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 27
+#line 28
     testRunner.When("eu remover uma quantidade igual a 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 28
+#line 29
     testRunner.Then("o item deve ter uma quantidade total igual a 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }

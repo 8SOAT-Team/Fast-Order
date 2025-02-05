@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.UseCase\Postech8SOAT.FastOrder.UseCases.csproj" />
 	<ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.WebAPI\Postech8SOAT.FastOrder.WebAPI.csproj" />
+	<ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.WebAPI\Postech8SOAT.FastOrder.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

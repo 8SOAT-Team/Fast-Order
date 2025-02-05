@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Postech8SOAT.FastOrder.Tests.BDD.Feature 
+namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
 {
     using TechTalk.SpecFlow;
     using System;
@@ -40,7 +40,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt-BR"), "Feature", "Gerenciamento de Clientes", "  Como um sistema de gerenciamento de clientes\r\n  Eu quero garantir que os client" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("pt-BR"), "BDD/Feature", "Gerenciamento de Clientes", "  Como um sistema de gerenciamento de clientes\r\n  Eu quero garantir que os client" +
                     "es sejam criados, alterados e validados corretamente", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -89,7 +89,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Criar um cliente válido", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+#line 7
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -99,19 +99,19 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 8
     testRunner.Given("que o CPF do cliente é \"765.273.200-00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 8
+#line 9
     testRunner.And("o nome do cliente é \"João da Silva\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 9
+#line 10
     testRunner.And("o email do cliente é \"joao@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 10
+#line 11
     testRunner.When("eu criar o cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 11
+#line 12
     testRunner.Then("o cliente deve ser válido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }
@@ -126,7 +126,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retornar exceção quando CPF for nulo ou vazio", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 13
+#line 14
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -136,19 +136,19 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 14
+#line 15
     testRunner.Given("que o CPF do cliente é \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 15
+#line 16
     testRunner.And("o nome do cliente é \"João da Silva\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 16
+#line 17
     testRunner.And("o email do cliente é \"joao@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 17
+#line 18
     testRunner.When("eu tentar criar o cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 18
+#line 19
     testRunner.Then("uma exceção de validação deve ser lançada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }
@@ -163,7 +163,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retornar exceção quando CPF for inválido", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 20
+#line 21
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -173,19 +173,19 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 21
+#line 22
     testRunner.Given("que o CPF do cliente é \"765.273.200-0X\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 22
+#line 23
     testRunner.And("o nome do cliente é \"Nome válido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 23
+#line 24
     testRunner.And("o email do cliente é \"email@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 24
+#line 25
     testRunner.When("eu tentar criar o cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 25
+#line 26
     testRunner.Then("uma exceção de validação deve ser lançada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }
@@ -200,7 +200,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retornar exceção quando nome for inválido", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 27
+#line 28
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -210,19 +210,19 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 28
+#line 29
     testRunner.Given("que o CPF do cliente é \"765.273.200-00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 29
+#line 30
     testRunner.And("o nome do cliente é \"jo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 30
+#line 31
     testRunner.And("o email do cliente é \"email@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 31
+#line 32
     testRunner.When("eu tentar criar o cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 32
+#line 33
     testRunner.Then("uma exceção de validação deve ser lançada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }
@@ -237,7 +237,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Alterar nome de um cliente", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 34
+#line 35
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -247,17 +247,17 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 35
+#line 36
     testRunner.Given("que o cliente foi criado com CPF \"765.273.200-00\", nome \"João da Silva\" e email \"" +
                         "joao@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 36
+#line 37
     testRunner.And("o novo nome do cliente é \"João Silva\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 37
+#line 38
     testRunner.When("eu alterar o nome do cliente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 38
+#line 39
     testRunner.Then("o nome do cliente deve ser \"João Silva\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }
@@ -272,7 +272,7 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Alterar email de um cliente", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 40
+#line 41
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -282,17 +282,17 @@ namespace Postech8SOAT.FastOrder.Tests.BDD.Feature
             else
             {
                 this.ScenarioStart();
-#line 41
+#line 42
     testRunner.Given("que o cliente foi criado com CPF \"765.273.200-00\", nome \"João da Silva\" e email \"" +
                         "joao@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Dado ");
 #line hidden
-#line 42
+#line 43
     testRunner.And("o novo email do cliente é \"joao.da.silva@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "E ");
 #line hidden
-#line 43
+#line 44
     testRunner.When("eu alterar o email do cliente para \"joao.da.silva@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Quando ");
 #line hidden
-#line 44
+#line 45
     testRunner.Then("o email do cliente deve ser \"joao.da.silva@example.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Então ");
 #line hidden
             }

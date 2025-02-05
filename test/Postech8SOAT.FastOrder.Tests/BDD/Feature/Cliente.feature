@@ -1,4 +1,5 @@
-﻿Funcionalidade: Gerenciamento de Clientes
+﻿# language: pt-BR
+Funcionalidade: Gerenciamento de Clientes
 
   Como um sistema de gerenciamento de clientes
   Eu quero garantir que os clientes sejam criados, alterados e validados corretamente

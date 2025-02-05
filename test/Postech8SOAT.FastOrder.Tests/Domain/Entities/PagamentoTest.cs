@@ -35,7 +35,7 @@ namespace Postech8SOAT.FastOrder.Tests.Domain.Entities
             var pedido = new Pedido(Guid.NewGuid(), listaItens);
 
             //Act
-            Action act = () => new Pagamento(Guid.Empty, pedido.Id, pedido, Entities.Enums.MetodoDePagamento.Pix, 100m, "idExterno");
+            Action act = () => new Pagamento(Guid.Empty, pedido.Id, pedido, MetodoDePagamento.Pix, 100m, "idExterno");
             //Assert
             Assert.Throws<DomainExceptionValidation>(() => act());
         }
@@ -52,7 +52,7 @@ namespace Postech8SOAT.FastOrder.Tests.Domain.Entities
             var pedido = new Pedido(Guid.NewGuid(), listaItens);
 
             //Act
-            Action act = () => new Pagamento(Guid.NewGuid(), pedido.Id, pedido, Entities.Enums.MetodoDePagamento.Pix, -1m, "idExterno");
+            Action act = () => new Pagamento(Guid.NewGuid(), pedido.Id, pedido, MetodoDePagamento.Pix, -1m, "idExterno");
             //Assert
             Assert.Throws<DomainExceptionValidation>(() => act());
         }

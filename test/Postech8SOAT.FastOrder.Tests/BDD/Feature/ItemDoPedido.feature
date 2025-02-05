@@ -1,4 +1,5 @@
-﻿Funcionalidade: Gerenciar itens do pedido
+﻿# language: pt-BR
+Funcionalidade: Gerenciar itens do pedido
   Para garantir que os itens de um pedido sejam gerenciados corretamente,
   Como desenvolvedor
   Eu quero realizar testes de comportamento na classe ItemDoPedido.
