@@ -41,7 +41,6 @@ public sealed class ItemDoPedido : Entity
     }
 
     public Guid PedidoId { get; init; }
-    public Guid PedidoId { get; init; }
     public Pedido Pedido { get; init; } = null!;
     public Guid ProdutoId { get; init; }
     public Produto Produto { get; set; } = null!;

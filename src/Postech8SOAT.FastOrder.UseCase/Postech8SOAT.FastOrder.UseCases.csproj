@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CleanArch.UseCase" Version="1.0.9-beta-g0d3852eaa0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.6" />
   </ItemGroup>
 
   <ItemGroup>

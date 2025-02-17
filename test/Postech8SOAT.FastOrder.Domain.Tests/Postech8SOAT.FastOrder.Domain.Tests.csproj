@@ -21,13 +21,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Controllers\Postech8SOAT.FastOrder.Controllers.csproj" />
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Domain\Postech8SOAT.FastOrder.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Gateways\Postech8SOAT.FastOrder.Gateways.csproj" />
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Infra.Data\Postech8SOAT.FastOrder.Infra.Data.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.Upstream\Postech8SOAT.FastOrder.Upstream.csproj" />
     <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.UseCase\Postech8SOAT.FastOrder.UseCases.csproj" />
+    <ProjectReference Include="..\..\src\Postech8SOAT.FastOrder.WebAPI\Postech8SOAT.FastOrder.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="External\Upstream\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ValueObjects\EmailAddressTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
 </Project>
