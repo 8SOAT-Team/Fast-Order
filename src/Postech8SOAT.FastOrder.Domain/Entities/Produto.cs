@@ -2,16 +2,16 @@
 using System.Text.Json.Serialization;
 
 namespace Postech8SOAT.FastOrder.Domain.Entities;
-public class Produto : Entity, IAggregateRoot
+public sealed class Produto : Entity, IAggregateRoot
 {
     public string Nome { get; private set; } = null!;
     public string Descricao { get; private set; } = null!;
     public decimal Preco { get; private set; }
     public Guid CategoriaId { get; set; }
-    public virtual Categoria? Categoria { get; set; }
+    public Categoria? Categoria { get; set; }
     public string Imagem { get; private set; } = null!;
 
-    protected Produto() { }
+    private Produto() { }
 
     public Produto(string nome, string descricao, decimal preco, string imagem, Guid categoriaId)
         : this(Guid.NewGuid(), nome, descricao, preco, imagem, categoriaId) { }
