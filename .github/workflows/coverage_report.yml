@@ -35,9 +35,9 @@ jobs:
         with:
           label: Unit Test Coverage
           color: brightgreen
-          path: ./test/TestResults/coverage.opencover.xml
+          path: ./test/Postech8SOAT.FastOrder.Tests/TestResults/coverage.opencover.xml
           gist-filename: code-coverage.json
-          gist-id: 316dc4c4e04246660bd7f355d0bea297
+          gist-id: 13654160d09af671a6631ae80eb602c9
           gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
 
       - name: Print code coverage
@@ -52,7 +52,7 @@ jobs:
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
         with:
-          reports: ./test/TestResults/coverage.opencover.xml
+          reports: ./test/Postech8SOAT.FastOrder.Tests/TestResults/coverage.opencover.xml
           targetdir: coveragereport
           reporttypes: Html_Dark;Badges
 

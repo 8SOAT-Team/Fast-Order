@@ -16,7 +16,7 @@ public sealed class Pagamento : Entity, IAggregateRoot
 
     public const int Parcelas = 1;
 
-    private Pagamento() { }
+    public Pagamento() { }
 
     [JsonConstructor]
     public Pagamento(Guid id, Guid pedidoId, Pedido pedido, MetodoDePagamento metodoDePagamento, decimal valorTotal, string? pagamentoExternoId)
@@ -45,18 +45,10 @@ public sealed class Pagamento : Entity, IAggregateRoot
 
     public bool EstaAutorizado() => Status == StatusPagamento.Autorizado;
 
-    public bool AguardandoConfirmacao() => Status == StatusPagamento.Pendente;
-
     public void FinalizarPagamento(bool autorizado)
     {
         DomainExceptionValidation.When(Status != StatusPagamento.Pendente, $"Pagamento só pode ser confirmado quando o status atual é {StatusPagamento.Pendente}");
         Status = autorizado ? StatusPagamento.Autorizado : StatusPagamento.Rejeitado;
-    }
-
-    public void CancelarPagamento()
-    {
-        DomainExceptionValidation.When(Status != StatusPagamento.Pendente, $"Pagamento só pode ser cancelado quando o status atual é {StatusPagamento.Pendente}");
-        Status = StatusPagamento.Cancelado;
     }
 
     public void AssociarPagamentoExterno(string pagamentoExternoId, string urlPagamento)
