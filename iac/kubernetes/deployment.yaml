@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fast-dep
+  labels:
+    app: fast-crud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fast-crud
+  template:
+    metadata:
+      labels:
+        app: fast-crud
+    spec:
+      containers:
+      - name: fast-order-cont
+        image: bergzado/fast-order-app:0.0.8
+        ports:
+        - containerPort: 8080
+        - containerPort: 8081
+        envFrom:
+          - configMapRef:
+              name: fo-api-configmap
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
