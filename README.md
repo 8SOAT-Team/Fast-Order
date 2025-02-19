@@ -71,5 +71,5 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para m
 - André Bessa - RM357159
 - Fernanda Beato - RM357346
 - Felipe Bergmann - RM357042
-- Gilberto Loubach - RM357416
+- Darlei Randel - RM356751
 - Victor Oliver - RM357451
